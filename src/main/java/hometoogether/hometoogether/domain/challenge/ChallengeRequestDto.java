@@ -1,6 +1,7 @@
-package hometoogether.hometoogether.domain.Challenge;
+package hometoogether.hometoogether.domain.challenge;
 
-import hometoogether.hometoogether.Pose.Pose;
+import hometoogether.hometoogether.domain.pose.Pose;
+import hometoogether.hometoogether.domain.user.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,14 +9,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChallengeRequestDto {
     private Pose pose;
-    private String user;
+    private User master;
     private String title;
     private String context;
 
     public Challenge toEntity() {
         return Challenge.builder()
                 .pose(pose)
-                .user(user)
+                .master(master)
                 .title(title)
                 .context(context)
                 .build();

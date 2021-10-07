@@ -1,4 +1,4 @@
-package hometoogether.hometoogether.domain.Challenge;
+package hometoogether.hometoogether.domain.challenge;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

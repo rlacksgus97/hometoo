@@ -1,4 +1,4 @@
-package hometoogether.hometoogether.domain.Pose;
+package hometoogether.hometoogether.domain.pose;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

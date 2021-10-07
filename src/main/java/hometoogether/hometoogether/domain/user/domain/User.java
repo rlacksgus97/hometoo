@@ -1,5 +1,6 @@
 package hometoogether.hometoogether.domain.user.domain;
 
+import hometoogether.hometoogether.domain.challenge.Challenge;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,8 +26,11 @@ public class User implements UserDetails {
 
     private String name;
     private String email;
-    private int age;
     private String password;
+
+    //challenge
+    @OneToMany
+    private List<Challenge> challenges;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
@@ -34,10 +38,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream().map(
-                SimpleGrantedAuthority::new
-        ).collect(Collectors.toList());
-
+        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override

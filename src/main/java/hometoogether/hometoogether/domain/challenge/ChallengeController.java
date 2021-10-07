@@ -1,5 +1,6 @@
-package hometoogether.hometoogether.domain.Challenge;
+package hometoogether.hometoogether.domain.challenge;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ public class ChallengeController {
     private final ChallengeService challengeService;
 
     @PostMapping("/challenges/")
-    public Long save(@RequestBody ChallengeRequestDto param){
+    public Long save(@RequestBody ChallengeRequestDto param) throws JsonProcessingException {
         return challengeService.saveChallenge(param);
     }
 

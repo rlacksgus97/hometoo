@@ -1,5 +1,8 @@
-package hometoogether.hometoogether.domain.Challenge;
+package hometoogether.hometoogether.domain.challenge;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import hometoogether.hometoogether.domain.pose.PoseService;
+import hometoogether.hometoogether.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -13,9 +16,12 @@ import java.util.stream.Collectors;
 public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
+    private final PoseService poseService;
 
     @Transactional
-    public Long saveChallenge(ChallengeRequestDto challengeRequestDto) {
+    public Long saveChallenge(ChallengeRequestDto challengeRequestDto) throws JsonProcessingException {
+        poseService.estimatePose();
+        
         return challengeRepository.save(challengeRequestDto.toEntity()).getId();
     }
 
@@ -35,7 +41,7 @@ public class ChallengeService {
     public Long updateChallenge(Long challengeId, ChallengeRequestDto param) {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + challengeId));
-        challenge.update(param.getPose(), param.getUser(), param.getTitle(), param.getContext());
+        challenge.update(param.getPose(), param.getMaster(), param.getTitle(), param.getContext());
         return challengeId;
     }
 
@@ -44,6 +50,14 @@ public class ChallengeService {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + challengeId));
         challengeRepository.delete(challenge);
+        return challengeId;
+    }
+
+    @Transactional
+    public Long joinChallenge(Long challengeId) {
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + challengeId));
+        List<User> challengers = challenge.getChallengers();
         return challengeId;
     }
 
