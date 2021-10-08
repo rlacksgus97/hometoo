@@ -30,9 +30,4 @@ public class Trial {
         this.trialPose = trialPose;
         this.challenge = challenge;
     }
-
-    public void update(TrialPose trialPose, Challenge challenge) {
-        this.trialPose = trialPose;
-        this.challenge = challenge;
-    }
 }

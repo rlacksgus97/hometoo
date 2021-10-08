@@ -19,7 +19,7 @@ public class PoseService {
     private final PoseRepository poseRepository;
     private final PoseInfoRepository poseInfoRepository;
 
-    public String estimatePose() throws JsonProcessingException {
+    public String estimatePosetest(String url) throws JsonProcessingException {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -29,8 +29,6 @@ public class PoseService {
 //        String url = "https://preview.clipartkorea.co.kr/2016/05/27/ti325057081.jpg";
 //        String url = "https://preview.clipartkorea.co.kr/2015/03/20/tip034z15020088.jpg";
 //        String url = "http://preview.clipartkorea.co.kr/2016/05/27/ti325057171.jpg";
-        String url = "https://media.istockphoto.com/photos/looking-at-camera-front-view-full-length-one-person-of-2029-years-old-picture-id1182145935";
-
         params.add("image_url", url);
 
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
@@ -57,6 +55,32 @@ public class PoseService {
 
         System.out.println("response = " + response);
         return jsonbody;
+    }
+
+    public PoseInfo estimatePose(String url) throws JsonProcessingException {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.add("Authorization", "KakaoAK 19a4097fe8917a985bb1a7acc9ce2fb1");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("image_url", url);
+
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
+
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<String> response = rt.exchange(
+                "https://cv-api.kakaobrain.com/pose",
+                HttpMethod.POST,
+                entity,
+                String.class
+        );
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonbody = response.getBody();
+        jsonbody = jsonbody.substring(1, jsonbody.length());
+        PoseInfo poseInfo = mapper.readValue(jsonbody, PoseInfo.class);
+        return poseInfo;
     }
 
     public double estimateSimilarity(){

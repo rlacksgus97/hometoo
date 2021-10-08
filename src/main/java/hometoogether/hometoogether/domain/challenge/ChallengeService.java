@@ -1,6 +1,8 @@
 package hometoogether.hometoogether.domain.challenge;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import hometoogether.hometoogether.domain.pose.ChallengePose;
+import hometoogether.hometoogether.domain.pose.PoseInfo;
 import hometoogether.hometoogether.domain.pose.PoseService;
 import hometoogether.hometoogether.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +22,17 @@ public class ChallengeService {
 
     @Transactional
     public Long saveChallenge(ChallengeRequestDto challengeRequestDto) throws JsonProcessingException {
-        poseService.estimatePose();
-        
-        return challengeRepository.save(challengeRequestDto.toEntity()).getId();
+        Challenge challenge = challengeRequestDto.toEntity();
+        ChallengePose challengePose = challengeRequestDto.getChallengePose();
+
+        String url = challengePose.getUrl();
+        PoseInfo poseInfo = poseService.estimatePose(url);
+
+        challengePose.setPoseInfo(poseInfo);
+        challenge.setChallengePose(challengePose);
+        challengePose.setChallenge(challenge);
+
+        return challengeRepository.save(challenge).getId();
     }
 
     public ChallengeResponseDto getChallenge(Long challengeId) {

@@ -1,4 +1,6 @@
 package hometoogether.hometoogether.domain.trial;
 
-public interface TrialRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TrialRepository extends JpaRepository<Trial, Long> {
 }

@@ -14,8 +14,9 @@ public class PoseController {
     @GetMapping("/pose")
     public String pose(){
         String result = "";
+        String url = "https://media.istockphoto.com/photos/looking-at-camera-front-view-full-length-one-person-of-2029-years-old-picture-id1182145935";
         try{
-            result = poseService.estimatePose();
+            result = poseService.estimatePosetest(url);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
