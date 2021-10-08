@@ -41,7 +41,7 @@ public class ChallengeService {
     public Long updateChallenge(Long challengeId, ChallengeRequestDto param) {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + challengeId));
-        challenge.update(param.getPose(), param.getMaster(), param.getTitle(), param.getContext());
+        challenge.update(param.getChallengePose(), param.getTitle(), param.getContext());
         return challengeId;
     }
 
@@ -50,14 +50,6 @@ public class ChallengeService {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + challengeId));
         challengeRepository.delete(challenge);
-        return challengeId;
-    }
-
-    @Transactional
-    public Long joinChallenge(Long challengeId) {
-        Challenge challenge = challengeRepository.findById(challengeId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + challengeId));
-        List<User> challengers = challenge.getChallengers();
         return challengeId;
     }
 

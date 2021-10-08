@@ -1,6 +1,7 @@
 package hometoogether.hometoogether.domain.user.domain;
 
-import hometoogether.hometoogether.domain.challenge.Challenge;
+import hometoogether.hometoogether.domain.pose.ChallengePose;
+import hometoogether.hometoogether.domain.pose.TrialPose;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,9 +29,11 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
-    //challenge
     @OneToMany
-    private List<Challenge> challenges;
+    private List<ChallengePose> challengePoseList;
+
+    @OneToMany
+    private List<TrialPose> trialPoseList;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

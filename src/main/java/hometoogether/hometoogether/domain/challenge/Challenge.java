@@ -1,7 +1,7 @@
 package hometoogether.hometoogether.domain.challenge;
 
-import hometoogether.hometoogether.domain.pose.Pose;
-import hometoogether.hometoogether.domain.user.domain.User;
+import hometoogether.hometoogether.domain.pose.ChallengePose;
+import hometoogether.hometoogether.domain.trial.Trial;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,29 +21,24 @@ public class Challenge {
     private Long id;
 
     @OneToOne
-    private Pose pose;
-
-    @ManyToOne
-    private User master;
+    private ChallengePose challengePose;
 
     private String title;
 
     private String context;
 
     @OneToMany
-    private List<User> challengers;
+    private List<Trial> trialList;
 
     @Builder
-    public Challenge(Pose pose, User master, String title, String context) {
-        this.pose = pose;
-        this.master = master;
+    public Challenge(ChallengePose challengePose, String title, String context) {
+        this.challengePose = challengePose;
         this.title = title;
         this.context = context;
     }
 
-    public void update(Pose pose, User master, String title, String context) {
-        this.pose = pose;
-        this.master = master;
+    public void update(ChallengePose challengePose, String title, String context) {
+        this.challengePose = challengePose;
         this.title = title;
         this.context = context;
     }
