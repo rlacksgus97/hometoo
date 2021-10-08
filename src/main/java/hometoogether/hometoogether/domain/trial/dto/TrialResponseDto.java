@@ -1,6 +1,7 @@
-package hometoogether.hometoogether.domain.trial;
+package hometoogether.hometoogether.domain.trial.dto;
 
-import hometoogether.hometoogether.domain.pose.TrialPose;
+import hometoogether.hometoogether.domain.pose.domain.TrialPose;
+import hometoogether.hometoogether.domain.trial.domain.Trial;
 import lombok.Getter;
 
 @Getter

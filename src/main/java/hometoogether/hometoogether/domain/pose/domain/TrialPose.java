@@ -1,6 +1,6 @@
-package hometoogether.hometoogether.domain.pose;
+package hometoogether.hometoogether.domain.pose.domain;
 
-import hometoogether.hometoogether.domain.trial.Trial;
+import hometoogether.hometoogether.domain.trial.domain.Trial;
 import hometoogether.hometoogether.domain.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-public class TrialPose extends Pose{
+public class TrialPose extends Pose {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +32,10 @@ public class TrialPose extends Pose{
     private Trial trial;
 
     @Builder
-    private TrialPose(String url, PoseInfo poseInfo, Trial trial) {
+    private TrialPose(String url, PoseInfo poseInfo, User user, Trial trial) {
         this.url = url;
         this.poseInfo = poseInfo;
+        this.user = user;
         this.trial = trial;
     }
 }

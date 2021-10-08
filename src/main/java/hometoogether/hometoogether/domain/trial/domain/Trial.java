@@ -1,7 +1,7 @@
-package hometoogether.hometoogether.domain.trial;
+package hometoogether.hometoogether.domain.trial.domain;
 
-import hometoogether.hometoogether.domain.challenge.Challenge;
-import hometoogether.hometoogether.domain.pose.TrialPose;
+import hometoogether.hometoogether.domain.challenge.domain.Challenge;
+import hometoogether.hometoogether.domain.pose.domain.TrialPose;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

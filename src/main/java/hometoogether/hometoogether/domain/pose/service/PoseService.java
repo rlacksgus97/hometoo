@@ -1,7 +1,11 @@
-package hometoogether.hometoogether.domain.pose;
+package hometoogether.hometoogether.domain.pose.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hometoogether.hometoogether.domain.pose.domain.Pose;
+import hometoogether.hometoogether.domain.pose.domain.PoseInfo;
+import hometoogether.hometoogether.domain.pose.repository.PoseInfoRepository;
+import hometoogether.hometoogether.domain.pose.repository.PoseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;

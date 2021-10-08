@@ -1,6 +1,7 @@
-package hometoogether.hometoogether.domain.challenge;
+package hometoogether.hometoogether.domain.challenge.dto;
 
-import hometoogether.hometoogether.domain.pose.ChallengePose;
+import hometoogether.hometoogether.domain.challenge.domain.Challenge;
+import hometoogether.hometoogether.domain.pose.domain.ChallengePose;
 import lombok.Getter;
 
 @Getter

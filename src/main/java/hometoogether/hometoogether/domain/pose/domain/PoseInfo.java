@@ -1,4 +1,4 @@
-package hometoogether.hometoogether.domain.pose;
+package hometoogether.hometoogether.domain.pose.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,4 +28,7 @@ public class PoseInfo {
     private List<Double> keypoints;
 
     private double score;
+
+    @OneToOne
+    private Pose pose;
 }

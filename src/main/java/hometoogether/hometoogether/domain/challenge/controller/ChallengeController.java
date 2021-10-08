@@ -1,6 +1,9 @@
-package hometoogether.hometoogether.domain.challenge;
+package hometoogether.hometoogether.domain.challenge.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import hometoogether.hometoogether.domain.challenge.dto.ChallengeRequestDto;
+import hometoogether.hometoogether.domain.challenge.dto.ChallengeResponseDto;
+import hometoogether.hometoogether.domain.challenge.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

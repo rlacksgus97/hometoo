@@ -1,7 +1,7 @@
 package hometoogether.hometoogether.domain.user.domain;
 
-import hometoogether.hometoogether.domain.pose.ChallengePose;
-import hometoogether.hometoogether.domain.pose.TrialPose;
+import hometoogether.hometoogether.domain.pose.domain.ChallengePose;
+import hometoogether.hometoogether.domain.pose.domain.TrialPose;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
