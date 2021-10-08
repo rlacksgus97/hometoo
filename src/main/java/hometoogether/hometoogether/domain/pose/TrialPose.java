@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-public class TrialPose {
+public class TrialPose extends Pose{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
