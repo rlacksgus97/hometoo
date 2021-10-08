@@ -1,6 +1,7 @@
 package hometoogether.hometoogether.domain.pose;
 
 import hometoogether.hometoogether.domain.challenge.Challenge;
+import hometoogether.hometoogether.domain.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,9 @@ public class ChallengePose extends Pose{
 
     @OneToOne
     private PoseInfo poseInfo;
+
+    @ManyToOne
+    private User user;
 
     @OneToOne
     private Challenge challenge;
