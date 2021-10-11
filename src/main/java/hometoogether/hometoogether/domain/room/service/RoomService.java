@@ -1,7 +1,9 @@
 package hometoogether.hometoogether.domain.room.service;
 
 import hometoogether.hometoogether.domain.room.domain.Room;
+import hometoogether.hometoogether.domain.room.repository.RoomRepository;
 import hometoogether.hometoogether.util.Parser;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
@@ -11,6 +13,7 @@ import java.util.*;
 @Service
 public class RoomService {
 
+//    private final RoomRepository roomRepository;
     private final Parser parser;
 
     // repository substitution since this is a very simple realization
@@ -29,6 +32,7 @@ public class RoomService {
     }
 
     public Boolean addRoom(final Room room) {
+//        room.setClients("example user");
         return rooms.add(room);
     }
 

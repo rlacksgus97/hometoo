@@ -1,15 +1,12 @@
 package hometoogether.hometoogether.domain.room.domain;
 
+import com.sun.istack.NotNull;
+import hometoogether.hometoogether.domain.user.domain.User;
 import lombok.NoArgsConstructor;
 import org.springframework.web.socket.WebSocketSession;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @NoArgsConstructor
@@ -17,11 +14,13 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+//    @NotNull
     private Long id;
     // sockets by user names
 
     // WebSocketSession은 spring에서 WebSocket connection이 맺어진 세션을 가리킨다 - 편하게 고수준 socket이라고 생각
-    //
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<User> userList=new ArrayList<>();
 //    private final Map<String, WebSocketSession> clients = new HashMap<>();
 
     public Room(Long id) {
@@ -52,4 +51,13 @@ public class Room {
 
         return Objects.hash(getId(), getClients());
     }
+
+//    public boolean isParticipant(Long userId) {
+//        for(User user : userList){
+//            if(user.getId()==userId){
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 }

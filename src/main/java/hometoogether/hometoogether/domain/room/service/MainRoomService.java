@@ -1,6 +1,7 @@
 package hometoogether.hometoogether.domain.room.service;
 
 import hometoogether.hometoogether.domain.room.domain.Room;
+import hometoogether.hometoogether.domain.room.repository.RoomRepository;
 import hometoogether.hometoogether.util.Parser;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -9,7 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.sockjs.transport.session.WebSocketServerSockJsSession;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -21,7 +26,8 @@ public class MainRoomService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private static final String REDIRECT = "redirect:/room/create";
 
-    private final RoomService roomService;
+//    private final RoomService roomService;
+    private final RoomRepository roomRepository;
     private final Parser parser;
 
     /**
@@ -29,10 +35,11 @@ public class MainRoomService {
      */
     public String displayMainPage(Model model, final Long id, final String uuid) {
 
-        Set<Room> rooms = roomService.getRooms();
+        List<Room> rooms = roomRepository.findAll();
         if(!rooms.isEmpty()){
             model.addAttribute("rooms", rooms);
         }
+//        model.addAttribute("rooms", roomService.getRooms());
 
         model.addAttribute("id", id);
         model.addAttribute("uuid", uuid);
@@ -51,7 +58,15 @@ public class MainRoomService {
             return REDIRECT;
         }
         Optional<Long> optionalId = parser.parseId(sid);
-        optionalId.ifPresent(id -> Optional.ofNullable(uuid).ifPresent(name -> roomService.addRoom(new Room(id))));
+        optionalId.ifPresent(id -> Optional.ofNullable(uuid).ifPresent(name -> roomRepository.save(new Room(id))));
+//        optionalId.ifPresent(id -> Optional.ofNullable(uuid).ifPresent(name -> roomService.addRoom(new Room(id))));
+
+//        List<Room> rooms = roomRepository.findAll();
+//        rooms.forEach(room -> System.out.println("room.getId() = " + room.getId()));
+//        for(Room room : rooms){
+//            Map<String, WebSocketSession> clients = room.getClients();
+//            System.out.println("clients.isEmpty() = " + clients.isEmpty());
+//        }
 
         return this.displayMainPage(model, optionalId.orElse(null), uuid);
     }
@@ -63,9 +78,11 @@ public class MainRoomService {
      */
     public String displaySelectedRoom(Model model, final String sid, final String uuid) {
         // redirect to main page if provided data is invalid
+        Long id = parser.parseId(sid).orElse(null);
 
-        if (parser.parseId(sid).isPresent()) {
-            Room room = roomService.findRoomByStringId(sid).orElse(null);
+        if (id!=null) {
+//            Room room = roomService.findRoomByStringId(sid).orElse(null);
+            Room room = roomRepository.findById(id).orElse(null);
             if(room != null && uuid != null && !uuid.isEmpty()) {
                 logger.debug("User {} is going to join Room #{}", uuid, sid);
                 // open the chat room
@@ -101,5 +118,9 @@ public class MainRoomService {
 
     private Long randomValue() {
         return ThreadLocalRandom.current().nextLong(0, 100);
+    }
+
+    public Room findByRoomId(Long id){
+        return roomRepository.findById(id).orElse(null);
     }
 }

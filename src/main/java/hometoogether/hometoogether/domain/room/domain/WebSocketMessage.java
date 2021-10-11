@@ -1,7 +1,13 @@
 package hometoogether.hometoogether.domain.room.domain;
 
+import lombok.Builder;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
 import java.util.Objects;
 
+@RequiredArgsConstructor
+@Setter
 public class WebSocketMessage {
 
     private String from;
@@ -10,9 +16,8 @@ public class WebSocketMessage {
     private Object candidate;
     private Object sdp;
 
-    public WebSocketMessage() {
-    }
 
+    @Builder
     public WebSocketMessage(final String from,
                             final String type,
                             final String data,
