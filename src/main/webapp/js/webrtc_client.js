@@ -72,7 +72,6 @@ function start() {
         stompconn.subscribe("/sub/video-signal/"+localUserName, function(msg){
             // stompconn.onmessage=function(msg){
                 let message = JSON.parse(msg.body);
-                console.log(message.type)
                 switch (message.type) {
                     case "text":
                         log('Text message from ' + message.from + ' received: ' + message.data);
@@ -260,6 +259,7 @@ function sendToServer(msg) {
 
 // initialize media stream
 async function getMedia(constraints) {
+    console.log("getMedia enter!");
     if (localStream) {
         localStream.getTracks().forEach(track => {
             track.stop();
@@ -277,6 +277,9 @@ async function getMedia(constraints) {
 // create peer connection, get media, start negotiating when second participant appears
 function handlePeerConnection(message) {
     console.log("message: ", message)
+    if (remoteVideo) {
+        remoteVideo.srcObject = null;
+    }
     createPeerConnection();
     getMedia(mediaConstraints);
     if (message.data === "true") {
@@ -289,6 +292,7 @@ function handlePeerConnection(message) {
  * 로컬 컴퓨터와 원격 피어 간의 WebRTC 연결을 나타낸다. 두 피어 간의 효율적인 데이터 스트리밍을 처리하는데 사용된다.
  */
 function createPeerConnection() {
+    console.log("createPeerConnection enter!");
     myPeerConnection = new RTCPeerConnection(peerConnectionConfig);
 
     // event handlers for the ICE negotiation process
