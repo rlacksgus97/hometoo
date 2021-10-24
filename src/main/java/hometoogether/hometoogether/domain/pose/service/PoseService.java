@@ -93,8 +93,8 @@ public class PoseService {
     @Transactional
     public double estimateSimilarity(){
 
-        List<Double> pose1 = poseInfoRepository.getById(10L).getKeypoints();
-        List<Double> pose2 = poseInfoRepository.getById(13L).getKeypoints();
+        List<Double> pose1 = poseInfoRepository.getById(6L).getKeypoints();
+        List<Double> pose2 = poseInfoRepository.getById(7L).getKeypoints();
 
         ArrayList<ArrayList<Double>> vectorInfo1 = vectorize(pose1);
         ArrayList<ArrayList<Double>> vectorInfo2 = vectorize(pose2);

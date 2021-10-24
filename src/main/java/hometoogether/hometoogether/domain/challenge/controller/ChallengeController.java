@@ -1,6 +1,6 @@
 package hometoogether.hometoogether.domain.challenge.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import hometoogether.hometoogether.domain.challenge.dto.ChallengeDetailResponseDto;
 import hometoogether.hometoogether.domain.challenge.dto.ChallengeRequestDto;
 import hometoogether.hometoogether.domain.challenge.dto.ChallengeResponseDto;
 import hometoogether.hometoogether.domain.challenge.service.ChallengeService;
@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -17,12 +18,12 @@ public class ChallengeController {
     private final ChallengeService challengeService;
 
     @PostMapping("/challenges/")
-    public Long save(@RequestBody ChallengeRequestDto param) throws JsonProcessingException {
+    public Long save(@RequestBody ChallengeRequestDto param) throws IOException {
         return challengeService.saveChallenge(param);
     }
 
     @GetMapping("/challenges/{id}")
-    public ChallengeResponseDto getDetail(@PathVariable("id") Long challengeId){
+    public ChallengeDetailResponseDto getDetail(@PathVariable("id") Long challengeId) throws IOException {
         return challengeService.getChallenge(challengeId);
     }
 

@@ -68,6 +68,8 @@ public class TrialService {
 
         trial.setChallenge(challenge);
 
+        //동작 유사도 계산
+
         return challengeRepository.save(challenge).getId();
     }
 

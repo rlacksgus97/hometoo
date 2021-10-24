@@ -1,6 +1,6 @@
 package hometoogether.hometoogether.domain.challenge.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import hometoogether.hometoogether.domain.challenge.dto.ChallengeDetailResponseDto;
 import hometoogether.hometoogether.domain.challenge.dto.ChallengeRequestDto;
 import hometoogether.hometoogether.domain.challenge.dto.ChallengeResponseDto;
 import hometoogether.hometoogether.domain.challenge.domain.Challenge;
@@ -10,11 +10,21 @@ import hometoogether.hometoogether.domain.pose.domain.PoseInfo;
 import hometoogether.hometoogether.domain.pose.service.PoseService;
 import hometoogether.hometoogether.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -24,18 +34,26 @@ public class ChallengeService {
     private final ChallengeRepository challengeRepository;
     private final PoseService poseService;
 
+    @Value("${spring.servlet.multipart.location}")
+    String videoPath;
+
     @Transactional
-    public Long saveChallenge(ChallengeRequestDto challengeRequestDto) throws JsonProcessingException {
+    public Long saveChallenge(ChallengeRequestDto challengeRequestDto) throws IOException {
         // parameter로 SessionUser 받아오게 구현 예정
 
         //ChallengePose 생성
         //url, poseInfo, user
-        String url = challengeRequestDto.getUrl();
+        MultipartFile multipartFile = challengeRequestDto.getFile();
+        String url = UUID.randomUUID().toString() + "_" + multipartFile.getOriginalFilename();
+        File file = new File(url);
+        multipartFile.transferTo(file);
+
         PoseInfo poseInfo = poseService.estimatePose(url);
         User user = new User();
 
         ChallengePose challengePose = ChallengePose.builder()
                 .url(url)
+                .contentType(multipartFile.getContentType())
                 .poseInfo(poseInfo)
                 .user(user)
                 .build();
@@ -59,10 +77,12 @@ public class ChallengeService {
         return challengeRepository.save(challenge).getId();
     }
 
-    public ChallengeResponseDto getChallenge(Long challengeId) {
+    public ChallengeDetailResponseDto getChallenge(Long challengeId) throws IOException {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + challengeId));
-        return new ChallengeResponseDto(challenge);
+//        Path path = Paths.get(videoPath + challenge.getChallengePose().getUrl());
+//        Resource resource = new InputStreamResource(Files.newInputStream(path));
+        return new ChallengeDetailResponseDto(challenge);
     }
 
     public List<ChallengeResponseDto> getChallengeList() {
@@ -76,7 +96,7 @@ public class ChallengeService {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + challengeId));
         ChallengePose challengePose = challenge.getChallengePose();
-        challengePose.setUrl(param.getUrl());
+//        challengePose.setUrl(param.getUrl());
         challenge.update(challengePose, param.getTitle(), param.getContext());
         return challengeId;
     }
@@ -88,5 +108,4 @@ public class ChallengeService {
         challengeRepository.delete(challenge);
         return challengeId;
     }
-
 }

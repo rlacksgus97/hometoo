@@ -28,12 +28,10 @@ dependencies {
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 	implementation 'javax.servlet:jstl'
 	compileOnly 'org.projectlombok:lombok'
-	compileOnly "org.springframework.boot:spring-boot-starter-security"
+	compileOnly 'org.springframework.boot:spring-boot-starter-security'
 	annotationProcessor 'org.projectlombok:lombok'
 //	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-	implementation 'commons-io:commons-io:2.6'
 }
 
 test {

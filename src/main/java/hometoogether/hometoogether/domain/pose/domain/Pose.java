@@ -17,8 +17,9 @@ public class Pose {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //private File file;
     private String url;
+
+    private String contentType;
 
     @OneToOne
     private PoseInfo poseInfo;

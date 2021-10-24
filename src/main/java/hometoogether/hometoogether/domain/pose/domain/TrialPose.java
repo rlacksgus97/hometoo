@@ -19,8 +19,9 @@ public class TrialPose extends Pose {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //private File file;
     private String url;
+
+    private String contentType;
 
     @OneToOne
     private PoseInfo poseInfo;
@@ -32,10 +33,17 @@ public class TrialPose extends Pose {
     private Trial trial;
 
     @Builder
-    private TrialPose(String url, PoseInfo poseInfo, User user, Trial trial) {
+    private TrialPose(String url, String contentType, PoseInfo poseInfo, User user, Trial trial) {
         this.url = url;
+        this.contentType = contentType;
         this.poseInfo = poseInfo;
         this.user = user;
         this.trial = trial;
+    }
+
+    public static class TrialPoseBuilder extends PoseBuilder{
+        TrialPoseBuilder() {
+            super();
+        }
     }
 }

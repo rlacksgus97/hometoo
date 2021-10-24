@@ -19,8 +19,9 @@ public class ChallengePose extends Pose {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //private File file;
     private String url;
+
+    private String contentType;
 
     @OneToOne
     private PoseInfo poseInfo;
@@ -32,10 +33,17 @@ public class ChallengePose extends Pose {
     private Challenge challenge;
 
     @Builder
-    private ChallengePose(String url, PoseInfo poseInfo, User user, Challenge challenge) {
+    private ChallengePose(String url, String contentType, PoseInfo poseInfo, User user, Challenge challenge) {
         this.url = url;
+        this.contentType = contentType;
         this.poseInfo = poseInfo;
         this.user = user;
         this.challenge = challenge;
+    }
+
+    public static class ChallengePoseBuilder extends PoseBuilder{
+        ChallengePoseBuilder() {
+            super();
+        }
     }
 }
