@@ -13,6 +13,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,8 @@ public class PoseService {
 //        String url = "https://preview.clipartkorea.co.kr/2016/05/27/ti325057081.jpg";
 //        String url = "https://preview.clipartkorea.co.kr/2015/03/20/tip034z15020088.jpg";
 //        String url = "http://preview.clipartkorea.co.kr/2016/05/27/ti325057171.jpg";
+//        String url = "https://media.istockphoto.com/photos/looking-at-camera-front-view-full-length-one-person-of-2029-years-old-picture-id1182145935";
+
         params.add("image_url", url);
 
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
@@ -49,13 +52,13 @@ public class PoseService {
         String jsonbody = response.getBody();
         jsonbody = jsonbody.substring(1, jsonbody.length());
         PoseInfo poseInfo = mapper.readValue(jsonbody, PoseInfo.class);
-//        poseInfoRepository.save(poseInfo);
+        poseInfoRepository.save(poseInfo);
 
         Pose pose = Pose.builder()
                 .url(url)
                 .poseInfo(poseInfo)
                 .build();
-//        poseRepository.save(pose);
+        poseRepository.save(pose);
 
         System.out.println("response = " + response);
         return jsonbody;
@@ -87,10 +90,11 @@ public class PoseService {
         return poseInfo;
     }
 
+    @Transactional
     public double estimateSimilarity(){
 
-        List<Double> pose1 = poseInfoRepository.getById(2L).getKeypoints();
-        List<Double> pose2 = poseInfoRepository.getById(5L).getKeypoints();
+        List<Double> pose1 = poseInfoRepository.getById(10L).getKeypoints();
+        List<Double> pose2 = poseInfoRepository.getById(13L).getKeypoints();
 
         ArrayList<ArrayList<Double>> vectorInfo1 = vectorize(pose1);
         ArrayList<ArrayList<Double>> vectorInfo2 = vectorize(pose2);
@@ -109,11 +113,13 @@ public class PoseService {
         vectorPose1XY = L2Normalize(vectorPose1XY);
         vectorPose2XY = L2Normalize(vectorPose2XY);
 
+        double cosineSimilarity = cosineSimilarity(vectorPose1XY, vectorPose2XY);
+
         double cosineDistance = cosineDistanceMatching(vectorPose1XY, vectorPose2XY);
 
         double weightedDistance = weightedDistanceMatching(vectorPose1XY, vectorPose2XY, vectorPose2Scores);
 
-        return weightedDistance;
+        return cosineSimilarity;
     }
 
     private ArrayList<ArrayList<Double>> vectorize(List<Double> pose) {
@@ -210,6 +216,7 @@ public class PoseService {
 
     private double cosineDistanceMatching(ArrayList<Double> vectorPose1XY, ArrayList<Double> vectorPose2XY) {
         double cosineSimilarity = cosineSimilarity(vectorPose1XY, vectorPose2XY);
+        System.out.println("cosineSimilarity = " + cosineSimilarity);
         return Math.sqrt(2*(1-cosineSimilarity));
     }
 
@@ -226,4 +233,27 @@ public class PoseService {
         return summation1 * summation2;
     }
 
+    private double DTWDistance(double[] SimilarityListA, double[] SimilarityListB){
+
+        int lengthA = SimilarityListA.length;
+        int lengthB = SimilarityListB.length;
+        double[][] DTW = new double[lengthA+1][lengthB+1];
+
+        for (int i = 0; i < lengthA+1; i++){
+            for (int j = 0; j < lengthB+1; j++) {
+                DTW[i][j] = 10;
+            }
+        }
+        DTW[lengthA-1][lengthB-1] = 0;
+
+        double cost = 0;
+        for (int i = 1; i < lengthA+1; i++){
+            for (int j = 1; j < lengthB+1; j++) {
+                cost = Math.abs(SimilarityListA[i] - SimilarityListB[j]);
+                DTW[i][j] = cost + Math.min(Math.min(DTW[i-1][j], DTW[i][j-1]), DTW[i-1][j-1]);
+            }
+        }
+
+        return DTW[lengthA][lengthB];
+    }
 }
