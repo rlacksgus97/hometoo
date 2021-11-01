@@ -46,6 +46,11 @@ import Icons from "components/IndexSections/Icons.js";
 import Login from "components/IndexSections/Login.js";
 import Download from "components/IndexSections/Download.js";
 
+//css
+import "assets/vendor/nucleo/css/nucleo.css";
+import "assets/vendor/font-awesome/css/font-awesome.min.css";
+import "assets/scss/argon-design-system-react.scss";
+
 class Sample extends React.Component {
   componentDidMount() {
     document.documentElement.scrollTop = 0;
