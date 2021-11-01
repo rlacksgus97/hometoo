@@ -40,6 +40,11 @@ import {
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import CardsFooter from "components/Footers/CardsFooter.js";
 
+//css
+import "assets/vendor/nucleo/css/nucleo.css";
+import "assets/vendor/font-awesome/css/font-awesome.min.css";
+import "assets/scss/argon-design-system-react.scss";
+
 // index page sections
 // import Download from "../IndexSections/Download.js";
 import Download from "../components/IndexSections/Download";

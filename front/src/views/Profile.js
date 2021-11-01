@@ -24,6 +24,11 @@ import { Button, Card, Container, Row, Col } from "reactstrap";
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 
+//css
+import "assets/vendor/nucleo/css/nucleo.css";
+import "assets/vendor/font-awesome/css/font-awesome.min.css";
+import "assets/scss/argon-design-system-react.scss";
+
 class Profile extends React.Component {
   componentDidMount() {
     document.documentElement.scrollTop = 0;
