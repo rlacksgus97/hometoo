@@ -10,6 +10,8 @@ import Landing from "./views/Landing.js";
 import Login from "./views/Login.js";
 import Profile from "./views/Profile";
 import Register from "./views/Register";
+import Board from "views/Board.js";
+import Detail from "views/Detail";
 
 ReactDOM.render(
     <BrowserRouter>
@@ -53,6 +55,16 @@ ReactDOM.render(
                 path="/register"
                 exact
                 render={props => <Register {...props} />}
+            />
+            <Route
+                path="/board"
+                exact
+                render={props => <Board {...props} />}
+            />
+            <Route
+                path="/detail"
+                exact
+                render={props => <Detail {...props} />}
             />
             <Redirect to="/" />
         </Switch>
