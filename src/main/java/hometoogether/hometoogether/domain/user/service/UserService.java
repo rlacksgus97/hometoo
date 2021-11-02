@@ -25,7 +25,6 @@ public class UserService {
                 .email(user.get("email"))
                 .name(user.get("name"))
                 .password(passwordEncoder.encode(user.get("password")))
-                .age(Integer.valueOf(user.get("age")))
                 .build()).getId();
     }
 
