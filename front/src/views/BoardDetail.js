@@ -154,6 +154,7 @@ class BoardDetail extends React.Component {
                                                         type="text"
                                                         onFocus={e => this.setState({ nameFocused: true })}
                                                         onBlur={e => this.setState({ nameFocused: false })}
+                                                        disabled="true"
                                                     />
                                                 </InputGroup>
                                             </FormGroup>
@@ -173,6 +174,7 @@ class BoardDetail extends React.Component {
                                                         type="email"
                                                         onFocus={e => this.setState({ emailFocused: true })}
                                                         onBlur={e => this.setState({ emailFocused: false })}
+                                                        disabled="true"
                                                     />
                                                 </InputGroup>
                                             </FormGroup>
@@ -184,19 +186,9 @@ class BoardDetail extends React.Component {
                                                     placeholder="내용을 입력해주세요."
                                                     rows="4"
                                                     type="textarea"
+                                                    disabled="true"
                                                 />
                                             </FormGroup>
-                                            <div>
-                                                <Button
-                                                    block
-                                                    className="btn-round"
-                                                    color="default"
-                                                    size="lg"
-                                                    type="button"
-                                                >
-                                                    저장
-                                                </Button>
-                                            </div>
                                             <h1 className="display-3 text-black">댓글 목록</h1>
                                             <div>
                                                 <CommentsBlock

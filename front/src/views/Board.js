@@ -311,19 +311,13 @@ class Board extends React.Component {
                                                             href="#pablo"
                                                             onClick={(e) => e.preventDefault()}
                                                         >
-                                                            Action
+                                                            수정
                                                         </DropdownItem>
                                                         <DropdownItem
                                                             href="#pablo"
                                                             onClick={(e) => e.preventDefault()}
                                                         >
-                                                            Another action
-                                                        </DropdownItem>
-                                                        <DropdownItem
-                                                            href="#pablo"
-                                                            onClick={(e) => e.preventDefault()}
-                                                        >
-                                                            Something else here
+                                                            삭제
                                                         </DropdownItem>
                                                     </DropdownMenu>
                                                 </UncontrolledDropdown>
