@@ -11,7 +11,8 @@ import Login from "./views/Login.js";
 import Profile from "./views/Profile";
 import Register from "./views/Register";
 import Board from "views/Board.js";
-import Detail from "views/Detail";
+import BoardUpdate from "views/BoardUpdate";
+import BoardDetail from "./views/BoardDetail";
 
 ReactDOM.render(
     <BrowserRouter>
@@ -62,9 +63,14 @@ ReactDOM.render(
                 render={props => <Board {...props} />}
             />
             <Route
-                path="/detail"
+                path="/board/update"
                 exact
-                render={props => <Detail {...props} />}
+                render={props => <BoardUpdate {...props} />}
+            />
+            <Route
+                path="/board/detail"
+                exact
+                render={props => <BoardDetail {...props} />}
             />
             <Redirect to="/" />
         </Switch>

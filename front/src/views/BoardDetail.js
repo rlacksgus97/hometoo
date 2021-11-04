@@ -28,11 +28,21 @@ import "assets/vendor/nucleo/css/nucleo.css";
 import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss";
 
+// 댓글기능
+import CommentsBlock from 'simple-react-comments';
+
 // index page sections
 // import Download from "../IndexSections/Download.js";
 import Download from "../components/IndexSections/Download";
-class Detail extends React.Component {
+class BoardDetail extends React.Component {
     state = {};
+    commentsData = [{"authorUrl" : "#", "avatarUrl": "#avatarUrl", "createdAt": new Date(Date.now()), "fullName": "Name", "text": "qwerasdf"}];
+    constructor(props) {
+        super(props);
+        this.state = {
+            comments : this.commentsData,
+        };
+    }
     componentDidMount() {
         document.documentElement.scrollTop = 0;
         document.scrollingElement.scrollTop = 0;
@@ -187,11 +197,42 @@ class Detail extends React.Component {
                                                     저장
                                                 </Button>
                                             </div>
+                                            <h1 className="display-3 text-black">댓글 목록</h1>
+                                            <div>
+                                                <CommentsBlock
+                                                    comments={this.state.comments}
+                                                    signinUrl={'/signin'}
+                                                    isLoggedIn
+                                                    // reactRouter // set to true if you are using react-router
+                                                    onSubmit={text => {
+                                                        if (text.length > 0) {
+                                                            this.setState({
+                                                                comments: [
+                                                                    ...this.state.comments,
+                                                                    {
+                                                                        authorUrl: '#',
+                                                                        avatarUrl: '#avatarUrl',
+                                                                        createdAt: new Date(),
+                                                                        fullName: 'Name',
+                                                                        text,
+                                                                    },
+                                                                ],
+                                                            });
+                                                            console.log('submit:', text);
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
                                         </CardBody>
                                     </Card>
                                 </Col>
                             </Row>
+
                         </Container>
+                    </section>
+                    {/*댓글 기능*/}
+                    <section className="section section-lg pt-lg-0 section-contact-us">
+
                     </section>
                     <Download />
                 </main>
@@ -201,4 +242,4 @@ class Detail extends React.Component {
     }
 }
 
-export default Detail;
+export default BoardDetail;
