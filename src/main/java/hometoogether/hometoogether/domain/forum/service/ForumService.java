@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,8 +30,8 @@ public class ForumService {
     }
 
     public ForumResponseDto getForumInfo(Long id) {
-        Forum forum = forumRepository.getById(id);
-        return new ForumResponseDto(forum);
+        Optional<Forum> forum = forumRepository.findById(id);
+        return new ForumResponseDto(forum.get());
     }
 
     @Transactional
