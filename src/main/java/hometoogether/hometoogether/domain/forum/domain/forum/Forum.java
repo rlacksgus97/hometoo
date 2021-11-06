@@ -58,4 +58,8 @@ public class Forum {
         this.updateDate = LocalDateTime.now();
     }
 
+    public void hitsUpdate() {
+        this.hits += 1;
+    }
+
 }

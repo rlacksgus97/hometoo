@@ -23,6 +23,7 @@ public class ForumController {
 
     @GetMapping("/forums/{id}")
     public ForumResponseDto getDetail(@PathVariable("id") Long forumId) {
+        forumService.updateHits(forumId);
         return forumService.getForumInfo(forumId);
     }
 

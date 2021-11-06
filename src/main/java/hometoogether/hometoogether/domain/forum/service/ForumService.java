@@ -31,7 +31,9 @@ public class ForumService {
 
     public ForumResponseDto getForumInfo(Long id) {
         Optional<Forum> forum = forumRepository.findById(id);
-        return new ForumResponseDto(forum.get());
+        Forum tempForum = forum.get();
+        tempForum.hitsUpdate();
+        return new ForumResponseDto(tempForum);
     }
 
     @Transactional
@@ -46,6 +48,14 @@ public class ForumService {
         );
         forum.update(param.getTitle(), param.getContents(), param.getWriter());
         return forumId;
+    }
+
+    @Transactional
+    public void updateHits(Long forumId) {
+        Forum forum = forumRepository.findById(forumId).orElseThrow(
+                () -> new CustomException(ErrorCode.POSTS_NOT_FOUND)
+        );
+        forum.hitsUpdate();
     }
 
     @Transactional
