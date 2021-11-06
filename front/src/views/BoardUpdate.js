@@ -34,20 +34,73 @@ import CommentsBlock from 'simple-react-comments';
 // index page sections
 // import Download from "../IndexSections/Download.js";
 import Download from "../components/IndexSections/Download";
+import BoardService from "../service/BoardService";
 class BoardUpdate extends React.Component {
     state = {};
-    commentsData = [{"authorUrl" : "#", "avatarUrl": "#avatarUrl", "createdAt": new Date(Date.now()), "fullName": "Name", "text": "qwerasdf"}];
+
     constructor(props) {
         super(props);
+
         this.state = {
-            comments : this.commentsData,
+            no: this.props.match.params.no,
+            title: '',
+            writer: '',
+            contents: '',
+            type: 'F',
+            delYn: 'N',
         };
+
+        this.changeWriterHandler = this.changeWriterHandler.bind(this);
+        this.changeContentsHandler = this.changeContentsHandler.bind(this);
+        this.changeTitleHandler = this.changeTitleHandler.bind(this);
+        this.createBoard = this.createBoard.bind(this);
     }
+
+    changeTitleHandler = (event) => {
+        this.setState({title: event.target.value});
+    }
+
+    changeWriterHandler = (event) => {
+        this.setState({writer: event.target.value});
+    }
+
+    changeContentsHandler = (event) => {
+        this.setState({contents: event.target.value});
+    }
+
     componentDidMount() {
         document.documentElement.scrollTop = 0;
         document.scrollingElement.scrollTop = 0;
         this.refs.main.scrollTop = 0;
+
+        BoardService.getOneBoard(this.state.no).then(res => {
+            let board = res.data;
+            // this.setState({board: res.data});
+            console.log("board => " + JSON.stringify(board));
+
+            this.setState({
+                title: board.title,
+                contents: board.contents,
+                writer: board.writer
+            })
+        });
     }
+
+    createBoard = (event) => {
+        event.preventDefault();
+        let board = {
+            type: this.state.type,
+            title: this.state.title,
+            writer: this.state.writer,
+            contents: this.state.contents,
+            delYn: this.state.delYn
+        };
+        console.log("board => " + JSON.stringify(board));
+        BoardService.updateBoard(this.state.no, board).then(res => {
+            this.props.history.push('/board');
+        });
+    }
+
     render() {
         return (
             <>
@@ -134,9 +187,9 @@ class BoardUpdate extends React.Component {
                                 <Col lg="8">
                                     <Card className="bg-gradient-secondary shadow">
                                         <CardBody className="p-lg-5">
-                                            <h4 className="mb-1">Want to work with us?</h4>
+                                            <h4 className="display-3 text-black">게시판</h4>
                                             <p className="mt-0">
-                                                Your project is very important to us.
+                                                운동 정보, 트레이닝에 관한 정보를 자유롭게 대화해주세요.
                                             </p>
                                             <FormGroup
                                                 className={classnames("mt-5", {
@@ -146,14 +199,16 @@ class BoardUpdate extends React.Component {
                                                 <InputGroup className="input-group-alternative">
                                                     <InputGroupAddon addonType="prepend">
                                                         <InputGroupText>
-                                                            <i className="ni ni-user-run" />
+                                                            <i className="ni ni-single-copy-04" />
                                                         </InputGroupText>
                                                     </InputGroupAddon>
                                                     <Input
-                                                        placeholder="Your name"
+                                                        placeholder="제목을 입력해주세요."
+                                                        value={this.state.title}
                                                         type="text"
                                                         onFocus={e => this.setState({ nameFocused: true })}
                                                         onBlur={e => this.setState({ nameFocused: false })}
+                                                        onChange={this.changeTitleHandler}
                                                     />
                                                 </InputGroup>
                                             </FormGroup>
@@ -165,14 +220,16 @@ class BoardUpdate extends React.Component {
                                                 <InputGroup className="input-group-alternative">
                                                     <InputGroupAddon addonType="prepend">
                                                         <InputGroupText>
-                                                            <i className="ni ni-email-83" />
+                                                            <i className="ni ni-circle-08" />
                                                         </InputGroupText>
                                                     </InputGroupAddon>
                                                     <Input
-                                                        placeholder="Email address"
+                                                        // placeholder={this.state.board.writer}
+                                                        value = {this.state.writer}
                                                         type="email"
                                                         onFocus={e => this.setState({ emailFocused: true })}
                                                         onBlur={e => this.setState({ emailFocused: false })}
+                                                        disabled={true}
                                                     />
                                                 </InputGroup>
                                             </FormGroup>
@@ -182,8 +239,10 @@ class BoardUpdate extends React.Component {
                                                     cols="80"
                                                     name="name"
                                                     placeholder="내용을 입력해주세요."
+                                                    value={this.state.contents}
                                                     rows="4"
                                                     type="textarea"
+                                                    onChange={this.changeContentsHandler}
                                                 />
                                             </FormGroup>
                                             <div>
@@ -193,46 +252,17 @@ class BoardUpdate extends React.Component {
                                                     color="default"
                                                     size="lg"
                                                     type="button"
+                                                    onClick={this.createBoard}
                                                 >
                                                     저장
                                                 </Button>
                                             </div>
-                                            {/*<h1 className="display-3 text-black">댓글 목록</h1>*/}
-                                            {/*<div>*/}
-                                            {/*    <CommentsBlock*/}
-                                            {/*        comments={this.state.comments}*/}
-                                            {/*        signinUrl={'/signin'}*/}
-                                            {/*        isLoggedIn*/}
-                                            {/*        // reactRouter // set to true if you are using react-router*/}
-                                            {/*        onSubmit={text => {*/}
-                                            {/*            if (text.length > 0) {*/}
-                                            {/*                this.setState({*/}
-                                            {/*                    comments: [*/}
-                                            {/*                        ...this.state.comments,*/}
-                                            {/*                        {*/}
-                                            {/*                            authorUrl: '#',*/}
-                                            {/*                            avatarUrl: '#avatarUrl',*/}
-                                            {/*                            createdAt: new Date(),*/}
-                                            {/*                            fullName: 'Name',*/}
-                                            {/*                            text,*/}
-                                            {/*                        },*/}
-                                            {/*                    ],*/}
-                                            {/*                });*/}
-                                            {/*                console.log('submit:', text);*/}
-                                            {/*            }*/}
-                                            {/*        }}*/}
-                                            {/*    />*/}
-                                            {/*</div>*/}
                                         </CardBody>
                                     </Card>
                                 </Col>
                             </Row>
 
                         </Container>
-                    </section>
-                    {/*댓글 기능*/}
-                    <section className="section section-lg pt-lg-0 section-contact-us">
-
                     </section>
                     <Download />
                 </main>

@@ -35,18 +35,24 @@ import BoardService from "../service/BoardService";
 // index page sections
 // import Download from "../IndexSections/Download.js";
 import Download from "../components/IndexSections/Download";
-class BoardDetail extends React.Component {
+class BoardCreate extends React.Component {
     state = {};
 
     constructor(props) {
         super(props);
+
         this.state = {
-            no: this.props.match.params.no,
-            board: {},
-            comments: [],
+            title: '',
+            writer: '',
+            contents: '',
+            type: 'F',
+            delYn: 'N'
         };
 
-        this.createComment = this.createComment.bind(this);
+        this.changeWriterHandler = this.changeWriterHandler.bind(this);
+        this.changeContentsHandler = this.changeContentsHandler.bind(this);
+        this.changeTitleHandler = this.changeTitleHandler.bind(this);
+        this.createBoard = this.createBoard.bind(this);
     }
 
     componentDidMount() {
@@ -58,34 +64,37 @@ class BoardDetail extends React.Component {
         BoardService.getOneBoard(this.state.no).then(res => {
             this.setState({board: res.data});
         });
+    }
 
-        BoardService.getComments(this.state.no).then(res => {
-            var data = new Array();
-            for (var i = 0; i < res.data.length; i++) {
-                var temp = new Object();
-                temp.fullName = res.data[i]['writer'];
-                temp.createdAt = new Date(res.data[i]['createDate']);
-                temp.text = res.data[i]['contents'];
+    changeTitleHandler = (event) => {
+        this.setState({title: event.target.value});
+    }
 
-                data.push(temp);
-            }
-            this.setState({comments: data});
+    changeWriterHandler = (event) => {
+        this.setState({writer: event.target.value});
+    }
+
+    changeContentsHandler = (event) => {
+        this.setState({contents: event.target.value});
+    }
+
+    createBoard = (event) => {
+        event.preventDefault();
+        let board = {
+            type: this.state.type,
+            title: this.state.title,
+            writer: this.state.writer,
+            contents: this.state.contents,
+            delYn: this.state.delYn
+        };
+        console.log("board => " + JSON.stringify(board));
+        BoardService.createBoard(board).then(res => {
+           this.props.history.push('/board');
         });
     }
 
-    createComment = (event) => {
-        // event.preventDefault();
-        let tempComment = {
-            forumId: this.state.no,
-            //TODO: 나중에 로그인된 아이디로 바꿔야함
-            writer: this.state.board.writer,
-            delYn: 'N',
-            contents: this.state.comments.at(-1)['contents']
-        }
-        console.log("tempComment => " + JSON.stringify(tempComment));
-        BoardService.createComment(this.state.no, tempComment).then(res => {
-            window.location.reload(true);
-        })
+    cancel() {
+        this.props.history.push('/board');
     }
 
     render() {
@@ -190,12 +199,12 @@ class BoardDetail extends React.Component {
                                                         </InputGroupText>
                                                     </InputGroupAddon>
                                                     <Input
-                                                        // placeholder={this.state.board.title}
-                                                        value={this.state.board.title}
+                                                        placeholder="제목을 입력해주세요."
                                                         type="text"
                                                         onFocus={e => this.setState({ nameFocused: true })}
                                                         onBlur={e => this.setState({ nameFocused: false })}
-                                                        disabled="true"
+                                                        value={this.state.title}
+                                                        onChange={this.changeTitleHandler}
                                                     />
                                                 </InputGroup>
                                             </FormGroup>
@@ -211,12 +220,12 @@ class BoardDetail extends React.Component {
                                                         </InputGroupText>
                                                     </InputGroupAddon>
                                                     <Input
-                                                        // placeholder={this.state.board.writer}
-                                                        value={this.state.board.writer}
-                                                        type="email"
+                                                        placeholder="writer1"
+                                                        type="writer"
                                                         onFocus={e => this.setState({ emailFocused: true })}
                                                         onBlur={e => this.setState({ emailFocused: false })}
-                                                        disabled="true"
+                                                        value={this.state.writer}
+                                                        onChange={this.changeWriterHandler}
                                                     />
                                                 </InputGroup>
                                             </FormGroup>
@@ -225,45 +234,24 @@ class BoardDetail extends React.Component {
                                                     className="form-control-alternative"
                                                     cols="80"
                                                     name="name"
-                                                    // placeholder={this.state.board.contents}
-                                                    value={this.state.board.contents}
+                                                    placeholder="내용을 입력해주세요."
                                                     rows="4"
                                                     type="textarea"
-                                                    disabled={true}
+                                                    value={this.state.contents}
+                                                    onChange={this.changeContentsHandler}
                                                 />
                                             </FormGroup>
-                                            <h1 className="display-3 text-black">댓글 목록</h1>
                                             <div>
-                                                <CommentsBlock
-                                                    comments={this.state.comments}
-                                                    signinUrl={'/signin'}
-                                                    isLoggedIn
-                                                    // reactRouter // set to true if you are using react-router
-                                                    //TODO: 로그인 된 정보를 fullName에 넣어줘야함
-                                                    onSubmit={text => {
-                                                        if (text.length > 0) {
-                                                            // this.setState({
-                                                            //     comments: [
-                                                            //         ...this.state.comments,
-                                                            //         {
-                                                            //             createdAt: new Date(Date.now()),
-                                                            //             fullName: 'Name',
-                                                            //             text,
-                                                            //         },
-                                                            //     ],
-                                                            // });
-                                                            var temp = new Object();
-                                                            temp.createdAt = new Date(Date.now());
-                                                            temp.fullName = this.state.board.writer;
-                                                            temp.contents = text;
-                                                            this.state.comments.push(temp);
-                                                            console.log('submit:', text, temp);
-                                                            console.log('state:', this.state.comments);
-                                                            this.createComment();
-                                                        }
-                                                    }
-                                                    }
-                                                />
+                                                <Button
+                                                    block
+                                                    className="btn-round"
+                                                    color="default"
+                                                    size="lg"
+                                                    type="button"
+                                                    onClick={this.createBoard}
+                                                >
+                                                    저장
+                                                </Button>
                                             </div>
                                         </CardBody>
                                     </Card>
@@ -280,4 +268,4 @@ class BoardDetail extends React.Component {
     }
 }
 
-export default BoardDetail;
+export default BoardCreate;
