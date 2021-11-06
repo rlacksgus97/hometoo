@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,10 +22,13 @@ public class TrialPose extends Pose {
 
     private String url;
 
-    private String contentType;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trialPose")
+    private List<PoseInfo> poseInfoList;
 
-    @OneToOne
-    private PoseInfo poseInfo;
+//    public void addPoseInfo(PoseInfo poseInfo) {
+//        poseInfo.setTrialPose(this);
+//        this.poseInfoList.add(poseInfo);
+//    }
 
     @ManyToOne
     private User user;
@@ -33,10 +37,9 @@ public class TrialPose extends Pose {
     private Trial trial;
 
     @Builder
-    private TrialPose(String url, String contentType, PoseInfo poseInfo, User user, Trial trial) {
+    private TrialPose(String url, List<PoseInfo> poseInfoList, User user, Trial trial) {
         this.url = url;
-        this.contentType = contentType;
-        this.poseInfo = poseInfo;
+        this.poseInfoList = poseInfoList;
         this.user = user;
         this.trial = trial;
     }

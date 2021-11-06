@@ -1,5 +1,7 @@
 package hometoogether.hometoogether.domain.pose.domain;
 
+import hometoogether.hometoogether.domain.pose.domain.JsonResponse.PoseDetail;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,6 +31,18 @@ public class PoseInfo {
 
     private double score;
 
-    @OneToOne
-    private Pose pose;
+//    @ManyToOne
+//    private ChallengePose challengePose;
+//
+//    @ManyToOne
+//    private TrialPose trialPose;
+
+    @Builder
+    private PoseInfo(PoseDetail poseDetail){
+        this.area = poseDetail.getArea();
+        this.bbox = poseDetail.getBbox();
+        this.keypoints = poseDetail.getKeypoints();
+        this.score = poseDetail.getScore();
+    }
+
 }

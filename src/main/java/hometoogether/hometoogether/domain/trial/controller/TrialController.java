@@ -1,24 +1,28 @@
 package hometoogether.hometoogether.domain.trial.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import hometoogether.hometoogether.domain.trial.dto.TrialRequestDto;
 import hometoogether.hometoogether.domain.trial.dto.TrialResponseDto;
 import hometoogether.hometoogether.domain.trial.service.TrialService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class TrialController {
 
     private final TrialService trialService;
 
-    @PostMapping("/trials/")
-    public Long save(@RequestBody TrialRequestDto param) throws JsonProcessingException {
-        return trialService.saveTrial(param);
+    @PostMapping("/challenges/{challengeId}/trials/")
+    public Long save(@PathVariable("id") Long challengeId, TrialRequestDto param) throws IOException {
+        return trialService.saveTrial(challengeId, param);
+    }
+
+    @PostMapping("/trials/{trialId}")
+    public double estimate(@PathVariable("trialId") Long trialId){
+        return trialService.runSimilarity(trialId);
     }
 
     @GetMapping("/trials/{id}")

@@ -1,9 +1,10 @@
 package hometoogether.hometoogether.domain.pose.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hometoogether.hometoogether.domain.pose.domain.Pose;
-import hometoogether.hometoogether.domain.pose.domain.PoseInfo;
+import hometoogether.hometoogether.domain.pose.domain.*;
+import hometoogether.hometoogether.domain.pose.domain.JsonResponse.JobId;
+import hometoogether.hometoogether.domain.pose.domain.JsonResponse.PoseDetail;
 import hometoogether.hometoogether.domain.pose.repository.PoseInfoRepository;
 import hometoogether.hometoogether.domain.pose.repository.PoseRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class PoseService {
     private final PoseRepository poseRepository;
     private final PoseInfoRepository poseInfoRepository;
 
-    public String estimatePosetest(String url) throws JsonProcessingException {
+    public String estimatePosetest(String url) throws IOException {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -48,10 +50,9 @@ public class PoseService {
                 String.class
                 );
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         String jsonbody = response.getBody();
-        jsonbody = jsonbody.substring(1, jsonbody.length());
-        PoseInfo poseInfo = mapper.readValue(jsonbody, PoseInfo.class);
+        PoseInfo poseInfo = objectMapper.readValue(jsonbody, PoseInfo.class);
         poseInfoRepository.save(poseInfo);
 
         Pose pose = Pose.builder()
@@ -64,7 +65,7 @@ public class PoseService {
         return jsonbody;
     }
 
-    public PoseInfo estimatePose(String url) throws JsonProcessingException {
+    public List<PoseDetail> estimatePosePhoto(String url) throws IOException {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -83,11 +84,63 @@ public class PoseService {
                 String.class
         );
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         String jsonbody = response.getBody();
-        jsonbody = jsonbody.substring(1, jsonbody.length());
-        PoseInfo poseInfo = mapper.readValue(jsonbody, PoseInfo.class);
-        return poseInfo;
+        List<PoseDetail> poseDetailList = objectMapper.readValue(jsonbody, new TypeReference<List<PoseDetail>>(){});
+
+        return poseDetailList;
+    }
+
+    public List<PoseDetail> estimatePoseVideo(String url) throws IOException {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.add("Authorization", "KakaoAK 19a4097fe8917a985bb1a7acc9ce2fb1");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("video_url", "http://221.143.144.143:80/"+url);
+
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
+
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<String> response = rt.exchange(
+                "https://cv-api.kakaobrain.com/pose/job",
+                HttpMethod.POST,
+                entity,
+                String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonbody = response.getBody();
+        JobId job_id = objectMapper.readValue(jsonbody, JobId.class);
+
+        return estimatePoseDetailVideo(job_id.getJob_id());
+    }
+
+    public List<PoseDetail> estimatePoseDetailVideo(String job_id) throws IOException {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.add("Authorization", "KakaoAK 19a4097fe8917a985bb1a7acc9ce2fb1");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("job_id", job_id);
+
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
+
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<String> response = rt.exchange(
+                "https://cv-api.kakaobrain.com/pose/job/"+job_id,
+                HttpMethod.GET,
+                entity,
+                String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonbody = response.getBody();
+        List<PoseDetail> poseDetailList = objectMapper.readValue(jsonbody, new TypeReference<List<PoseDetail>>(){});
+
+        return poseDetailList;
     }
 
     @Transactional

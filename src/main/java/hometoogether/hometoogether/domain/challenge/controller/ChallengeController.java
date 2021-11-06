@@ -5,21 +5,21 @@ import hometoogether.hometoogether.domain.challenge.dto.ChallengeRequestDto;
 import hometoogether.hometoogether.domain.challenge.dto.ChallengeResponseDto;
 import hometoogether.hometoogether.domain.challenge.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class ChallengeController {
 
     private final ChallengeService challengeService;
 
-    @PostMapping("/challenges/")
-    public Long save(@RequestBody ChallengeRequestDto param) throws IOException {
-        return challengeService.saveChallenge(param);
+    @PostMapping("/challenges")
+    public Long save(ChallengeRequestDto param) throws IOException {
+        return challengeService.saveChallengePhoto(param);
+//        return challengeService.saveChallengeVideo(param);
     }
 
     @GetMapping("/challenges/{id}")
@@ -33,7 +33,7 @@ public class ChallengeController {
     }
 
     @PutMapping("/challenges/{id}")
-    public Long update(@PathVariable("id") Long challengeId, @RequestBody ChallengeRequestDto param){
+    public Long update(@PathVariable("id") Long challengeId, ChallengeRequestDto param){
         return challengeService.updateChallenge(challengeId, param);
     }
 

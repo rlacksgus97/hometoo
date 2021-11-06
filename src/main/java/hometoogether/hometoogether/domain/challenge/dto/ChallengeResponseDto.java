@@ -6,11 +6,11 @@ import lombok.Getter;
 @Getter
 public class ChallengeResponseDto {
     // 썸네일도 추가?
-    private String user;
+    private String username;
     private String title;
 
     public ChallengeResponseDto(Challenge entity) {
-        this.user = entity.getChallengePose().getUser().getName();
+        this.username = entity.getChallengePose().getUser().getUsername();
         this.title = entity.getTitle();
     }
 }

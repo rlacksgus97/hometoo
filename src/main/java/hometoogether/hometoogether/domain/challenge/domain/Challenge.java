@@ -30,6 +30,11 @@ public class Challenge {
     @OneToMany
     private List<Trial> trialList;
 
+    public void addTrial(Trial trial) {
+        trial.setChallenge(this);
+        this.trialList.add(trial);
+    }
+
     @Builder
     public Challenge(ChallengePose challengePose, String title, String context) {
         this.challengePose = challengePose;

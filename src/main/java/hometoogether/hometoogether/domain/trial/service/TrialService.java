@@ -1,8 +1,8 @@
 package hometoogether.hometoogether.domain.trial.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import hometoogether.hometoogether.domain.challenge.domain.Challenge;
 import hometoogether.hometoogether.domain.challenge.repository.ChallengeRepository;
+import hometoogether.hometoogether.domain.pose.domain.JsonResponse.PoseDetail;
 import hometoogether.hometoogether.domain.pose.domain.PoseInfo;
 import hometoogether.hometoogether.domain.pose.domain.TrialPose;
 import hometoogether.hometoogether.domain.pose.service.PoseService;
@@ -14,9 +14,14 @@ import hometoogether.hometoogether.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -28,27 +33,35 @@ public class TrialService {
     private final PoseService poseService;
 
     @Transactional
-    public Long saveTrial(TrialRequestDto trialRequestDto) throws JsonProcessingException {
+    public Long saveTrial(Long challengeId, TrialRequestDto trialRequestDto) throws IOException {
         // parameter로 SessionUser 받아오게 구현 예정
-        // parameter로 challengeId 받아오게 구현 예정
 
         //TrialPose 생성
-        //url, poseInfo, user
-        String url = trialRequestDto.getUrl();
-        PoseInfo poseInfo = poseService.estimatePose(url);
+        //url, poseInfoList, user
+        MultipartFile multipartFile = trialRequestDto.getFile();
+        String url = UUID.randomUUID().toString() + "_" + multipartFile.getOriginalFilename();
+        File file = new File(url);
+        multipartFile.transferTo(file);
+
+        List<PoseDetail> poseDetailList = poseService.estimatePoseVideo(url);
+        List<PoseInfo> poseInfoList = new ArrayList<>();
+        for (PoseDetail pd : poseDetailList){
+            PoseInfo poseInfo = PoseInfo.builder()
+                    .poseDetail(pd)
+                    .build();
+            poseInfoList.add(poseInfo);
+        }
+
         User user = new User();
 
         TrialPose trialPose = TrialPose.builder()
                 .url(url)
-                .poseInfo(poseInfo)
+                .poseInfoList(poseInfoList)
                 .user(user)
                 .build();
 
-        //trialPose <-> (poseInfo, user) 상호 매핑
-        poseInfo.setPose(trialPose);
-        List<TrialPose> trialPoseList = user.getTrialPoseList();
-        trialPoseList.add(trialPose);
-        user.setTrialPoseList(trialPoseList);
+        //User <-> ChallengePose 매핑
+        user.addTrialPose(trialPose);
 
         //Trial 생성
         Trial trial = Trial.builder()
@@ -59,18 +72,25 @@ public class TrialService {
         trialPose.setTrial(trial);
 
         //Trial <-> Challenge 상호 매핑
-        Long challengeId = 1L;
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + challengeId));
-        List<Trial> trialList = challenge.getTrialList();
-        trialList.add(trial);
-        challenge.setTrialList(trialList);
+        challenge.addTrial(trial);
 
         trial.setChallenge(challenge);
 
-        //동작 유사도 계산
-
         return challengeRepository.save(challenge).getId();
+    }
+
+    public double runSimilarity(Long trialId){
+        Trial trial = trialRepository.findById(trialId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + trialId));
+
+        Challenge challenge = trial.getChallenge();
+
+        List<PoseInfo> poseInfoList1 = challenge.getChallengePose().getPoseInfoList();
+        List<PoseInfo> poseInfoList2 = trial.getTrialPose().getPoseInfoList();
+
+        return 1;
     }
 
     public TrialResponseDto getTrial(Long trialId) {
