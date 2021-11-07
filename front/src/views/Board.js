@@ -218,7 +218,7 @@ class Board extends React.Component {
                                   board =>
                                       <tr key={board.forumId}>
                                           <td> {board.forumId} </td>
-                                          <td> <a onClick={() => this.readBoard(board.forumId)}> {board.title} </a></td>
+                                          <td id="cursor"> <a onClick={() => this.readBoard(board.forumId)}> {board.title} </a></td>
                                           <td> {board.writer}</td>
                                           <td> {board.createDate}</td>
                                           <td> {board.updateDate}</td>
