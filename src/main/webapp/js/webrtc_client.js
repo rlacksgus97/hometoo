@@ -1,8 +1,10 @@
 'use strict';
 
 // create and run Web Socket connection
-// const socket = new WebSocket("ws://" + window.location.host + "/signal");
+// Domain adress can be changed because of using ngrok
 const conn = new SockJS("http://localhost:8080/ws-stomp");
+// const conn = new SockJS("https://047a-58-122-7-167.ngrok.io/ws-stomp");
+// const conn = new SockJS("http://047a-58-122-7-167.ngrok.io/ws-stomp");
 const stompconn = Stomp.over(conn);
 
 
@@ -54,11 +56,8 @@ let myPeerConnection;
  */
 // on page load runner
 $(function(){
-    // stompconn.connect({}, start());
     start();
 });
-// $(document).ready(start());
-// window.onload=start();
 
 /**
  * 핵심 function
@@ -259,7 +258,6 @@ function sendToServer(msg) {
 
 // initialize media stream
 async function getMedia(constraints) {
-    console.log("getMedia enter!");
     if (localStream) {
         localStream.getTracks().forEach(track => {
             track.stop();

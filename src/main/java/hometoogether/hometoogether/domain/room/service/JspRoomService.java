@@ -9,31 +9,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.sockjs.transport.session.WebSocketServerSockJsSession;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @RequiredArgsConstructor
-public class MainRoomService {
+public class JspRoomService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private static final String REDIRECT = "redirect:/room/create";
 
-//    private final RoomService roomService;
     private final RoomRepository roomRepository;
     private final Parser parser;
 
     /**
      * main 화면 return
      */
-    public String displayMainPage(Model model, final Long id, final String uuid) {
+    public String displayMainPage(Model model, final Long max_num, final String uuid) {
 
         List<Room> rooms = roomRepository.findAll();
         if(!rooms.isEmpty()){
@@ -41,7 +34,7 @@ public class MainRoomService {
         }
 //        model.addAttribute("rooms", roomService.getRooms());
 
-        model.addAttribute("id", id);
+        model.addAttribute("max_num", max_num);
         model.addAttribute("uuid", uuid);
 
         return "chat/create_room";
@@ -51,24 +44,16 @@ public class MainRoomService {
      * 룸 만들기 요청
      * 륨 만들어진 main 화면 return
      */
-    public String processRoomSelection(Model model, final String sid, final String uuid,
+    public String processRoomSelection(Model model, final String max_num, final String uuid,
                                        final BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            // simplified version, no errors processing
             return REDIRECT;
         }
-        Optional<Long> optionalId = parser.parseId(sid);
-        optionalId.ifPresent(id -> Optional.ofNullable(uuid).ifPresent(name -> roomRepository.save(new Room(id))));
-//        optionalId.ifPresent(id -> Optional.ofNullable(uuid).ifPresent(name -> roomService.addRoom(new Room(id))));
 
-//        List<Room> rooms = roomRepository.findAll();
-//        rooms.forEach(room -> System.out.println("room.getId() = " + room.getId()));
-//        for(Room room : rooms){
-//            Map<String, WebSocketSession> clients = room.getClients();
-//            System.out.println("clients.isEmpty() = " + clients.isEmpty());
-//        }
+        Long max = Long.valueOf(max_num);
+        roomRepository.save(new Room(max));
 
-        return this.displayMainPage(model, optionalId.orElse(null), uuid);
+        return this.displayMainPage(model, max, uuid);
     }
 
 
@@ -81,17 +66,33 @@ public class MainRoomService {
         Long id = parser.parseId(sid).orElse(null);
 
         if (id!=null) {
-//            Room room = roomService.findRoomByStringId(sid).orElse(null);
+
             Room room = roomRepository.findById(id).orElse(null);
             if(room != null && uuid != null && !uuid.isEmpty()) {
-                logger.debug("User {} is going to join Room #{}", uuid, sid);
-                // open the chat room
-                model.addAttribute("id", sid);
-                model.addAttribute("uuid", uuid);
+                logger.info("The room {} max num: {}", room.getId(), room.getMax_num());
+                logger.info("The room {} cur num: {}", room.getId(), room.getCur_num());
+                if(room.getMax_num()>room.getCur_num()){
+                    logger.debug("User {} is going to join Room #{}", uuid, sid);
+
+                    // open the chat room
+
+                    model.addAttribute("id", sid);
+                    model.addAttribute("uuid", uuid);
+                    return "chat/chat_room";
+                }
+                else{
+                    logger.error("Cannot enter chat room because the room is already full");
+                }
+            }
+            else{
+                logger.error("Cannot enter chat room because of many other reason");
             }
         }
+        else{
+            logger.error("Cannot enter chat room because of null id");
+        }
 
-        return "chat/chat_room";
+        return REDIRECT;
     }
 
     /**
@@ -102,8 +103,23 @@ public class MainRoomService {
     public String processRoomExit(final String sid, final String uuid) {
         if(sid != null && uuid != null) {
             logger.debug("User {} has left Room #{}", uuid, sid);
-            // implement any logic you need
+
+            Room room = roomRepository.findById(Long.valueOf(sid)).orElse(null);
+
+            System.out.println("Before room cur num setting: " + room.getCur_num());
+            room.setCur_num(room.getCur_num()-1L);
+            System.out.println("After room cur num setting: " + room.getCur_num());
+
+            if(room.getCur_num().equals(0L)){
+                System.out.println("Delete room");
+                roomRepository.delete(room);
+            }
+            else{
+                System.out.println("Edit room info");
+                roomRepository.save(room);
+            }
         }
+        System.out.println("MainRoomService.processRoomExit");
         return REDIRECT;
     }
 
