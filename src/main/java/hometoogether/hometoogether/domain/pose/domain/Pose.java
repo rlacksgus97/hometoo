@@ -19,8 +19,6 @@ public class Pose {
 
     private String url;
 
-    private String contentType;
-
     @OneToOne
     private PoseInfo poseInfo;
 

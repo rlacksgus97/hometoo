@@ -2,13 +2,21 @@ package hometoogether.hometoogether.domain.pose.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hometoogether.hometoogether.domain.challenge.dto.ChallengeRequestDto;
 import hometoogether.hometoogether.domain.pose.domain.*;
 import hometoogether.hometoogether.domain.pose.domain.JsonResponse.JobId;
 import hometoogether.hometoogether.domain.pose.domain.JsonResponse.PoseDetail;
+import hometoogether.hometoogether.domain.pose.repository.ChallengePoseRepository;
 import hometoogether.hometoogether.domain.pose.repository.PoseInfoRepository;
 import hometoogether.hometoogether.domain.pose.repository.PoseRepository;
+import hometoogether.hometoogether.domain.pose.repository.TrialPoseRepository;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -23,56 +31,88 @@ import java.util.List;
 @Service
 public class PoseService {
 
-    private final PoseRepository poseRepository;
-    private final PoseInfoRepository poseInfoRepository;
+    private final ChallengePoseRepository challengePoseRepository;
+    private final TrialPoseRepository trialPoseRepository;
 
-    public String estimatePosetest(String url) throws IOException {
+//    public String estimatePosetest(String url) throws IOException {
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//        headers.add("Authorization", "KakaoAK 19a4097fe8917a985bb1a7acc9ce2fb1");
+//
+//        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+////        String url = "https://preview.clipartkorea.co.kr/2016/05/27/ti325057081.jpg";
+////        String url = "https://preview.clipartkorea.co.kr/2015/03/20/tip034z15020088.jpg";
+////        String url = "http://preview.clipartkorea.co.kr/2016/05/27/ti325057171.jpg";
+////        String url = "https://media.istockphoto.com/photos/looking-at-camera-front-view-full-length-one-person-of-2029-years-old-picture-id1182145935";
+//
+//        params.add("image_url", url);
+//
+//        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
+//
+//        RestTemplate rt = new RestTemplate();
+//        ResponseEntity<String> response = rt.exchange(
+//                "https://cv-api.kakaobrain.com/pose",
+//                HttpMethod.POST,
+//                entity,
+//                String.class
+//                );
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String jsonbody = response.getBody();
+//        PoseInfo poseInfo = objectMapper.readValue(jsonbody, PoseInfo.class);
+//        poseInfoRepository.save(poseInfo);
+//
+//        Pose pose = Pose.builder()
+//                .url(url)
+//                .poseInfo(poseInfo)
+//                .build();
+//        poseRepository.save(pose);
+//
+//        System.out.println("response = " + response);
+//        return jsonbody;
+//    }
+
+//    public void test() throws ParseException {
+//        String response = "[\n" +
+//                "    {\n" +
+//                "        \"area\": 101090.2833,\n" +
+//                "        \"bbox\": [719.4526, 244.1255, 182.7314, 553.2178],\n" +
+//                "        \"category_id\": 1,\n" +
+//                "        \"keypoints\": [\n" +
+//                "            805.4897, 256.4165, 0.8422, 819.5366, 245.0034, 0.8773, 795.8325, 244.1255, 0.8664, 845.8745, 254.6606, 0.8105, 788.8091, 251.1489, 0.0631, 885.3813, 320.5054, 0.7525, 749.3022, 331.9185, 0.7706, 898.5503, 377.5708, 0.7825, 719.4526, 414.4438, 0.7897, 901.1841, 435.5142, 0.7782, 749.3022, 443.4155, 0.8086, 852.02, 504.8706, 0.6854, 785.2974, 511.894, 0.6738, 833.5835, 644.4614, 0.7899, 800.2222, 659.3862, 0.7655, 833.5835, 796.3433, 0.7055, 824.8042, 743.6675, 0.5165\n" +
+//                "        ],\n" +
+//                "        \"score\": 0.7185\n" +
+//                "    }\n" +
+//                "]";
+//        JSONParser jsonParse = new JSONParser();
+//        JSONArray jsonArr = (JSONArray) jsonParse.parse(response);
+//        JSONObject jsonObj = (JSONObject) jsonArr.get(0);
+//        List<Double> keypoints = (List<Double>) jsonObj.get("keypoints");
+//        for (Double kp : keypoints){
+//            System.out.println("kp = " + kp);
+//        }
+//
+//
+//        JSONParser jsonParse = new JSONParser();
+//        JSONObject jsonObj = (JSONObject) jsonParse.parse(response.getBody());
+//        JSONArray jsonArr = (JSONArray) jsonObj.get("annotations");
+//        for (int i=0; i<jsonArr.size(); i++) {
+//            JSONObject jsonPart = (JSONObject) jsonArr.get(i);
+//            List<Double> keypoints = (List<Double>) jsonPart.get(i);
+//        }
+//    }
+
+    @Transactional
+    @Async
+    public void estimatePosePhoto(Long pose_id, String url, String pose_type) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.add("Authorization", "KakaoAK 19a4097fe8917a985bb1a7acc9ce2fb1");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-//        String url = "https://preview.clipartkorea.co.kr/2016/05/27/ti325057081.jpg";
-//        String url = "https://preview.clipartkorea.co.kr/2015/03/20/tip034z15020088.jpg";
-//        String url = "http://preview.clipartkorea.co.kr/2016/05/27/ti325057171.jpg";
-//        String url = "https://media.istockphoto.com/photos/looking-at-camera-front-view-full-length-one-person-of-2029-years-old-picture-id1182145935";
-
-        params.add("image_url", url);
-
-        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
-
-        RestTemplate rt = new RestTemplate();
-        ResponseEntity<String> response = rt.exchange(
-                "https://cv-api.kakaobrain.com/pose",
-                HttpMethod.POST,
-                entity,
-                String.class
-                );
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonbody = response.getBody();
-        PoseInfo poseInfo = objectMapper.readValue(jsonbody, PoseInfo.class);
-        poseInfoRepository.save(poseInfo);
-
-        Pose pose = Pose.builder()
-                .url(url)
-                .poseInfo(poseInfo)
-                .build();
-        poseRepository.save(pose);
-
-        System.out.println("response = " + response);
-        return jsonbody;
-    }
-
-    public List<PoseDetail> estimatePosePhoto(String url) throws IOException {
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add("Authorization", "KakaoAK 19a4097fe8917a985bb1a7acc9ce2fb1");
-
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("image_url", url);
+        params.add("image_url", "http://221.143.144.143:80/"+url);
 
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
 
@@ -84,14 +124,38 @@ public class PoseService {
                 String.class
         );
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonbody = response.getBody();
-        List<PoseDetail> poseDetailList = objectMapper.readValue(jsonbody, new TypeReference<List<PoseDetail>>(){});
+        if (pose_type == "challenge")
+        {
+            ChallengePose challengePose = challengePoseRepository.getById(pose_id);
+            challengePose.setPose_info(response.getBody());
+        }
+        else if (pose_type == "trial"){
+            TrialPose trialPose = trialPoseRepository.getById(pose_id);
+            trialPose.setPose_info(response.getBody());
+        }
 
-        return poseDetailList;
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String jsonbody = response.getBody();
+//        List<PoseDetail> poseDetailList = objectMapper.readValue(jsonbody, new TypeReference<List<PoseDetail>>(){});
+//
+//        List<PoseInfo> poseInfoList = new ArrayList<>();
+//        for (PoseDetail pd : poseDetailList){
+//            PoseInfo poseInfo = PoseInfo.builder()
+//                    .poseDetail(pd)
+//                    .build();
+//            poseInfo.setChallenge_pose(challengePose);
+//            poseInfoRepository.save(poseInfo);
+//            poseInfoList.add(poseInfo);
+//        }
+//
+//        challengePose.setPoseInfoList(poseInfoList);
+
+        return;
     }
 
-    public List<PoseDetail> estimatePoseVideo(String url) throws IOException {
+    @Transactional
+    @Async
+    public void estimatePoseVideo(Long pose_id, String url, String pose_type) throws ParseException {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -110,14 +174,30 @@ public class PoseService {
                 String.class
         );
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonbody = response.getBody();
-        JobId job_id = objectMapper.readValue(jsonbody, JobId.class);
+        JSONParser jsonParse = new JSONParser();
+        JSONObject jsonObj = (JSONObject) jsonParse.parse(response.getBody());
+        String job_id = (String) jsonObj.get("job_id");
 
-        return estimatePoseDetailVideo(job_id.getJob_id());
+        try {
+            Thread.sleep(300000);
+            String poseInfo = estimatePoseDetailVideo(job_id);
+            if (pose_type == "challenge")
+            {
+                ChallengePose challengePose = challengePoseRepository.getById(pose_id);
+                challengePose.setPose_info(poseInfo);
+            }
+            else if (pose_type == "trial"){
+                TrialPose trialPose = trialPoseRepository.getById(pose_id);
+                trialPose.setPose_info(poseInfo);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return;
     }
 
-    public List<PoseDetail> estimatePoseDetailVideo(String job_id) throws IOException {
+    public String estimatePoseDetailVideo(String job_id) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -136,18 +216,13 @@ public class PoseService {
                 String.class
         );
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonbody = response.getBody();
-        List<PoseDetail> poseDetailList = objectMapper.readValue(jsonbody, new TypeReference<List<PoseDetail>>(){});
-
-        return poseDetailList;
+        return response.getBody();
     }
 
-    @Transactional
-    public double estimateSimilarity(){
+    public double estimateSimilarity(List<Double> pose1, List<Double> pose2){
 
-        List<Double> pose1 = poseInfoRepository.getById(6L).getKeypoints();
-        List<Double> pose2 = poseInfoRepository.getById(7L).getKeypoints();
+//        List<Double> pose1 = poseInfoRepository.getById(6L).getKeypoints();
+//        List<Double> pose2 = poseInfoRepository.getById(7L).getKeypoints();
 
         ArrayList<ArrayList<Double>> vectorInfo1 = vectorize(pose1);
         ArrayList<ArrayList<Double>> vectorInfo2 = vectorize(pose2);

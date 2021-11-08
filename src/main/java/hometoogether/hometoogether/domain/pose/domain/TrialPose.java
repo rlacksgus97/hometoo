@@ -13,8 +13,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-public class TrialPose extends Pose {
+@Entity(name = "trial_pose")
+public class TrialPose {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,8 +22,11 @@ public class TrialPose extends Pose {
 
     private String url;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trialPose")
-    private List<PoseInfo> poseInfoList;
+    @Column(columnDefinition = "TEXT")
+    private String pose_info;
+
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trial_pose")
+//    private List<PoseInfo> poseInfoList;
 
 //    public void addPoseInfo(PoseInfo poseInfo) {
 //        poseInfo.setTrialPose(this);
@@ -37,16 +40,16 @@ public class TrialPose extends Pose {
     private Trial trial;
 
     @Builder
-    private TrialPose(String url, List<PoseInfo> poseInfoList, User user, Trial trial) {
+    private TrialPose(String url, String pose_info, User user, Trial trial) {
         this.url = url;
-        this.poseInfoList = poseInfoList;
+        this.pose_info = pose_info;
         this.user = user;
         this.trial = trial;
     }
 
-    public static class TrialPoseBuilder extends PoseBuilder{
-        TrialPoseBuilder() {
-            super();
-        }
-    }
+//    public static class TrialPoseBuilder extends PoseBuilder{
+//        TrialPoseBuilder() {
+//            super();
+//        }
+//    }
 }

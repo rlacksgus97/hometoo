@@ -36,4 +36,11 @@ public class User {
         trialPose.setUser(this);
         this.trialPoseList.add(trialPose);
     }
+
+    @Builder
+    private User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 }

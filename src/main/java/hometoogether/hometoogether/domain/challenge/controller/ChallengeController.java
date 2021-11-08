@@ -5,6 +5,7 @@ import hometoogether.hometoogether.domain.challenge.dto.ChallengeRequestDto;
 import hometoogether.hometoogether.domain.challenge.dto.ChallengeResponseDto;
 import hometoogether.hometoogether.domain.challenge.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -17,9 +18,9 @@ public class ChallengeController {
     private final ChallengeService challengeService;
 
     @PostMapping("/challenges")
-    public Long save(ChallengeRequestDto param) throws IOException {
-        return challengeService.saveChallengePhoto(param);
-//        return challengeService.saveChallengeVideo(param);
+    public Long save(ChallengeRequestDto param) throws IOException, ParseException {
+//        return challengeService.saveChallengePhoto(param);
+        return challengeService.saveChallengeVideo(param);
     }
 
     @GetMapping("/challenges/{id}")

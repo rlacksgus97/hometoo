@@ -8,13 +8,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-public class ChallengePose extends Pose {
+@Entity(name = "challenge_pose")
+public class ChallengePose {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,8 +23,11 @@ public class ChallengePose extends Pose {
 
     private String url;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "challengePose")
-    private List<PoseInfo> poseInfoList;
+    @Column(columnDefinition = "TEXT")
+    private String pose_info;
+
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "challenge_pose")
+//    private List<PoseInfo> poseInfoList;
 
 //    public void addPoseInfo(PoseInfo poseInfo) {
 //        poseInfo.setChallengePose(this);
@@ -37,16 +41,16 @@ public class ChallengePose extends Pose {
     private Challenge challenge;
 
     @Builder
-    private ChallengePose(String url, List<PoseInfo> poseInfoList, User user, Challenge challenge) {
+    private ChallengePose(String url, String pose_info, User user, Challenge challenge) {
         this.url = url;
-        this.poseInfoList = poseInfoList;
+        this.pose_info = pose_info;
         this.user = user;
         this.challenge = challenge;
     }
 
-    public static class ChallengePoseBuilder extends PoseBuilder{
-        ChallengePoseBuilder() {
-            super();
-        }
-    }
+//    public static class ChallengePoseBuilder extends PoseBuilder{
+//        ChallengePoseBuilder() {
+//            super();
+//        }
+//    }
 }

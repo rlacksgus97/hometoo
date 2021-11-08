@@ -6,12 +6,12 @@ import hometoogether.hometoogether.domain.challenge.dto.ChallengeResponseDto;
 import hometoogether.hometoogether.domain.challenge.domain.Challenge;
 import hometoogether.hometoogether.domain.challenge.repository.ChallengeRepository;
 import hometoogether.hometoogether.domain.pose.domain.ChallengePose;
-import hometoogether.hometoogether.domain.pose.domain.JsonResponse.PoseDetail;
-import hometoogether.hometoogether.domain.pose.domain.PoseInfo;
+import hometoogether.hometoogether.domain.pose.repository.ChallengePoseRepository;
 import hometoogether.hometoogether.domain.pose.service.PoseService;
 import hometoogether.hometoogether.domain.user.domain.User;
 import hometoogether.hometoogether.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -31,6 +30,7 @@ public class ChallengeService {
 
     private final UserRepository userRepository;
     private final ChallengeRepository challengeRepository;
+    private final ChallengePoseRepository challengePoseRepository;
     private final PoseService poseService;
 
     @Value("${spring.servlet.multipart.location}")
@@ -47,22 +47,25 @@ public class ChallengeService {
         File file = new File(url);
         multipartFile.transferTo(file);
 
-        List<PoseDetail> poseDetailList = poseService.estimatePosePhoto(url);
-        List<PoseInfo> poseInfoList = new ArrayList<>();
-        for (PoseDetail pd : poseDetailList){
-            PoseInfo poseInfo = PoseInfo.builder()
-                    .poseDetail(pd)
-                    .build();
-            poseInfoList.add(poseInfo);
-        }
-
-        User user = new User();
+        User user = userRepository.findByUsername(challengeRequestDto.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. username=" + challengeRequestDto.getUsername()));
 
         ChallengePose challengePose = ChallengePose.builder()
                 .url(url)
-                .poseInfoList(poseInfoList)
                 .user(user)
                 .build();
+
+        challengePoseRepository.save(challengePose);
+
+        poseService.estimatePosePhoto(challengePose.getId(), url, "challenge");
+//        List<PoseDetail> poseDetailList = poseService.estimatePosePhoto(url);
+//        List<PoseInfo> poseInfoList = new ArrayList<>();
+//        for (PoseDetail pd : poseDetailList){
+//            PoseInfo poseInfo = PoseInfo.builder()
+//                    .poseDetail(pd)
+//                    .build();
+//            poseInfoList.add(poseInfo);
+//        }
 
         //User <-> ChallengePose 매핑
         user.addChallengePose(challengePose);
@@ -81,7 +84,7 @@ public class ChallengeService {
     }
 
     @Transactional
-    public Long saveChallengeVideo(ChallengeRequestDto challengeRequestDto) throws IOException {
+    public Long saveChallengeVideo(ChallengeRequestDto challengeRequestDto) throws IOException, ParseException {
         // parameter로 SessionUser 받아오게 구현 예정
 
         //ChallengePose 생성
@@ -91,22 +94,24 @@ public class ChallengeService {
         File file = new File(url);
         multipartFile.transferTo(file);
 
-        List<PoseDetail> poseDetailList = poseService.estimatePoseVideo(url);
-        List<PoseInfo> poseInfoList = new ArrayList<>();
-        for (PoseDetail pd : poseDetailList){
-            PoseInfo poseInfo = PoseInfo.builder()
-                    .poseDetail(pd)
-                    .build();
-            poseInfoList.add(poseInfo);
-        }
-
-        User user = new User();
+        User user = userRepository.findByUsername(challengeRequestDto.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. username=" + challengeRequestDto.getUsername()));
 
         ChallengePose challengePose = ChallengePose.builder()
                 .url(url)
-                .poseInfoList(poseInfoList)
                 .user(user)
                 .build();
+
+        challengePoseRepository.save(challengePose);
+
+        poseService.estimatePoseVideo(challengePose.getId(), url, "challenge");
+//        List<PoseInfo> poseInfoList = new ArrayList<>();
+//        for (PoseDetail pd : poseDetailList){
+//            PoseInfo poseInfo = PoseInfo.builder()
+//                    .poseDetail(pd)
+//                    .build();
+//            poseInfoList.add(poseInfo);
+//        }
 
         //User <-> ChallengePose 매핑
         user.addChallengePose(challengePose);
@@ -124,7 +129,7 @@ public class ChallengeService {
         return challengeRepository.save(challenge).getId();
     }
 
-    public ChallengeDetailResponseDto getChallenge(Long challengeId) throws IOException {
+    public ChallengeDetailResponseDto getChallenge(Long challengeId) {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + challengeId));
 //        Path path = Paths.get(videoPath + challenge.getChallengePose().getUrl());

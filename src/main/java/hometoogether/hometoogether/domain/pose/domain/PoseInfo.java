@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Entity(name = "pose_info")
 public class PoseInfo {
 
     @Id
@@ -32,10 +32,12 @@ public class PoseInfo {
     private double score;
 
 //    @ManyToOne
-//    private ChallengePose challengePose;
+//    @JoinColumn(name = "challenge_pose_id")
+//    private ChallengePose challenge_pose;
 //
 //    @ManyToOne
-//    private TrialPose trialPose;
+//    @JoinColumn(name = "trial_pose_id")
+//    private TrialPose trial_pose;
 
     @Builder
     private PoseInfo(PoseDetail poseDetail){

@@ -4,6 +4,7 @@ import hometoogether.hometoogether.domain.trial.dto.TrialRequestDto;
 import hometoogether.hometoogether.domain.trial.dto.TrialResponseDto;
 import hometoogether.hometoogether.domain.trial.service.TrialService;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -16,14 +17,14 @@ public class TrialController {
     private final TrialService trialService;
 
     @PostMapping("/challenges/{challengeId}/trials/")
-    public Long save(@PathVariable("id") Long challengeId, TrialRequestDto param) throws IOException {
+    public Long save(@PathVariable("id") Long challengeId, TrialRequestDto param) throws IOException, ParseException {
         return trialService.saveTrial(challengeId, param);
     }
 
-    @PostMapping("/trials/{trialId}")
-    public double estimate(@PathVariable("trialId") Long trialId){
-        return trialService.runSimilarity(trialId);
-    }
+//    @PostMapping("/trials/{trialId}")
+//    public double estimate(@PathVariable("trialId") Long trialId){
+//        return trialService.runSimilarity(trialId);
+//    }
 
     @GetMapping("/trials/{id}")
     public TrialResponseDto getDetail(@PathVariable("id") Long trialId){
