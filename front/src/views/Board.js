@@ -47,6 +47,7 @@ import BoardService from '../service/BoardService';
 // index page sections
 // import Download from "../IndexSections/Download.js";
 import Download from "../components/IndexSections/Download";
+import moment from "moment";
 class Board extends React.Component {
     state = {};
 
@@ -65,7 +66,13 @@ class Board extends React.Component {
         this.refs.main.scrollTop = 0;
 
         BoardService.getBoards().then((res) => {
-            this.setState({boards: res.data});
+            let temp = res.data;
+            for (var i = 0; i < temp.length; i++) {
+                temp[i]['createDate'] = moment(new Date(temp[i]['createDate'])).format("YYYY-MM-DD");
+                temp[i]['updateDate'] = moment(new Date(temp[i]['updateDate'])).format("YYYY-MM-DD");
+                // console.log("craeteDate : " + temp[i]['createDate'] + "updateDate : " + temp[i]['updateDate']);
+            }
+            this.setState({boards: temp});
         });
     }
 
@@ -220,8 +227,8 @@ class Board extends React.Component {
                                           <td> {board.forumId} </td>
                                           <td id="cursor"> <a onClick={() => this.readBoard(board.forumId)}> {board.title} </a></td>
                                           <td> {board.writer}</td>
-                                          <td> {board.createDate}</td>
-                                          <td> {board.updateDate}</td>
+                                          <td id="createDate"> {board.createDate}</td>
+                                          <td id="updateDate"> {board.updateDate}</td>
                                           <td> {board.hits}</td>
                                                             <td className="text-right">
                                                                 <UncontrolledDropdown>
