@@ -168,7 +168,7 @@ class BoardDetail extends React.Component {
                         {/* 1st Hero Variation */}
                     </div>
                     {/*이름, 이메일, 메모 카드 섹션*/}
-                    <section className="section section-lg pt-lg-0 section-contact-us">
+                    <section className="section">
                         <Container className="justify-content-md-center" fluid>
                             <Row className="justify-content-center mt--300">
                                 <Col lg="8">
@@ -227,7 +227,7 @@ class BoardDetail extends React.Component {
                                                     name="name"
                                                     // placeholder={this.state.board.contents}
                                                     value={this.state.board.contents}
-                                                    rows="4"
+                                                    rows="10"
                                                     type="textarea"
                                                     disabled={true}
                                                 />

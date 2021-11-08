@@ -181,7 +181,7 @@ class BoardUpdate extends React.Component {
                         {/* 1st Hero Variation */}
                     </div>
                     {/*이름, 이메일, 메모 카드 섹션*/}
-                    <section className="section section-lg pt-lg-0 section-contact-us">
+                    <section className="section section-components pb-0">
                         <Container className="justify-content-md-center" fluid>
                             <Row className="justify-content-center mt--300">
                                 <Col lg="8">
@@ -233,14 +233,14 @@ class BoardUpdate extends React.Component {
                                                     />
                                                 </InputGroup>
                                             </FormGroup>
-                                            <FormGroup className="mb-4">
+                                            <FormGroup className="mb-5">
                                                 <Input
                                                     className="form-control-alternative"
                                                     cols="80"
                                                     name="name"
                                                     placeholder="내용을 입력해주세요."
                                                     value={this.state.contents}
-                                                    rows="4"
+                                                    rows="10"
                                                     type="textarea"
                                                     onChange={this.changeContentsHandler}
                                                 />

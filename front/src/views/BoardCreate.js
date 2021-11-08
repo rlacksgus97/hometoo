@@ -177,7 +177,7 @@ class BoardCreate extends React.Component {
                         {/* 1st Hero Variation */}
                     </div>
                     {/*이름, 이메일, 메모 카드 섹션*/}
-                    <section className="section section-lg pt-lg-0 section-contact-us">
+                    <section className="section section-components pb-0">
                         <Container className="justify-content-md-center" fluid>
                             <Row className="justify-content-center mt--300">
                                 <Col lg="8">
@@ -235,7 +235,7 @@ class BoardCreate extends React.Component {
                                                     cols="80"
                                                     name="name"
                                                     placeholder="내용을 입력해주세요."
-                                                    rows="4"
+                                                    rows="10"
                                                     type="textarea"
                                                     value={this.state.contents}
                                                     onChange={this.changeContentsHandler}
@@ -257,7 +257,6 @@ class BoardCreate extends React.Component {
                                     </Card>
                                 </Col>
                             </Row>
-
                         </Container>
                     </section>
                     <Download />
