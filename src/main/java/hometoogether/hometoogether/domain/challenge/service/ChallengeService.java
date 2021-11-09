@@ -37,7 +37,7 @@ public class ChallengeService {
     String videoPath;
 
     @Transactional
-    public Long saveChallengePhoto(ChallengeRequestDto challengeRequestDto) throws IOException {
+    public Long saveChallengePhoto(ChallengeRequestDto challengeRequestDto) throws IOException, ParseException {
         // parameter로 SessionUser 받아오게 구현 예정
 
         //ChallengePose 생성

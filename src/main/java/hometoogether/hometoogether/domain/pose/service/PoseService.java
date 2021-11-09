@@ -105,7 +105,7 @@ public class PoseService {
 
     @Transactional
     @Async
-    public void estimatePosePhoto(Long pose_id, String url, String pose_type) {
+    public void estimatePosePhoto(Long pose_id, String url, String pose_type) throws ParseException {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -124,14 +124,21 @@ public class PoseService {
                 String.class
         );
 
+        JSONParser jsonParse = new JSONParser();
+        JSONArray jsonArr = (JSONArray) jsonParse.parse(response.getBody());
+        JSONObject jsonObj = (JSONObject) jsonArr.get(0);
+        String keypoints = (String) jsonObj.get("keypoints");
+
         if (pose_type == "challenge")
         {
             ChallengePose challengePose = challengePoseRepository.getById(pose_id);
-            challengePose.setPose_info(response.getBody());
+            challengePose.getKeypoints().add(keypoints);
+            challengePoseRepository.save(challengePose);
         }
         else if (pose_type == "trial"){
             TrialPose trialPose = trialPoseRepository.getById(pose_id);
-            trialPose.setPose_info(response.getBody());
+            trialPose.getKeypoints().add(keypoints);
+            trialPoseRepository.save(trialPose);
         }
 
 //        ObjectMapper objectMapper = new ObjectMapper();
@@ -178,17 +185,31 @@ public class PoseService {
         JSONObject jsonObj = (JSONObject) jsonParse.parse(response.getBody());
         String job_id = (String) jsonObj.get("job_id");
 
+        if (pose_type == "challenge")
+        {
+            ChallengePose challengePose = challengePoseRepository.getById(pose_id);
+            challengePose.setJob_id(job_id);
+            challengePoseRepository.save(challengePose);
+        }
+        else if (pose_type == "trial"){
+            TrialPose trialPose = trialPoseRepository.getById(pose_id);
+            trialPose.setJob_id(job_id);
+            trialPoseRepository.save(trialPose);
+        }
+
         try {
             Thread.sleep(300000);
-            String poseInfo = estimatePoseDetailVideo(job_id);
+            List<String> keypoints = estimatePoseDetailVideo(job_id);
             if (pose_type == "challenge")
             {
                 ChallengePose challengePose = challengePoseRepository.getById(pose_id);
-                challengePose.setPose_info(poseInfo);
+                challengePose.setKeypoints(keypoints);
+                challengePoseRepository.save(challengePose);
             }
             else if (pose_type == "trial"){
                 TrialPose trialPose = trialPoseRepository.getById(pose_id);
-                trialPose.setPose_info(poseInfo);
+                trialPose.setKeypoints(keypoints);
+                trialPoseRepository.save(trialPose);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -197,7 +218,8 @@ public class PoseService {
         return;
     }
 
-    public String estimatePoseDetailVideo(String job_id) {
+    @Transactional
+    public List<String> estimatePoseDetailVideo(String job_id) throws ParseException {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -216,7 +238,17 @@ public class PoseService {
                 String.class
         );
 
-        return response.getBody();
+        JSONParser jsonParse = new JSONParser();
+        JSONObject jsonObj = (JSONObject) jsonParse.parse(response.getBody());
+        JSONArray jsonArr = (JSONArray) jsonObj.get("annotations");
+        List<String> keypointsList = new ArrayList<>();
+        for (int i=0; i<jsonArr.size(); i++) {
+            JSONObject jsonPart = (JSONObject) jsonArr.get(i);
+            String keypoints_per_frame = (String) jsonPart.get("objects");
+            keypointsList.add(keypoints_per_frame);
+        }
+
+        return keypointsList;
     }
 
     public double estimateSimilarity(List<Double> pose1, List<Double> pose2){

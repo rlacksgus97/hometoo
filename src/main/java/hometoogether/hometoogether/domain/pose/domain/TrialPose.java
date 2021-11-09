@@ -22,8 +22,10 @@ public class TrialPose {
 
     private String url;
 
-    @Column(columnDefinition = "TEXT")
-    private String pose_info;
+    private String job_id;
+
+    @ElementCollection
+    private List<String> keypoints;
 
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trial_pose")
 //    private List<PoseInfo> poseInfoList;
@@ -40,9 +42,9 @@ public class TrialPose {
     private Trial trial;
 
     @Builder
-    private TrialPose(String url, String pose_info, User user, Trial trial) {
+    private TrialPose(String url, List<String> keypoints, User user, Trial trial) {
         this.url = url;
-        this.pose_info = pose_info;
+        this.keypoints = keypoints;
         this.user = user;
         this.trial = trial;
     }

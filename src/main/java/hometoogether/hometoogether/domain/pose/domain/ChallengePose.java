@@ -23,8 +23,13 @@ public class ChallengePose {
 
     private String url;
 
-    @Column(columnDefinition = "TEXT")
-    private String pose_info;
+    private String job_id;
+
+    @ElementCollection
+    private List<String> keypoints;
+
+//    @Column(columnDefinition = "TEXT")
+//    private String pose_info;
 
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "challenge_pose")
 //    private List<PoseInfo> poseInfoList;
@@ -41,9 +46,9 @@ public class ChallengePose {
     private Challenge challenge;
 
     @Builder
-    private ChallengePose(String url, String pose_info, User user, Challenge challenge) {
+    private ChallengePose(String url, List<String> keypoints, User user, Challenge challenge) {
         this.url = url;
-        this.pose_info = pose_info;
+        this.keypoints = keypoints;
         this.user = user;
         this.challenge = challenge;
     }

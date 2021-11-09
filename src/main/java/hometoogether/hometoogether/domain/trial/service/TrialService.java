@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -78,14 +79,24 @@ public class TrialService {
         return challengeRepository.save(challenge).getId();
     }
 
+    @Transactional
 //    public double runSimilarity(Long trialId){
 //        Trial trial = trialRepository.findById(trialId)
 //                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + trialId));
 //
 //        Challenge challenge = trial.getChallenge();
 //
-//        List<PoseInfo> poseInfoList1 = challenge.getChallengePose().getPoseInfoList();
-//        List<PoseInfo> poseInfoList2 = trial.getTrialPose().getPoseInfoList();
+//        List<String> keypoints_String1 = challenge.getChallengePose().getKeypoints();
+//        List<List<Double>> keypointsList1 = new ArrayList<>();
+//        for(String kp : keypoints_String1){
+//
+//        };
+//        List<String> keypoints_String2 = trial.getTrialPose().getKeypoints();
+//        List<List<Double>> keypointsList2 = new ArrayList<>();
+//        for(String kp : keypoints_String2){
+//
+//        };
+//        poseService.estimateSimilarity(keypointsList1, keypointsList2);
 //
 //        return 1;
 //    }
