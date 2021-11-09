@@ -6,10 +6,7 @@ import hometoogether.hometoogether.domain.challenge.dto.ChallengeRequestDto;
 import hometoogether.hometoogether.domain.pose.domain.*;
 import hometoogether.hometoogether.domain.pose.domain.JsonResponse.JobId;
 import hometoogether.hometoogether.domain.pose.domain.JsonResponse.PoseDetail;
-import hometoogether.hometoogether.domain.pose.repository.ChallengePoseRepository;
-import hometoogether.hometoogether.domain.pose.repository.PoseInfoRepository;
-import hometoogether.hometoogether.domain.pose.repository.PoseRepository;
-import hometoogether.hometoogether.domain.pose.repository.TrialPoseRepository;
+import hometoogether.hometoogether.domain.pose.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -31,6 +28,7 @@ import java.util.List;
 @Service
 public class PoseService {
 
+    private final KeypointsRepository keypointsRepository;
     private final ChallengePoseRepository challengePoseRepository;
     private final TrialPoseRepository trialPoseRepository;
 
@@ -127,17 +125,22 @@ public class PoseService {
         JSONParser jsonParse = new JSONParser();
         JSONArray jsonArr = (JSONArray) jsonParse.parse(response.getBody());
         JSONObject jsonObj = (JSONObject) jsonArr.get(0);
-        String keypoints = (String) jsonObj.get("keypoints");
+        JSONArray JSON_keypoints = (JSONArray) jsonObj.get("keypoints");
+        List<Double> keypoints = (List<Double>) JSON_keypoints;
+        Keypoints kp = Keypoints.builder()
+                .keypoints(keypoints)
+                .build();
+        keypointsRepository.save(kp);
 
         if (pose_type == "challenge")
         {
             ChallengePose challengePose = challengePoseRepository.getById(pose_id);
-            challengePose.getKeypoints().add(keypoints);
+            challengePose.addKeypoints(kp);
             challengePoseRepository.save(challengePose);
         }
         else if (pose_type == "trial"){
             TrialPose trialPose = trialPoseRepository.getById(pose_id);
-            trialPose.getKeypoints().add(keypoints);
+            trialPose.addKeypoints(kp);
             trialPoseRepository.save(trialPose);
         }
 
@@ -165,7 +168,7 @@ public class PoseService {
     public void estimatePoseVideo(Long pose_id, String url, String pose_type) throws ParseException {
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.add("Authorization", "KakaoAK 19a4097fe8917a985bb1a7acc9ce2fb1");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -184,32 +187,35 @@ public class PoseService {
         JSONParser jsonParse = new JSONParser();
         JSONObject jsonObj = (JSONObject) jsonParse.parse(response.getBody());
         String job_id = (String) jsonObj.get("job_id");
+        System.out.println("job_id = " + job_id);
 
         if (pose_type == "challenge")
         {
-            ChallengePose challengePose = challengePoseRepository.getById(pose_id);
-            challengePose.setJob_id(job_id);
-            challengePoseRepository.save(challengePose);
+            System.out.println("I'm challenge\n");
+            ChallengePose challengePose = challengePoseRepository.findById(pose_id)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + pose_id));
+            challengePose.update(job_id);
         }
         else if (pose_type == "trial"){
-            TrialPose trialPose = trialPoseRepository.getById(pose_id);
-            trialPose.setJob_id(job_id);
-            trialPoseRepository.save(trialPose);
+            System.out.println("I'm trial\n");
+            TrialPose trialPose = trialPoseRepository.findById(pose_id)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + pose_id));
+            trialPose.update(job_id);
         }
 
         try {
             Thread.sleep(300000);
-            List<String> keypoints = estimatePoseDetailVideo(job_id);
+            List<Keypoints> keypoints = estimatePoseDetailVideo(job_id);
             if (pose_type == "challenge")
             {
                 ChallengePose challengePose = challengePoseRepository.getById(pose_id);
-                challengePose.setKeypoints(keypoints);
-                challengePoseRepository.save(challengePose);
+                challengePose.setKeypointsList(keypoints);
+//                challengePoseRepository.save(challengePose);
             }
             else if (pose_type == "trial"){
                 TrialPose trialPose = trialPoseRepository.getById(pose_id);
-                trialPose.setKeypoints(keypoints);
-                trialPoseRepository.save(trialPose);
+                trialPose.setKeypointsList(keypoints);
+//                trialPoseRepository.save(trialPose);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -219,10 +225,10 @@ public class PoseService {
     }
 
     @Transactional
-    public List<String> estimatePoseDetailVideo(String job_id) throws ParseException {
+    public List<Keypoints> estimatePoseDetailVideo(String job_id) throws ParseException {
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.add("Authorization", "KakaoAK 19a4097fe8917a985bb1a7acc9ce2fb1");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -241,11 +247,29 @@ public class PoseService {
         JSONParser jsonParse = new JSONParser();
         JSONObject jsonObj = (JSONObject) jsonParse.parse(response.getBody());
         JSONArray jsonArr = (JSONArray) jsonObj.get("annotations");
-        List<String> keypointsList = new ArrayList<>();
+
+        JSONObject example = (JSONObject) jsonArr.get(5);
+        JSONArray example2 = (JSONArray) example.get("objects");
+        JSONObject example3 = (JSONObject) example2.get(0);
+        JSONArray example4 = (JSONArray) example3.get("keypoints");
+        List<Double> example5 = (List<Double>) example4;
+        System.out.println("example = " + example5);
+
+        List<Keypoints> keypointsList = new ArrayList<Keypoints>();
         for (int i=0; i<jsonArr.size(); i++) {
             JSONObject jsonPart = (JSONObject) jsonArr.get(i);
-            String keypoints_per_frame = (String) jsonPart.get("objects");
-            keypointsList.add(keypoints_per_frame);
+            JSONArray objectArr = (JSONArray) jsonPart.get("objects");
+            System.out.println("i = " + i);
+            if (objectArr.size() != 0){
+                JSONObject object = (JSONObject) objectArr.get(0);
+                JSONArray JSON_keypoints = (JSONArray) object.get("keypoints");
+                List<Double> keypoints = (List<Double>) JSON_keypoints;
+                Keypoints kp = Keypoints.builder()
+                        .keypoints(keypoints)
+                        .build();
+                keypointsRepository.save(kp);
+                keypointsList.add(kp);
+            }
         }
 
         return keypointsList;

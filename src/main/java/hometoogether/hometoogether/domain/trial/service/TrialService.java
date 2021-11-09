@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -80,7 +81,7 @@ public class TrialService {
     }
 
     @Transactional
-//    public double runSimilarity(Long trialId){
+    public double runSimilarity(Long trialId){
 //        Trial trial = trialRepository.findById(trialId)
 //                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + trialId));
 //
@@ -89,17 +90,18 @@ public class TrialService {
 //        List<String> keypoints_String1 = challenge.getChallengePose().getKeypoints();
 //        List<List<Double>> keypointsList1 = new ArrayList<>();
 //        for(String kp : keypoints_String1){
-//
+//            Stream.of(kp).mapToDouble(Double::parseDouble).boxed().toArray(Double[]::new);
+////            Stream.of(arr).mapToInt(Integer::parseInt).boxed().toArray(Integer[]::new);
 //        };
 //        List<String> keypoints_String2 = trial.getTrialPose().getKeypoints();
 //        List<List<Double>> keypointsList2 = new ArrayList<>();
 //        for(String kp : keypoints_String2){
 //
 //        };
-//        poseService.estimateSimilarity(keypointsList1, keypointsList2);
+////        poseService.estimateSimilarity(keypointsList1, keypointsList2);
 //
-//        return 1;
-//    }
+        return 1;
+    }
 
     public TrialResponseDto getTrial(Long trialId) {
         Trial trial = trialRepository.findById(trialId)

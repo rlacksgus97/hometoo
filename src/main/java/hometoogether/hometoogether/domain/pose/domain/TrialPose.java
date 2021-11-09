@@ -24,16 +24,16 @@ public class TrialPose {
 
     private String job_id;
 
-    @ElementCollection
-    private List<String> keypoints;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trial_pose")
+    private List<Keypoints> keypointsList;
+
+    public void addKeypoints(Keypoints keypoints) {
+        keypoints.setTrial_pose(this);
+        this.keypointsList.add(keypoints);
+    }
 
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trial_pose")
 //    private List<PoseInfo> poseInfoList;
-
-//    public void addPoseInfo(PoseInfo poseInfo) {
-//        poseInfo.setTrialPose(this);
-//        this.poseInfoList.add(poseInfo);
-//    }
 
     @ManyToOne
     private User user;
@@ -42,16 +42,14 @@ public class TrialPose {
     private Trial trial;
 
     @Builder
-    private TrialPose(String url, List<String> keypoints, User user, Trial trial) {
+    private TrialPose(String url, List<Keypoints> keypointsList, User user, Trial trial) {
         this.url = url;
-        this.keypoints = keypoints;
+        this.keypointsList = keypointsList;
         this.user = user;
         this.trial = trial;
     }
 
-//    public static class TrialPoseBuilder extends PoseBuilder{
-//        TrialPoseBuilder() {
-//            super();
-//        }
-//    }
+    public void update(String job_id){
+        this.job_id = job_id;
+    }
 }

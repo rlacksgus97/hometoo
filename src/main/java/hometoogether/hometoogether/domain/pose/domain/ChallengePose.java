@@ -25,19 +25,19 @@ public class ChallengePose {
 
     private String job_id;
 
-    @ElementCollection
-    private List<String> keypoints;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "challenge_pose")
+    private List<Keypoints> keypointsList;
+
+    public void addKeypoints(Keypoints keypoints) {
+        keypoints.setChallenge_pose(this);
+        this.keypointsList.add(keypoints);
+    }
 
 //    @Column(columnDefinition = "TEXT")
 //    private String pose_info;
 
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "challenge_pose")
 //    private List<PoseInfo> poseInfoList;
-
-//    public void addPoseInfo(PoseInfo poseInfo) {
-//        poseInfo.setChallengePose(this);
-//        this.poseInfoList.add(poseInfo);
-//    }
 
     @ManyToOne
     private User user;
@@ -46,16 +46,14 @@ public class ChallengePose {
     private Challenge challenge;
 
     @Builder
-    private ChallengePose(String url, List<String> keypoints, User user, Challenge challenge) {
+    private ChallengePose(String url, List<Keypoints> keypointsList, User user, Challenge challenge) {
         this.url = url;
-        this.keypoints = keypoints;
+        this.keypointsList = keypointsList;
         this.user = user;
         this.challenge = challenge;
     }
 
-//    public static class ChallengePoseBuilder extends PoseBuilder{
-//        ChallengePoseBuilder() {
-//            super();
-//        }
-//    }
+    public void update(String job_id){
+        this.job_id = job_id;
+    }
 }
