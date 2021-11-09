@@ -69,8 +69,9 @@ class Board extends React.Component {
             let temp = res.data;
             for (var i = 0; i < temp.length; i++) {
                 temp[i]['createDate'] = moment(new Date(temp[i]['createDate'])).format("YYYY-MM-DD");
-                temp[i]['updateDate'] = moment(new Date(temp[i]['updateDate'])).format("YYYY-MM-DD");
-                // console.log("craeteDate : " + temp[i]['createDate'] + "updateDate : " + temp[i]['updateDate']);
+                if (temp[i]['updateDate']) {
+                    temp[i]['updateDate'] = moment(new Date(temp[i]['updateDate'])).format("YYYY-MM-DD");
+                }
             }
             this.setState({boards: temp});
         });
