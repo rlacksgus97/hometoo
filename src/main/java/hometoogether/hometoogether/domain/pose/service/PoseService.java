@@ -1,11 +1,6 @@
 package hometoogether.hometoogether.domain.pose.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import hometoogether.hometoogether.domain.challenge.dto.ChallengeRequestDto;
 import hometoogether.hometoogether.domain.pose.domain.*;
-import hometoogether.hometoogether.domain.pose.domain.JsonResponse.JobId;
-import hometoogether.hometoogether.domain.pose.domain.JsonResponse.PoseDetail;
 import hometoogether.hometoogether.domain.pose.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -20,7 +15,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,36 +65,6 @@ public class PoseService {
 //        return jsonbody;
 //    }
 
-//    public void test() throws ParseException {
-//        String response = "[\n" +
-//                "    {\n" +
-//                "        \"area\": 101090.2833,\n" +
-//                "        \"bbox\": [719.4526, 244.1255, 182.7314, 553.2178],\n" +
-//                "        \"category_id\": 1,\n" +
-//                "        \"keypoints\": [\n" +
-//                "            805.4897, 256.4165, 0.8422, 819.5366, 245.0034, 0.8773, 795.8325, 244.1255, 0.8664, 845.8745, 254.6606, 0.8105, 788.8091, 251.1489, 0.0631, 885.3813, 320.5054, 0.7525, 749.3022, 331.9185, 0.7706, 898.5503, 377.5708, 0.7825, 719.4526, 414.4438, 0.7897, 901.1841, 435.5142, 0.7782, 749.3022, 443.4155, 0.8086, 852.02, 504.8706, 0.6854, 785.2974, 511.894, 0.6738, 833.5835, 644.4614, 0.7899, 800.2222, 659.3862, 0.7655, 833.5835, 796.3433, 0.7055, 824.8042, 743.6675, 0.5165\n" +
-//                "        ],\n" +
-//                "        \"score\": 0.7185\n" +
-//                "    }\n" +
-//                "]";
-//        JSONParser jsonParse = new JSONParser();
-//        JSONArray jsonArr = (JSONArray) jsonParse.parse(response);
-//        JSONObject jsonObj = (JSONObject) jsonArr.get(0);
-//        List<Double> keypoints = (List<Double>) jsonObj.get("keypoints");
-//        for (Double kp : keypoints){
-//            System.out.println("kp = " + kp);
-//        }
-//
-//
-//        JSONParser jsonParse = new JSONParser();
-//        JSONObject jsonObj = (JSONObject) jsonParse.parse(response.getBody());
-//        JSONArray jsonArr = (JSONArray) jsonObj.get("annotations");
-//        for (int i=0; i<jsonArr.size(); i++) {
-//            JSONObject jsonPart = (JSONObject) jsonArr.get(i);
-//            List<Double> keypoints = (List<Double>) jsonPart.get(i);
-//        }
-//    }
-
     @Transactional
     @Async
     public void estimatePosePhoto(Long pose_id, String url, String pose_type) throws ParseException {
@@ -143,23 +107,6 @@ public class PoseService {
             trialPose.addKeypoints(kp);
             trialPoseRepository.save(trialPose);
         }
-
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        String jsonbody = response.getBody();
-//        List<PoseDetail> poseDetailList = objectMapper.readValue(jsonbody, new TypeReference<List<PoseDetail>>(){});
-//
-//        List<PoseInfo> poseInfoList = new ArrayList<>();
-//        for (PoseDetail pd : poseDetailList){
-//            PoseInfo poseInfo = PoseInfo.builder()
-//                    .poseDetail(pd)
-//                    .build();
-//            poseInfo.setChallenge_pose(challengePose);
-//            poseInfoRepository.save(poseInfo);
-//            poseInfoList.add(poseInfo);
-//        }
-//
-//        challengePose.setPoseInfoList(poseInfoList);
-
         return;
     }
 

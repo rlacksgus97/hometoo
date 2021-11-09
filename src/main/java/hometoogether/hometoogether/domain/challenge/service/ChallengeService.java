@@ -101,17 +101,9 @@ public class ChallengeService {
                 .url(url)
                 .user(user)
                 .build();
-
         challengePoseRepository.save(challengePose);
 
         poseService.estimatePoseVideo(challengePose.getId(), url, "challenge");
-//        List<PoseInfo> poseInfoList = new ArrayList<>();
-//        for (PoseDetail pd : poseDetailList){
-//            PoseInfo poseInfo = PoseInfo.builder()
-//                    .poseDetail(pd)
-//                    .build();
-//            poseInfoList.add(poseInfo);
-//        }
 
         //User <-> ChallengePose 매핑
         user.addChallengePose(challengePose);
