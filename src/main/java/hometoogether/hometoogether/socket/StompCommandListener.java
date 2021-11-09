@@ -112,13 +112,14 @@ public class StompCommandListener {
     @ResponseBody
     public UserCountAndTimeDto test(){
 
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date time=new Date();
-        String currentTime = format.format(time);
+//        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Date time=new Date();
+//        String currentTime = format.format(time);
+        Long currentTimeMillis = System.currentTimeMillis();
         Long userCount=socketParticipateUserList.stream().count();
 
         return UserCountAndTimeDto.builder()
-                .count(userCount).time(currentTime)
+                .count(userCount).time(currentTimeMillis)
                 .build();
     }
 
