@@ -14,6 +14,7 @@ import Board from "views/Board.js";
 import BoardUpdate from "views/BoardUpdate";
 import BoardDetail from "./views/BoardDetail";
 import BoardCreate from "./views/BoardCreate";
+import ChallengeDetail from "./views/ChallengeDetail";
 
 ReactDOM.render(
     <BrowserRouter>
@@ -77,6 +78,11 @@ ReactDOM.render(
                 path="/board/create"
                 exact
                 render={props => <BoardCreate {...props} />}
+            />
+            <Route
+                path="/challenge/detail"
+                exact
+                render={props => <ChallengeDetail {...props} />}
             />
             <Redirect to="/" />
         </Switch>
