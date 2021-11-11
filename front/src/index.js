@@ -14,6 +14,9 @@ import Board from "views/Board.js";
 import BoardUpdate from "views/BoardUpdate";
 import BoardDetail from "./views/BoardDetail";
 
+import ChatRoom from "./views/chat/ChatRoom";
+import CreateRoom from "./views/chat/CreateRoom";
+
 ReactDOM.render(
     <BrowserRouter>
         <Switch>
@@ -71,6 +74,15 @@ ReactDOM.render(
                 path="/board/detail"
                 exact
                 render={props => <BoardDetail {...props} />}
+            />
+            <Route
+                path="/room/create"
+                exact
+                render={props => <CreateRoom {...props} />}
+            />
+            <Route
+                path="/room/:id/user/:uuid"
+                render={props => <ChatRoom {...props} />}
             />
             <Redirect to="/" />
         </Switch>

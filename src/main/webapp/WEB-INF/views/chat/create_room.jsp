@@ -37,10 +37,10 @@
                         </h4>
                     </div>
                     <div class="mb-3">
-                        <label for="id">To create a new room enter your room number,
+                        <label for="max_num">To create a new room enter your room number,
                             or press 'Random #' button to get a random one</label>
-                        <input class="form-control" name="id" id="id" type="number" placeholder="Min: 0, max: 99"
-                               min="0" max="99" value="${id}" required>
+                        <input class="form-control" name="max_num" id="max_num" type="number" placeholder="Min: 0, max: 99"
+                               min="0" max="99" value="${max_num}" required>
                     </div>
                     <div>
                         <a href="/room/random">

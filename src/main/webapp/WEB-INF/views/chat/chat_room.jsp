@@ -5,8 +5,10 @@
     <title>Chat Room</title>
     <!-- Latest minified Bootstrap & JQuery-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js" type="text/javascript"></script>
+    <script src="/webjars/sockjs-client/1.5.1/sockjs.js" type="text/javascript"></script>
     <!-- Custom styles for this template -->
     <style>
         .btn.active {
@@ -27,7 +29,7 @@
             display: none;
         }
     </style>
-    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+<%--    <link rel="stylesheet" type="text/css" href="/css/main.css"/>--%>
 </head>
 <body>
 <main role="main" class="container-fluid">
@@ -79,8 +81,13 @@
         </div>
     </div>
 </main>
+<%--<script src="/webjars/sockjs-client/1.0.2/sockjs.min.js">--%>
+<%--<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>--%>
+<%--<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@5.0.0/bundles/stomp.umd.min.js"></script>--%>
+<%--<script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>--%>
+
+
 
 <script src="/js/webrtc_client.js"></script>
-
 </body>
 </html>
