@@ -176,20 +176,12 @@ function CreateRoom(){
                                                             )
                                                         })
                                                 }
-                                                {/*<Button id="create_button" onClick={createRoom} className="btn-neutral btn-icon">*/}
-                                                {/*    Create Selected Room*/}
-                                                {/*</Button>*/}
                                             </>
                                         ) : (
                                             <>
-                                                return(
-                                                    <div className="mb-3">
-                                                        No Room
-                                                        {/*<Button id="create_button" onClick={createRoom} className="btn-neutral btn-icon">*/}
-                                                        {/*Create Selected Room*/}
-                                                        {/*</Button>*/}
-                                                    </div>
-                                                )
+                                                <div className="text-center">
+                                                    No Room
+                                                </div>
                                             </>
                                             )}
                                     </tbody>
@@ -201,48 +193,6 @@ function CreateRoom(){
                         </div>
                     </Row>
                     <input type="hidden" id="uuid" name="uuid" value="${uuid}"/>
-                    {/*<div className="row justify-content-md-center">*/}
-                    {/*    <div className="input-group col-md-6 mb-3 justify-content-md-center">*/}
-                    {/*        {(roomList!=="") ? (*/}
-                    {/*            <div className="mb-3">*/}
-                    {/*                <label className="row text-white">Click the room you wanna enter</label><br/>*/}
-                    {/*                <h4>*/}
-                    {/*                    {*/}
-                    {/*                        roomList.map((room)=>{*/}
-                    {/*                            let uuid=localStorage.getItem("uuid");*/}
-                    {/*                            return(*/}
-                    {/*                                <div>*/}
-                    {/*                                    <Button type="button" name="action" text={room.id} value={room.id} id={room.id}*/}
-                    {/*                                            className="btn-neutral btn-icon" color="default"*/}
-                    {/*                                            onClick={()=>{addUuidToButtonLink(room)}}>*/}
-                    {/*                                        id: {room.id}*/}
-                    {/*                                    </Button>*/}
-                    {/*                                </div>*/}
-                    {/*                            )*/}
-                    {/*                        })*/}
-                    {/*                    }*/}
-                    {/*                </h4>*/}
-                    {/*                <Button id="create_button" onClick={createRoom} className="btn-neutral btn-icon">*/}
-                    {/*                    Create Selected Room*/}
-                    {/*                </Button>*/}
-                    {/*            </div>) : (*/}
-                    {/*            <div className="mb-3">*/}
-                    {/*                No Room*/}
-                    {/*                <Button id="create_button" onClick={createRoom} className="btn-neutral btn-icon">*/}
-                    {/*                    Create Selected Room*/}
-                    {/*                </Button>*/}
-                    {/*            </div>*/}
-                    {/*        )}*/}
-
-                    {/*        <div className="">*/}
-                    {/*            <a href="/room/random">*/}
-                    {/*                <button className="btn btn-outline-success" type="button">Random #</button>*/}
-                    {/*            </a>*/}
-
-
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
 
                 </Container>
                 </section>
