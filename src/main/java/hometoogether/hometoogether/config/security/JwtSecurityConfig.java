@@ -52,9 +52,9 @@
 //
 //
 //
-////        http.httpBasic()
-////                .and()
-////                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-////                        UsernamePasswordAuthenticationFilter.class);
+//        http.httpBasic()
+//                .and()
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+//                        UsernamePasswordAuthenticationFilter.class);
 //    }
 //}
