@@ -34,7 +34,6 @@ dependencies {
 //	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 	implementation 'javax.servlet:jstl'
 
-<<<<<<< HEAD
 	implementation 'commons-io:commons-io:2.6'
 	compileOnly "com.fasterxml.jackson.core:jackson-databind:2.9.4"
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
