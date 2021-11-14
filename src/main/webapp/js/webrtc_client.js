@@ -1,6 +1,12 @@
 'use strict';
+
 // create and run Web Socket connection
-const socket = new WebSocket("ws://" + window.location.host + "/signal");
+// Domain adress can be changed because of using ngrok
+const conn = new SockJS("http://localhost:8080/ws-stomp");
+// const conn = new SockJS("https://047a-58-122-7-167.ngrok.io/ws-stomp");
+// const conn = new SockJS("http://047a-58-122-7-167.ngrok.io/ws-stomp");
+const stompconn = Stomp.over(conn);
+
 
 // UI elements
 const videoButtonOff = document.querySelector('#video_off');
@@ -60,76 +66,98 @@ $(function(){
  */
 function start() {
     // add an event listener for a message being received
-    socket.onmessage = function(msg) {
-        let message = JSON.parse(msg.data);
-        switch (message.type) {
-            case "text":
-                log('Text message from ' + message.from + ' received: ' + message.data);
-                break;
+    stompconn.connect({}, function(){
+        // socket.onmessage = function(msg) {
+        stompconn.subscribe("/sub/video-signal/"+localUserName, function(msg){
+            // stompconn.onmessage=function(msg){
+                let message = JSON.parse(msg.body);
+                switch (message.type) {
+                    case "text":
+                        log('Text message from ' + message.from + ' received: ' + message.data);
+                        break;
 
-            case "offer":
-                log('Signal OFFER received');
-                handleOfferMessage(message);
-                break;
+                    case "offer":
+                        log('Signal OFFER received');
+                        handleOfferMessage(message);
+                        break;
 
-            /**
-             * 그 후 다른 피어가 오퍼를 수신하면 이를 원격 설명으로 설정해야합니다 .
-             * 또한 응답을 생성해야 하며 이는 시작 피어로 전송됩니다.
-             */
-            case "answer":
-                log('Signal ANSWER received');
-                handleAnswerMessage(message);
-                break;
+                    /**
+                     * 그 후 다른 피어가 오퍼를 수신하면 이를 원격 설명으로 설정해야합니다 .
+                     * 또한 응답을 생성해야 하며 이는 시작 피어로 전송됩니다.
+                     */
+                    case "answer":
+                        log('Signal ANSWER received');
+                        handleAnswerMessage(message);
+                        break;
 
-            /**
-             * WebRTC는 ICE (Interactive Connection Establishment) 프로토콜을
-             * 사용하여 피어를 검색하고 연결을 설정합니다.
-             *
-             * peerConnection 에 로컬 설명을 설정하면 icecandidate 이벤트가 트리거됩니다 .
-             * 이 이벤트는 원격 피어가 원격 후보 세트에 후보를 추가 할 수 있도록 후보를 원격 피어로 전송해야합니다.
-             * 이를 위해 onicecandidate 이벤트에 대한 리스너를 만듭니다 .
-             */
-            case "ice":
-                log('Signal ICE Candidate received');
-                handleNewICECandidateMessage(message);
-                break;
+                    /**
+                     * WebRTC는 ICE (Interactive Connection Establishment) 프로토콜을
+                     * 사용하여 피어를 검색하고 연결을 설정합니다.
+                     *
+                     * peerConnection 에 로컬 설명을 설정하면 icecandidate 이벤트가 트리거됩니다 .
+                     * 이 이벤트는 원격 피어가 원격 후보 세트에 후보를 추가 할 수 있도록 후보를 원격 피어로 전송해야합니다.
+                     * 이를 위해 onicecandidate 이벤트에 대한 리스너를 만듭니다 .
+                     */
+                    case "ice":
+                        log('Signal ICE Candidate received');
+                        handleNewICECandidateMessage(message);
+                        break;
 
-            /**어 에게 보냅니다
-             * 서버 측 기술로 send 메소
-             * 먼저 오퍼를 생성하고 이를 peerConnection 의 로컬 설명으로 설정합니다 .
-             * 그런 다음 제안 을 다른 피드의 로직을 자유롭게 구현할 수 있습니다.
-             */
-            case "join":
-                log('Client is starting to ' + (message.data === "true)" ? 'negotiate' : 'wait for a peer'));
-                handlePeerConnection(message);
-                break;
+                    /**어 에게 보냅니다
+                     * 서버 측 기술로 send 메소
+                     * 먼저 오퍼를 생성하고 이를 peerConnection 의 로컬 설명으로 설정합니다 .
+                     * 그런 다음 제안 을 다른 피드의 로직을 자유롭게 구현할 수 있습니다.
+                     */
+                    case "join":
+                        log('Client is starting to ' + (message.data === "true)" ? 'negotiate' : 'wait for a peer'));
+                        handlePeerConnection(message);
+                        break;
 
-            default:
-                handleErrorMessage('Wrong type message received from server');
+                    default:
+                        handleErrorMessage('Wrong type message received from server');
+                }
+            // }
         }
-    };
+        )
+        sendToServer({
+            from: localUserName, // uuid를 의미
+            type: 'join',
+            data: localRoom // room number를 의미
+        })
+    })
 
     /**
      * onopen을 통해 소켓이 연결된 경우에만 서버로 메세지 보낸다.
      */
     // add an event listener to get to know when a connection is open
-    socket.onopen = function() {
-        log('WebSocket connection opened to Room: #' + localRoom);
-        // send a message to the server to join selected room with Web Socket
-        sendToServer({
-            from: localUserName, // uuid를 의미
-            type: 'join',
-            data: localRoom // room number를 의미
-        });
-    };
+    // socket.onopen = function() {
+    //     log('WebSocket connection opened to Room: #' + localRoom);
+    //     // send a message to the server to join selected room with Web Socket
+    //     sendToServer({
+    //         from: localUserName, // uuid를 의미
+    //         type: 'join',
+    //         data: localRoom // room number를 의미
+    //     });
+    // };
+    // stompconn.onopen = function() {
+    //     log('WebSocket connection opened to Room: #' + localRoom);
+    //     // send a message to the server to join selected room with Web Socket
+    //     sendToServer({
+    //         from: localUserName, // uuid를 의미
+    //         type: 'join',
+    //         data: localRoom // room number를 의미
+    //     });
+    // };
 
     // a listener for the socket being closed event
-    socket.onclose = function(message) {
+    // socket.onclose = function(message) {
+    stompconn.onclose=function(message) {
         log('Socket has been closed');
     };
 
     // an event listener to handle socket errors
-    socket.onerror = function(message) {
+    // socket.onerror = function(message) {
+    stompconn.onerror = function(message) {
         handleErrorMessage("Error: " + message);
     };
 }
@@ -171,9 +199,13 @@ function stop() {
         myPeerConnection.close();
         myPeerConnection = null;
 
-        log('Close the socket');
-        if (socket != null) {
-            socket.close();
+        // log('Close the socket');
+        // if (socket != null) {
+        //     socket.close();
+        // }
+        log("Close the socket");
+        if (conn != null) {
+            conn.close();
         }
     }
 }
@@ -220,22 +252,32 @@ function handleErrorMessage(message) {
 // use JSON format to send WebSocket message
 function sendToServer(msg) {
     let msgJSON = JSON.stringify(msg);
-    socket.send(msgJSON);
+    // socket.send(msgJSON);
+    stompconn.send("/pub/video-signal", {}, msgJSON);
 }
 
 // initialize media stream
-function getMedia(constraints) {
+async function getMedia(constraints) {
     if (localStream) {
         localStream.getTracks().forEach(track => {
             track.stop();
         });
     }
-    navigator.mediaDevices.getUserMedia(constraints)
-        .then(getLocalMediaStream).catch(handleGetUserMediaError);
+    await navigator.mediaDevices.getUserMedia(constraints)
+        .then(getLocalMediaStream).catch((error)=>
+            // handleGetUserMediaError
+            {
+                console.log(error);
+            }
+        );
 }
 
 // create peer connection, get media, start negotiating when second participant appears
 function handlePeerConnection(message) {
+    console.log("message: ", message)
+    if (remoteVideo) {
+        remoteVideo.srcObject = null;
+    }
     createPeerConnection();
     getMedia(mediaConstraints);
     if (message.data === "true") {
@@ -248,6 +290,7 @@ function handlePeerConnection(message) {
  * 로컬 컴퓨터와 원격 피어 간의 WebRTC 연결을 나타낸다. 두 피어 간의 효율적인 데이터 스트리밍을 처리하는데 사용된다.
  */
 function createPeerConnection() {
+    console.log("createPeerConnection enter!");
     myPeerConnection = new RTCPeerConnection(peerConnectionConfig);
 
     // event handlers for the ICE negotiation process
@@ -275,6 +318,7 @@ function getLocalMediaStream(mediaStream) {
 // handle get media error
 function handleGetUserMediaError(error) {
     log('navigator.getUserMedia error: ', error);
+    log("error name: ", error.name);
     switch(error.name) {
         case "NotFoundError":
             alert("Unable to open your call because no camera and/or microphone were found.");
@@ -320,18 +364,18 @@ function handleNegotiationNeededEvent() {
     myPeerConnection.createOffer().then(function(offer) {
         return myPeerConnection.setLocalDescription(offer);
     })
-        .then(function() {
-            sendToServer({
-                from: localUserName,
-                type: 'offer',
-                sdp: myPeerConnection.localDescription
-            });
-            log('Negotiation Needed Event: SDP offer sent');
-        })
-        .catch(function(reason) {
-            // an error occurred, so handle the failure to connect
-            handleErrorMessage('failure to connect error: ', reason);
+    .then(function() {
+        sendToServer({
+            from: localUserName,
+            type: 'offer',
+            sdp: myPeerConnection.localDescription
         });
+        log('Negotiation Needed Event: SDP offer sent');
+    })
+    .catch(function(reason) {
+        // an error occurred, so handle the failure to connect
+        handleErrorMessage('failure to connect error: ', reason);
+    });
 }
 
 /**
@@ -350,22 +394,23 @@ function handleOfferMessage(message) {
     //TODO test this
     if (desc != null && message.sdp != null) {
         log('RTC Signalling state: ' + myPeerConnection.signalingState);
-        myPeerConnection.setRemoteDescription(desc).then(function () {
-            log("Set up local media stream");
-            return navigator.mediaDevices.getUserMedia(mediaConstraints);
-        })
-            .then(function (stream) {
-                log("-- Local video stream obtained");
-                localStream = stream;
-                try {
-                    localVideo.srcObject = localStream;
-                } catch (error) {
-                    localVideo.src = window.URL.createObjectURL(stream);
-                }
-
-                log("-- Adding stream to the RTCPeerConnection");
-                localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
-            })
+        myPeerConnection.setRemoteDescription(desc)
+            // .then(function () {
+            //     log("Set up local media stream");
+            //     return navigator.mediaDevices.getUserMedia(mediaConstraints);
+            // })
+            // .then(function (stream) {
+            //     log("-- Local video stream obtained");
+            //     localStream = stream;
+            //     try {
+            //         localVideo.srcObject = localStream;
+            //     } catch (error) {
+            //         localVideo.src = window.URL.createObjectURL(stream);
+            //     }
+            //
+            //     log("-- Adding stream to the RTCPeerConnection");
+            //     localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
+            // })
             .then(function () {
                 /**
                  * Client2는 응답을 인자로 전달하는 성공 콜백 함수 createAnswer()를 호출
