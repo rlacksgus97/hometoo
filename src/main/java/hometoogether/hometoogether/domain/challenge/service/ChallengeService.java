@@ -12,7 +12,10 @@ import hometoogether.hometoogether.domain.user.domain.User;
 import hometoogether.hometoogether.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -121,17 +124,17 @@ public class ChallengeService {
         return challengeRepository.save(challenge).getId();
     }
 
+    @Transactional
     public ChallengeDetailResponseDto getChallenge(Long challengeId) {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + challengeId));
-//        Path path = Paths.get(videoPath + challenge.getChallengePose().getUrl());
-//        Resource resource = new InputStreamResource(Files.newInputStream(path));
         return new ChallengeDetailResponseDto(challenge);
     }
 
+    @Transactional
     public List<ChallengeResponseDto> getChallengeList() {
-        Sort sort = Sort.by(Sort.Direction.DESC, "create_date");
-        List<Challenge> challenges = challengeRepository.findAll(sort);
+//        Sort sort = Sort.by(Sort.Direction.DESC, "create_date");
+        List<Challenge> challenges = challengeRepository.findAll();
         return challenges.stream().map(ChallengeResponseDto::new).collect(Collectors.toList());
     }
 

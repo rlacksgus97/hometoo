@@ -32,9 +32,6 @@ public class TrialPose {
         this.keypointsList.add(keypoints);
     }
 
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trial_pose")
-//    private List<PoseInfo> poseInfoList;
-
     @ManyToOne
     private User user;
 

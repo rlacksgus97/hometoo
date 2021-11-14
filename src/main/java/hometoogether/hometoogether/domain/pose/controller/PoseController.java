@@ -1,25 +1,52 @@
 package hometoogether.hometoogether.domain.pose.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import hometoogether.hometoogether.domain.challenge.domain.Challenge;
+import hometoogether.hometoogether.domain.challenge.dto.ChallengeRequestDto;
+import hometoogether.hometoogether.domain.challenge.repository.ChallengeRepository;
+import hometoogether.hometoogether.domain.challenge.service.ChallengeService;
+import hometoogether.hometoogether.domain.pose.domain.Keypoints;
 import hometoogether.hometoogether.domain.pose.service.PoseService;
+import hometoogether.hometoogether.domain.trial.service.TrialService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
 public class PoseController {
 
+    private final ChallengeService challengeService;
+    private final TrialService trialService;
     private final PoseService poseService;
+    private final ChallengeRepository challengeRepository;
 
-//    @GetMapping("/posetest")
-//    public void test() throws ParseException {
-//        poseService.test();
-//        return;
-//    }
+    @PostMapping("/demo/photo")
+    public Long test(ChallengeRequestDto param) throws IOException, ParseException {
+        return challengeService.saveChallengePhoto(param);
+    }
+
+    @GetMapping("/demo/similarity")
+    @Transactional
+    public double similarity(){
+        Challenge challenge1 = challengeRepository.findById(5L)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + 3));
+
+        Challenge challenge2 = challengeRepository.findById(6L)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + 4));
+
+        List<Keypoints> keypointsList1 = challenge1.getChallengePose().getKeypointsList();
+        List<Keypoints> keypointsList2 = challenge2.getChallengePose().getKeypointsList();
+
+        double similarity = poseService.DTWDistance(keypointsList1, keypointsList2);
+
+        return similarity;
+    }
 
 //    @GetMapping("/pose")
 //    public String pose() throws IOException {
@@ -33,10 +60,5 @@ public class PoseController {
 //        return result;
 //    }
 
-//    @GetMapping("/similarity")
-//    public double similarity(){
-//        double result = 0;
-//        result = poseService.estimateSimilarity();
-//        return result;
-//    }
+
 }

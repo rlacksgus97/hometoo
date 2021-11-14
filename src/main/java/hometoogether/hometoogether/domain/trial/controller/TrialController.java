@@ -16,27 +16,27 @@ public class TrialController {
 
     private final TrialService trialService;
 
-    @PostMapping("/challenges/{challengeId}/trials/")
-    public Long save(@PathVariable("id") Long challengeId, TrialRequestDto param) throws IOException, ParseException {
+    @PostMapping("/challenges/{challengeId}/trials/test")
+    public Long save(@PathVariable("challengeId") Long challengeId, TrialRequestDto param) throws IOException, ParseException {
         return trialService.saveTrial(challengeId, param);
     }
 
-//    @PostMapping("/trials/{trialId}")
-//    public double estimate(@PathVariable("trialId") Long trialId){
-//        return trialService.runSimilarity(trialId);
-//    }
+    @GetMapping("/trials/estimate")
+    public double estimate(){
+        return trialService.runSimilarity();
+    }
 
-    @GetMapping("/trials/{id}")
+    @GetMapping("/challenges/{challengeId}/trials/{id}")
     public TrialResponseDto getDetail(@PathVariable("id") Long trialId){
         return trialService.getTrial(trialId);
     }
 
-    @GetMapping("/trials")
+    @GetMapping("/challenges/{challengeId}/trials")
     public List<TrialResponseDto> getList(){
         return trialService.getTrialList();
     }
 
-    @DeleteMapping("/trials/{id}")
+    @DeleteMapping("/challenges/{challengeId}/trials/{id}")
     public Long delete(@PathVariable("id") Long trialId){
         return trialService.deleteTrial(trialId);
     }

@@ -2,6 +2,7 @@ package hometoogether.hometoogether.domain.trial.service;
 
 import hometoogether.hometoogether.domain.challenge.domain.Challenge;
 import hometoogether.hometoogether.domain.challenge.repository.ChallengeRepository;
+import hometoogether.hometoogether.domain.pose.domain.Keypoints;
 import hometoogether.hometoogether.domain.pose.domain.TrialPose;
 import hometoogether.hometoogether.domain.pose.repository.TrialPoseRepository;
 import hometoogether.hometoogether.domain.pose.service.PoseService;
@@ -20,11 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -77,30 +77,27 @@ public class TrialService {
 
         trial.setChallenge(challenge);
 
-        return challengeRepository.save(challenge).getId();
+        return trialRepository.save(trial).getId();
     }
 
     @Transactional
-    public double runSimilarity(Long trialId){
+    public double runSimilarity(){
 //        Trial trial = trialRepository.findById(trialId)
 //                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + trialId));
 //
 //        Challenge challenge = trial.getChallenge();
-//
-//        List<String> keypoints_String1 = challenge.getChallengePose().getKeypoints();
-//        List<List<Double>> keypointsList1 = new ArrayList<>();
-//        for(String kp : keypoints_String1){
-//            Stream.of(kp).mapToDouble(Double::parseDouble).boxed().toArray(Double[]::new);
-////            Stream.of(arr).mapToInt(Integer::parseInt).boxed().toArray(Integer[]::new);
-//        };
-//        List<String> keypoints_String2 = trial.getTrialPose().getKeypoints();
-//        List<List<Double>> keypointsList2 = new ArrayList<>();
-//        for(String kp : keypoints_String2){
-//
-//        };
-////        poseService.estimateSimilarity(keypointsList1, keypointsList2);
-//
-        return 1;
+
+        Challenge challenge1 = challengeRepository.findById(1L)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + 0));
+
+        Challenge challenge2 = challengeRepository.findById(2L)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + 1));
+
+        List<Keypoints> keypointsList1 = challenge1.getChallengePose().getKeypointsList();
+        List<Keypoints> keypointsList2 = challenge2.getChallengePose().getKeypointsList();
+        double similarity = poseService.DTWDistance(keypointsList1, keypointsList2);
+
+        return similarity;
     }
 
     public TrialResponseDto getTrial(Long trialId) {

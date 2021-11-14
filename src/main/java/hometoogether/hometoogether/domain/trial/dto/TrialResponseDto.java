@@ -1,14 +1,15 @@
 package hometoogether.hometoogether.domain.trial.dto;
 
-import hometoogether.hometoogether.domain.pose.domain.TrialPose;
 import hometoogether.hometoogether.domain.trial.domain.Trial;
 import lombok.Getter;
 
 @Getter
 public class TrialResponseDto {
-    private TrialPose trialPose;
+    private String url;
+    private String username;
 
     public TrialResponseDto(Trial entity) {
-        this.trialPose = entity.getTrialPose();
+        this.url = entity.getTrialPose().getUrl();
+        this.username = entity.getTrialPose().getUser().getUsername();
     }
 }

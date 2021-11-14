@@ -26,7 +26,7 @@ public class PoseService {
     private final ChallengePoseRepository challengePoseRepository;
     private final TrialPoseRepository trialPoseRepository;
 
-//    public String estimatePosetest(String url) throws IOException {
+//    public String test(String url) throws IOException {
 //
 //        HttpHeaders headers = new HttpHeaders();
 //        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -141,7 +141,7 @@ public class PoseService {
             System.out.println("I'm challenge\n");
             ChallengePose challengePose = challengePoseRepository.findById(pose_id)
                     .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + pose_id));
-            challengePose.update(job_id);
+            challengePose.update_Job_id(job_id);
         }
         else if (pose_type == "trial"){
             System.out.println("I'm trial\n");
@@ -156,13 +156,11 @@ public class PoseService {
             if (pose_type == "challenge")
             {
                 ChallengePose challengePose = challengePoseRepository.getById(pose_id);
-                challengePose.setKeypointsList(keypoints);
-//                challengePoseRepository.save(challengePose);
+                challengePose.update_KeypointsList(keypoints);
             }
             else if (pose_type == "trial"){
                 TrialPose trialPose = trialPoseRepository.getById(pose_id);
                 trialPose.setKeypointsList(keypoints);
-//                trialPoseRepository.save(trialPose);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -253,7 +251,7 @@ public class PoseService {
         return cosineSimilarity;
     }
 
-    private ArrayList<ArrayList<Double>> vectorize(List<Double> pose) {
+    public ArrayList<ArrayList<Double>> vectorize(List<Double> pose) {
 
         ArrayList<ArrayList<Double>> vectorInfo = new ArrayList<ArrayList<Double>>();
         ArrayList<Double> vectorposeXY = new ArrayList<>();
@@ -295,7 +293,7 @@ public class PoseService {
         return vectorInfo;
     }
 
-    private ArrayList<Double> sclaeAndtranslate(ArrayList<Double> vectorPoseXY, ArrayList<Double> vectorMinMax) {
+    public ArrayList<Double> sclaeAndtranslate(ArrayList<Double> vectorPoseXY, ArrayList<Double> vectorMinMax) {
 
         for(int i = 0; i< vectorPoseXY.size(); i++){
             double item = vectorPoseXY.get(i);
@@ -312,7 +310,7 @@ public class PoseService {
         return vectorPoseXY;
     }
 
-    private ArrayList<Double> L2Normalize(ArrayList<Double> vectorPoseXY) {
+    public ArrayList<Double> L2Normalize(ArrayList<Double> vectorPoseXY) {
         double absVectorPoseXY = 0;
         for (Double pos: vectorPoseXY) {
             absVectorPoseXY += Math.pow(pos, 2);
@@ -324,7 +322,7 @@ public class PoseService {
         return vectorPoseXY;
     }
 
-    private double cosineSimilarity(ArrayList<Double> vectorPose1XY, ArrayList<Double> vectorPose2XY) {
+    public double cosineSimilarity(ArrayList<Double> vectorPose1XY, ArrayList<Double> vectorPose2XY) {
         double v1DotV2 = 0;
         double absV1 = 0;
         double absV2 = 0;
@@ -345,13 +343,13 @@ public class PoseService {
         return v1DotV2 / (absV1 * absV2);
     }
 
-    private double cosineDistanceMatching(ArrayList<Double> vectorPose1XY, ArrayList<Double> vectorPose2XY) {
+    public double cosineDistanceMatching(ArrayList<Double> vectorPose1XY, ArrayList<Double> vectorPose2XY) {
         double cosineSimilarity = cosineSimilarity(vectorPose1XY, vectorPose2XY);
         System.out.println("cosineSimilarity = " + cosineSimilarity);
         return Math.sqrt(2*(1-cosineSimilarity));
     }
 
-    private double weightedDistanceMatching(ArrayList<Double> vectorPose1XY, ArrayList<Double> vectorPose2XY, ArrayList<Double> vectorPose2Scores) {
+    public double weightedDistanceMatching(ArrayList<Double> vectorPose1XY, ArrayList<Double> vectorPose2XY, ArrayList<Double> vectorPose2Scores) {
 
         double summation1 = 1 / vectorPose2Scores.get(vectorPose2Scores.size()-1);
         double summation2 = 0;
@@ -364,15 +362,15 @@ public class PoseService {
         return summation1 * summation2;
     }
 
-    private double DTWDistance(double[] SimilarityListA, double[] SimilarityListB){
+    public double DTWDistance(List<Keypoints> keypointsListA, List<Keypoints> keypointsListB){
 
-        int lengthA = SimilarityListA.length;
-        int lengthB = SimilarityListB.length;
+        int lengthA = keypointsListA.size();
+        int lengthB = keypointsListB.size();
         double[][] DTW = new double[lengthA+1][lengthB+1];
 
         for (int i = 0; i < lengthA+1; i++){
             for (int j = 0; j < lengthB+1; j++) {
-                DTW[i][j] = 10;
+                DTW[i][j] = 10000;
             }
         }
         DTW[lengthA-1][lengthB-1] = 0;
@@ -380,8 +378,12 @@ public class PoseService {
         double cost = 0;
         for (int i = 1; i < lengthA+1; i++){
             for (int j = 1; j < lengthB+1; j++) {
-                cost = Math.abs(SimilarityListA[i] - SimilarityListB[j]);
-                DTW[i][j] = cost + Math.min(Math.min(DTW[i-1][j], DTW[i][j-1]), DTW[i-1][j-1]);
+                ArrayList<Double> kpListA = new ArrayList<Double>();
+                kpListA.addAll(keypointsListA.get(i-1).getKeypoints());
+                ArrayList<Double> kpListB = new ArrayList<Double>();
+                kpListB.addAll(keypointsListB.get(j-1).getKeypoints());
+                cost = cosineSimilarity(kpListA , kpListB);
+                DTW[i][j] = cost + Math.max(Math.max(DTW[i-1][j], DTW[i][j-1]), DTW[i-1][j-1]);
             }
         }
 

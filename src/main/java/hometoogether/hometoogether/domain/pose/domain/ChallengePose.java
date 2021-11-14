@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -33,12 +32,6 @@ public class ChallengePose {
         this.keypointsList.add(keypoints);
     }
 
-//    @Column(columnDefinition = "TEXT")
-//    private String pose_info;
-
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "challenge_pose")
-//    private List<PoseInfo> poseInfoList;
-
     @ManyToOne
     private User user;
 
@@ -53,7 +46,11 @@ public class ChallengePose {
         this.challenge = challenge;
     }
 
-    public void update(String job_id){
+    public void update_Job_id(String job_id){
         this.job_id = job_id;
+    }
+
+    public void update_KeypointsList(List<Keypoints> keypointsList){
+        this.keypointsList = keypointsList;
     }
 }
