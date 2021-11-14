@@ -48,6 +48,8 @@ function ChatRoom(){
         video: true
     };
 
+    const rTime=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+    31, 32, 33, 34, 35, 36, 37 ,38 ,39 ,40 ,41 ,42 ,43 ,44 ,45 ,46 ,47 ,48 ,49 ,50];
     const [training, setTraining]=useState(
         [
             {
@@ -366,53 +368,45 @@ function ChatRoom(){
         myPeerConnection.addIceCandidate(candidate).catch(handleErrorMessage);
     }
 
-    // function workoutStart(){
-    //     axios.get("/start")
-    //     .then((res)=>{
-    //         console.log("time: " + res.data);
-    //     })
-    //     .catch((error)=>{
-    //         console.log(error);
-    //     })
-    // }
-
     let count=0;
 
     function workoutStart(){
-        console.log("Enter workoutStart: " + new Date());
-
-        let i;
-        // for(i=1; i<6; i++){
-        //     (function(x){
-        //       setTimeout(function(){
-        //         setAlarmText("x=" + x + "/time=" + new Date())
-        //       }, 1000*x);
-        //     })(i);
-        // }
-
-        console.log(training);
         let totalWorkoutTime=0;
 
-        for(i=1;i<=training.length*1*2;i++){
-            totalWorkoutTime+=training[Math.floor((i-1)/2)].routineSec;
-            (function(x){
-                setTimeout(function(){
-                    if(x%2==1){
-                        setAlarmText("User A" + " 차례입니다.\n"
-                            + training[Math.floor((x-1)/2)].routineSec + "초 동안 "
-                            + training[Math.floor((x-1)/2)].routineName + "을 하세요.\n" + new Date());
-                    }
-                    else{
-                        setAlarmText("User B" + " 차례입니다.\n"
-                            + training[Math.floor((x-1)/2)].routineSec + "초 동안 "
-                            + training[Math.floor((x-1)/2)].routineName + "을 하세요.\n" + new Date());
-                    }
-                }, 5*1000*x);
-            })(i);
+        setTimeout(()=>{
+            setAlarmText("User A" + " 차례입니다.\n"
+                + training[0].routineSec + "초 동안 "
+                + training[0].routineName + "을 하세요.\n" + new Date());
+        }, 5*1000)
+        totalWorkoutTime+=training[0].routineSec;
+
+        for(let a=0;a<training.length;a++){
+            for(let b=0;b<training[a].routineSetCnt*2;b++){
+                if(a!=0 || b!=0){
+                    (function(x, y, time){
+                        setTimeout(()=>{
+                            if(y%2==0){
+                                setAlarmText("User A" + " 차례입니다.\n"
+                                    + training[x].routineSec + "초 동안 "
+                                    + training[x].routineName + "을 하세요.\n" + new Date());
+                            }
+                            else{
+                                setAlarmText("User B" + " 차례입니다.\n"
+                                    + training[x].routineSec + "초 동안 "
+                                    + training[x].routineName + "을 하세요.\n" + new Date());
+                            }
+                        }, (time+5)*1000);
+                    })(a, b, totalWorkoutTime)
+
+                    if(b==0) totalWorkoutTime+=training[a-1].routineSec;
+                    else totalWorkoutTime += training[a].routineSec;
+                }
+            }
         }
+
         setTimeout(()=>{
             setAlarmText("운동이 모두 종료되었습니다.");
-        }, (5+totalWorkoutTime)*1000);
+        }, (totalWorkoutTime+5)*1000);
     }
 
     useEffect(()=>{
@@ -446,12 +440,6 @@ function ChatRoom(){
             <h1>Simple WebRTC Signalling Server</h1>
             <input type="hidden" id="id" name="id" value={id}/>
             <div class="col-lg-12 mb-3">
-                {/*<div class="mb-3" text={"'User: '" + localUserName + "' @ Room #'" + id}>*/}
-                {/*    User: {localUserName} & Room #: {id}*/}
-                {/*</div>*/}
-                {/*<div>*/}
-                {/*    Alarm: {alarmText}*/}
-                {/*</div>*/}
                 <Navbar fixed="top" color="light" light expand="xs" className="border-bottom border-gray bg-white" style={{ height: 80 }}>
                 <Container>
                     <Row noGutters className="position-relative w-100 align-items-center">
@@ -484,30 +472,6 @@ function ChatRoom(){
                     </Row>
                 </Container>
                 </Navbar>
-
-                {/*<div class="flex justify-between">*/}
-                {/*    <button id="video_button" onClick={videoButtonOff}>*/}
-                {/*        {localVideoState ? (*/}
-                {/*            "Video On"*/}
-                {/*        ) : (*/}
-                {/*            "Video Off"*/}
-                {/*        )}*/}
-                {/*    </button>*/}
-                {/*    <button id="audio_button" onClick={audioButtonOff}>*/}
-                {/*        {localAudioState ? (*/}
-                {/*            "Audio On"*/}
-                {/*        ) : (*/}
-                {/*            "Audio Off"*/}
-                {/*        )}*/}
-                {/*    </button>*/}
-                {/*</div>*/}
-
-                {/*<button type="button" onClick={exit_room}>*/}
-                {/*    Exit Room*/}
-                {/*</button>*/}
-                {/* <button onClick={workoutStart}>
-                    Start!
-                </button> */}
 
                 <div className="row justify-content-around mb-3">
                     <div className="col-lg-6 mb-3 mx-auto">
