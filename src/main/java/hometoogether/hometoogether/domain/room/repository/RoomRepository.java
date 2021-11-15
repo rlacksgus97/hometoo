@@ -1,8 +1,8 @@
-package hometoogether.hometoogether.domain.room.repository;
-
-import hometoogether.hometoogether.domain.room.domain.Room;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface RoomRepository extends JpaRepository<Room, Long> {
-
-}
+//package hometoogether.hometoogether.domain.room.repository;
+//
+//import hometoogether.hometoogether.domain.room.domain.Room;
+//import org.springframework.data.jpa.repository.JpaRepository;
+//
+//public interface RoomRepository extends JpaRepository<Room, Long> {
+//
+//}

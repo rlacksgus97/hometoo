@@ -1,4 +1,4 @@
-//package hometoogether.hometoogether.domain.user.domain;
+package hometoogether.hometoogether.domain.user.domain;//package hometoogether.hometoogether.domain.user.domain;
 //
 //import lombok.*;
 //import org.springframework.security.core.GrantedAuthority;
@@ -70,3 +70,32 @@
 //        return true;
 //    }
 //}
+
+import lombok.*;
+import javax.persistence.*;
+
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+@Builder
+@Setter
+@AllArgsConstructor
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long userId;
+
+    @Column(name = "routine_id")
+    private Long routineId;
+
+    @Column(name = "forum_id")
+    private Long forumId;
+
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+}
