@@ -27,7 +27,7 @@ public class UserController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) throws Exception {
         return ResponseEntity.ok(new JwtAuthenticationResponse(userService.signIn(loginRequest)));
 //        try {

@@ -1,20 +1,3 @@
-/*!
-
-=========================================================
-* Argon Design System React - v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-design-system-react
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-design-system-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 
 // reactstrap components
@@ -43,7 +26,50 @@ import "assets/vendor/nucleo/css/nucleo.css";
 import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss";
 
+// 유저기능
+import UserService from "../service/UserService";
+
 class Login extends React.Component {
+  state = {};
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email : '',
+      password: ''
+    };
+
+    this.changeEmailHandler = this.changeEmailHandler.bind(this);
+    this.changePasswordHandler = this.changePasswordHandler.bind(this);
+    this.loginUser = this.loginUser.bind(this);
+  }
+
+  changeEmailHandler = (event) => {
+    this.setState({email: event.target.value});
+  }
+
+  changePasswordHandler = (event) => {
+    this.setState({password: event.target.value});
+  }
+
+  loginUser = (event) => {
+    event.preventDefault();
+    let user = {
+      email: this.state.email,
+      password: this.state.password
+    };
+
+    console.log("user => " + JSON.stringify(user));
+    UserService.signIn(user).then(res => {
+      // 로그인 정보 저장
+      console.log(res.data);
+      UserService.registerSuccessfulLoginForJwt(user.email, res.data['accessToken']);
+      this.props.history.push('/board');
+    });
+  }
+
+
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -116,7 +142,7 @@ class Login extends React.Component {
                                 <i className="ni ni-email-83" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Email" type="email" />
+                            <Input placeholder="Email" type="email" onChange={this.changeEmailHandler}/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -130,6 +156,7 @@ class Login extends React.Component {
                               placeholder="Password"
                               type="password"
                               autoComplete="off"
+                              onChange={this.changePasswordHandler}
                             />
                           </InputGroup>
                         </FormGroup>
@@ -151,6 +178,7 @@ class Login extends React.Component {
                             className="my-4"
                             color="primary"
                             type="button"
+                            onClick={this.loginUser}
                           >
                             Sign in
                           </Button>

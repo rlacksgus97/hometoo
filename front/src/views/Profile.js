@@ -1,20 +1,4 @@
-/*!
 
-=========================================================
-* Argon Design System React - v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-design-system-react
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-design-system-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 
 // reactstrap components
@@ -29,12 +13,32 @@ import "assets/vendor/nucleo/css/nucleo.css";
 import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss";
 
+//user
+import UserService from "../service/UserService";
+
 class Profile extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  logoutUser = (event) => {
+    event.preventDefault();
+    UserService.logout();
+    this.props.history.push('/board');
+  };
+
+
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     this.refs.main.scrollTop = 0;
+
+    UserService.userInfo().then(res => {
+      console.log("userInfo = > ", res.data);
+    });
+
   }
+
   render() {
     return (
       <>
@@ -92,11 +96,10 @@ class Profile extends React.Component {
                         <Button
                           className="mr-4"
                           color="info"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
+                          onClick={this.logoutUser}
                           size="sm"
                         >
-                          Connect
+                          Logout
                         </Button>
                         <Button
                           className="float-right"

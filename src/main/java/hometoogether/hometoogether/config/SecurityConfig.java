@@ -18,6 +18,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -53,22 +54,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors()
-//                .and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
-                .and().csrf().disable().authorizeRequests().antMatchers("/api/users/signin")
-                .permitAll().anyRequest().permitAll()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//                .and().authorizeRequests()
-//                .antMatchers(
-//                        "/", "/favicon.ico", "/**/*.png",
-//                        "/**/*.gif", "/**/*.svg", "/**/*.jpg",
-//                        "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
-//                .antMatchers("/api/**").permitAll()
-////                .permitAll().antMatchers("/api/user/checkUsernameAvailability", "/api/user/checkEmailAvailability")
-////                .permitAll().antMatchers(HttpMethod.GET, "/api/**", "/api/**")
-//                .anyRequest().permitAll();
-//                .permitAll().anyRequest().permitAll();
-//                .permitAll().anyRequest();
+        // For CORS error
+        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+        http.csrf().disable()
+                // dont authenticate this particular request
+                .authorizeRequests().antMatchers("/api/users/login", "/api/users/signup").permitAll().
+                // all other requests need to be authenticated
+                        anyRequest().authenticated().and().
+            sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // Add our custom JWT security filter
          http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
