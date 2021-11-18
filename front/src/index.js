@@ -16,6 +16,7 @@ import BoardDetail from "./views/BoardDetail";
 
 import ChatRoom from "./views/chat/ChatRoom";
 import CreateRoom from "./views/chat/CreateRoom";
+import CreateRoutine from "./views/routine/CreateRoutine";
 
 ReactDOM.render(
     <BrowserRouter>
@@ -83,6 +84,11 @@ ReactDOM.render(
             <Route
                 path="/room/:id/user/:uuid"
                 render={props => <ChatRoom {...props} />}
+            />
+            <Route
+                path="/routine"
+                exact
+                render={props => <CreateRoutine {...props} />}
             />
             <Redirect to="/" />
         </Switch>
