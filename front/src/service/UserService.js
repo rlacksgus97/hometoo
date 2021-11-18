@@ -15,6 +15,7 @@ class UserService {
     logout() {
         localStorage.removeItem("authenticatedUser");
         localStorage.removeItem("token");
+        window.location.href='/login';
     }
 
     isUserLoggedIn() {
