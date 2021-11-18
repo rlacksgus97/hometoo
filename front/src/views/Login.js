@@ -45,6 +45,16 @@ class Login extends React.Component {
     this.loginUser = this.loginUser.bind(this);
   }
 
+  clickFindPassword = (event) => {
+    event.preventDefault();
+    window.location.href='/find/password';
+  }
+
+  clickRegisterUser = (event) => {
+    event.preventDefault();
+    window.location.href='/register';
+  }
+
   changeEmailHandler = (event) => {
     this.setState({email: event.target.value});
   }
@@ -192,19 +202,19 @@ class Login extends React.Component {
                     <Col xs="6">
                       <a
                         className="text-light"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        style={{cursor:'pointer'}}
+                        onClick={this.clickFindPassword}
                       >
-                        <small>Forgot password?</small>
+                        <small>비밀번호찾기</small>
                       </a>
                     </Col>
                     <Col className="text-right" xs="6">
                       <a
                         className="text-light"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        style={{cursor:'pointer'}}
+                        onClick={this.clickRegisterUser}
                       >
-                        <small>Create new account</small>
+                        <small>계정 생성</small>
                       </a>
                     </Col>
                   </Row>

@@ -69,6 +69,10 @@ class UserService {
         );
     }
 
+    findPassword(email) {
+        return axios.patch(USER_API_BASE_URL+"/find/password", email);
+    }
+
 }
 
 export default new UserService;

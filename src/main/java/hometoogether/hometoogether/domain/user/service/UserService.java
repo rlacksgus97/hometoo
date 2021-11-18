@@ -2,6 +2,7 @@ package hometoogether.hometoogether.domain.user.service;
 
 import hometoogether.hometoogether.config.jwt.JwtTokenProvider;
 import hometoogether.hometoogether.domain.user.domain.LoginRequest;
+import hometoogether.hometoogether.domain.user.domain.PasswordFindReqeust;
 import hometoogether.hometoogether.domain.user.domain.SignUpRequest;
 import hometoogether.hometoogether.domain.user.domain.User;
 import hometoogether.hometoogether.domain.user.repository.UserRepository;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.transaction.Transactional;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -41,16 +43,10 @@ public class UserService {
     @Transactional
     public String singUp(SignUpRequest signUpRequest) {
         if (userRepository.existsUserByEmail(signUpRequest.getEmail())) {
-//            return new ResponseEntity(new ApiResponse(false, "Username is already taken!"), HttpStatus.BAD_REQUEST);
             return "EXIST";
         }
 
-//        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-//            return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"), HttpStatus.BAD_REQUEST);
-//        }
-
         // Creating user's account
-//        User user = new User(signUpRequest.getName(), signUpRequest.getUsername(), signUpRequest.getEmail(), signUpRequest.getPassword());
         signUpRequest.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         User user = signUpRequest.toEntity();
 //        user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -58,8 +54,30 @@ public class UserService {
 //        user.setRoles(Collections.singleton(userRole));
         User result = userRepository.save(user);
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{username}") .buildAndExpand(result.getEmail()).toUri();
-//        return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully")); }
         return String.valueOf(location);
+    }
+
+    @Transactional
+    public String resetPassword(PasswordFindReqeust passwordFindReqeust) throws Exception {
+        User user = userRepository.findUserByEmail(passwordFindReqeust.getEmail());
+
+        if (user == null) {
+            throw new Exception("유저가 없습니다.");
+        }
+
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
+
+        String generatedString = random.ints(leftLimit,rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+
+        user.update(passwordEncoder.encode(generatedString));
+        return generatedString;
     }
 
 }

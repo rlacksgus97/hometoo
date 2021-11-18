@@ -101,4 +101,8 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    public void update(String password) {
+        this.password = password;
+    }
+
 }

@@ -4,9 +4,11 @@ import hometoogether.hometoogether.common.ApiResponse;
 import hometoogether.hometoogether.common.JwtAuthenticationResponse;
 import hometoogether.hometoogether.config.jwt.JwtTokenProvider;
 import hometoogether.hometoogether.domain.user.domain.LoginRequest;
+import hometoogether.hometoogether.domain.user.domain.PasswordFindReqeust;
 import hometoogether.hometoogether.domain.user.domain.SignUpRequest;
 import hometoogether.hometoogether.domain.user.repository.UserRepository;
 import hometoogether.hometoogether.domain.user.service.UserService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,13 +32,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) throws Exception {
         return ResponseEntity.ok(new JwtAuthenticationResponse(userService.signIn(loginRequest)));
-//        try {
-//            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-//        } catch (Exception e) {
-//            throw new Exception("invalid");
-//        }
-//
-//        return jwtTokenProvider.generateToken()
     }
 
     @PostMapping("/signup")
@@ -48,6 +43,11 @@ public class UserController {
         } else {
             return ResponseEntity.created(URI.create(result)).body(new ApiResponse(true, "User registered successfully"));
         }
+    }
+
+    @PatchMapping("/find/password")
+    public ResponseEntity<?> findPassword(@RequestBody PasswordFindReqeust passwordFindReqeust) throws Exception {
+        return ResponseEntity.ok(userService.resetPassword(passwordFindReqeust));
     }
 
 }
