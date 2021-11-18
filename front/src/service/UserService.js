@@ -44,7 +44,8 @@ class UserService {
 
     registerSuccessfulLoginForJwt(user, token) {
         localStorage.setItem("token", token);
-        localStorage.setItem("authenticatedUser", user);
+        // localStorage.setItem("userName", user.name);
+        localStorage.setItem("authenticatedUser", user.email);
         this.setupAxiosInterceptors();
     }
 

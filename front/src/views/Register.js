@@ -36,9 +36,11 @@ class Register extends React.Component {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      userName: ''
     };
 
+    this.changeNameHandler = this.changeNameHandler.bind(this);
     this.changeEmailHandler = this.changeEmailHandler.bind(this);
     this.changePasswordHandler = this.changePasswordHandler.bind(this);
     this.singupUser = this.singupUser.bind(this);
@@ -49,7 +51,8 @@ class Register extends React.Component {
 
     let user = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      userName: this.state.name
     };
 
     console.log("user => " + JSON.stringify(user));
@@ -58,7 +61,13 @@ class Register extends React.Component {
       console.log(res.data);
       // UserService.registerSuccessfulLoginForJwt(user.email, res.data['accessToken']);
       this.props.history.push('/login');
-    });
+    }).catch(() => {
+      alert('중복된 이메일이 존재합니다.');
+    })
+  }
+
+  changeNameHandler = (event) => {
+    this.setState({name: event.target.value});
   }
 
   changeEmailHandler = (event) => {
@@ -96,23 +105,23 @@ class Register extends React.Component {
                   <Card className="bg-secondary shadow border-0">
                     <CardHeader className="bg-white pb-5">
                       <div className="text-muted text-center mb-3">
-                        <small>Sign up with</small>
+                        <small>구글 이메일을 통한 회원가입</small>
                       </div>
                       <div className="text-center">
-                        <Button
-                          className="btn-neutral btn-icon mr-4"
-                          color="default"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <span className="btn-inner--icon mr-1">
-                            <img
-                              alt="..."
-                              src={require("assets/img/icons/common/github.svg")}
-                            />
-                          </span>
-                          <span className="btn-inner--text">Github</span>
-                        </Button>
+                        {/*<Button*/}
+                        {/*  className="btn-neutral btn-icon mr-4"*/}
+                        {/*  color="default"*/}
+                        {/*  href="#pablo"*/}
+                        {/*  onClick={e => e.preventDefault()}*/}
+                        {/*>*/}
+                        {/*  <span className="btn-inner--icon mr-1">*/}
+                        {/*    <img*/}
+                        {/*      alt="..."*/}
+                        {/*      src={require("assets/img/icons/common/github.svg")}*/}
+                        {/*    />*/}
+                        {/*  </span>*/}
+                        {/*  <span className="btn-inner--text">Github</span>*/}
+                        {/*</Button>*/}
                         <Button
                           className="btn-neutral btn-icon ml-1"
                           color="default"
@@ -131,19 +140,19 @@ class Register extends React.Component {
                     </CardHeader>
                     <CardBody className="px-lg-5 py-lg-5">
                       <div className="text-center text-muted mb-4">
-                        <small>Or sign up with credentials</small>
+                        <small>성명, 이메일과 비밀번호를 통해 가입해주세요.</small>
                       </div>
                       <Form role="form">
-                        {/*<FormGroup>*/}
-                        {/*  <InputGroup className="input-group-alternative mb-3">*/}
-                        {/*    <InputGroupAddon addonType="prepend">*/}
-                        {/*      <InputGroupText>*/}
-                        {/*        <i className="ni ni-hat-3" />*/}
-                        {/*      </InputGroupText>*/}
-                        {/*    </InputGroupAddon>*/}
-                        {/*    <Input placeholder="Name" type="text" />*/}
-                        {/*  </InputGroup>*/}
-                        {/*</FormGroup>*/}
+                        <FormGroup>
+                          <InputGroup className="input-group-alternative mb-3">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="ni ni-hat-3" />
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input placeholder="Name" type="text" onChange={this.changeNameHandler}/>
+                          </InputGroup>
+                        </FormGroup>
                         <FormGroup>
                           <InputGroup className="input-group-alternative mb-3">
                             <InputGroupAddon addonType="prepend">
@@ -169,14 +178,14 @@ class Register extends React.Component {
                             />
                           </InputGroup>
                         </FormGroup>
-                        <div className="text-muted font-italic">
-                          <small>
-                            password strength:{" "}
-                            <span className="text-success font-weight-700">
-                              strong
-                            </span>
-                          </small>
-                        </div>
+                        {/*<div className="text-muted font-italic">*/}
+                        {/*  <small>*/}
+                        {/*    password strength:{" "}*/}
+                        {/*    <span className="text-success font-weight-700">*/}
+                        {/*      strong*/}
+                        {/*    </span>*/}
+                        {/*  </small>*/}
+                        {/*</div>*/}
                         <Row className="my-4">
                           <Col xs="12">
                             <div className="custom-control custom-control-alternative custom-checkbox">
@@ -185,20 +194,20 @@ class Register extends React.Component {
                                 id="customCheckRegister"
                                 type="checkbox"
                               />
-                              <label
-                                className="custom-control-label"
-                                htmlFor="customCheckRegister"
-                              >
-                                <span>
-                                  I agree with the{" "}
-                                  <a
-                                    href="#pablo"
-                                    onClick={e => e.preventDefault()}
-                                  >
-                                    Privacy Policy
-                                  </a>
-                                </span>
-                              </label>
+                              {/*<label*/}
+                              {/*  className="custom-control-label"*/}
+                              {/*  htmlFor="customCheckRegister"*/}
+                              {/*>*/}
+                              {/*  <span>*/}
+                              {/*    I agree with the{" "}*/}
+                              {/*    <a*/}
+                              {/*      href="#pablo"*/}
+                              {/*      onClick={e => e.preventDefault()}*/}
+                              {/*    >*/}
+                              {/*      Privacy Policy*/}
+                              {/*    </a>*/}
+                              {/*  </span>*/}
+                              {/*</label>*/}
                             </div>
                           </Col>
                         </Row>
@@ -209,7 +218,7 @@ class Register extends React.Component {
                             type="button"
                             onClick={this.singupUser}
                           >
-                            Create account
+                            계정 만들기
                           </Button>
                         </div>
                       </Form>

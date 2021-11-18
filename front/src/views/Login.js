@@ -64,8 +64,10 @@ class Login extends React.Component {
     UserService.signIn(user).then(res => {
       // 로그인 정보 저장
       console.log(res.data);
-      UserService.registerSuccessfulLoginForJwt(user.email, res.data['accessToken']);
+      UserService.registerSuccessfulLoginForJwt(user, res.data['accessToken']);
       this.props.history.push('/board');
+    }).catch(() => {
+      alert('이메일 혹은 비밀번호가 틀립니다.');
     });
   }
 
@@ -97,23 +99,23 @@ class Login extends React.Component {
                   <Card className="bg-secondary shadow border-0">
                     <CardHeader className="bg-white pb-5">
                       <div className="text-muted text-center mb-3">
-                        <small>Sign in with</small>
+                        <small>구글 로그인</small>
                       </div>
                       <div className="btn-wrapper text-center">
-                        <Button
-                          className="btn-neutral btn-icon"
-                          color="default"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <span className="btn-inner--icon mr-1">
-                            <img
-                              alt="..."
-                              src={require("assets/img/icons/common/github.svg")}
-                            />
-                          </span>
-                          <span className="btn-inner--text">Github</span>
-                        </Button>
+                        {/*<Button*/}
+                        {/*  className="btn-neutral btn-icon"*/}
+                        {/*  color="default"*/}
+                        {/*  href="#pablo"*/}
+                        {/*  onClick={e => e.preventDefault()}*/}
+                        {/*>*/}
+                        {/*  <span className="btn-inner--icon mr-1">*/}
+                        {/*    <img*/}
+                        {/*      alt="..."*/}
+                        {/*      src={require("assets/img/icons/common/github.svg")}*/}
+                        {/*    />*/}
+                        {/*  </span>*/}
+                        {/*  <span className="btn-inner--text">Github</span>*/}
+                        {/*</Button>*/}
                         <Button
                           className="btn-neutral btn-icon ml-1"
                           color="default"
@@ -132,7 +134,7 @@ class Login extends React.Component {
                     </CardHeader>
                     <CardBody className="px-lg-5 py-lg-5">
                       <div className="text-center text-muted mb-4">
-                        <small>Or sign in with credentials</small>
+                        <small>이메일과 비밀번호로 로그인하세요.</small>
                       </div>
                       <Form role="form">
                         <FormGroup className="mb-3">
@@ -166,12 +168,12 @@ class Login extends React.Component {
                             id=" customCheckLogin"
                             type="checkbox"
                           />
-                          <label
-                            className="custom-control-label"
-                            htmlFor=" customCheckLogin"
-                          >
-                            <span>Remember me</span>
-                          </label>
+                          {/*<label*/}
+                          {/*  className="custom-control-label"*/}
+                          {/*  htmlFor=" customCheckLogin"*/}
+                          {/*>*/}
+                          {/*  <span>Remember me</span>*/}
+                          {/*</label>*/}
                         </div>
                         <div className="text-center">
                           <Button
