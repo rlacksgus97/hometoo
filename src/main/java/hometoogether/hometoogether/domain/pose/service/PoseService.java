@@ -244,9 +244,9 @@ public class PoseService {
 
         double cosineSimilarity = cosineSimilarity(vectorPose1XY, vectorPose2XY);
 
-        double cosineDistance = cosineDistanceMatching(vectorPose1XY, vectorPose2XY);
+//        double cosineDistance = cosineDistanceMatching(vectorPose1XY, vectorPose2XY);
 
-        double weightedDistance = weightedDistanceMatching(vectorPose1XY, vectorPose2XY, vectorPose2Scores);
+//        double weightedDistance = weightedDistanceMatching(vectorPose1XY, vectorPose2XY, vectorPose2Scores);
 
         return cosineSimilarity;
     }
@@ -382,7 +382,7 @@ public class PoseService {
                 kpListA.addAll(keypointsListA.get(i-1).getKeypoints());
                 ArrayList<Double> kpListB = new ArrayList<Double>();
                 kpListB.addAll(keypointsListB.get(j-1).getKeypoints());
-                cost = cosineSimilarity(kpListA , kpListB);
+                cost = estimateSimilarity(kpListA , kpListB);
                 DTW[i][j] = cost + Math.max(Math.max(DTW[i-1][j], DTW[i][j-1]), DTW[i-1][j-1]);
             }
         }

@@ -1,4 +1,4 @@
-//package hometoogether.hometoogether.domain.room.controller;
+package hometoogether.hometoogether.domain.room.controller;
 //
 //import hometoogether.hometoogether.domain.room.service.MainRoomService;
 //import lombok.RequiredArgsConstructor;

@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -57,7 +58,8 @@ public class TrialService {
 
         trialPoseRepository.save(trialPose);
 
-        poseService.estimatePoseVideo(trialPose.getId(), url, "trial");
+        poseService.estimatePosePhoto(trialPose.getId(), url, "trial");
+//        poseService.estimatePoseVideo(trialPose.getId(), url, "trial");
 
         //User <-> ChallengePose 매핑
         user.addTrialPose(trialPose);
@@ -81,21 +83,24 @@ public class TrialService {
     }
 
     @Transactional
-    public double runSimilarity(){
+    public double runSimilarity(Long challengeId, Long trialId){
 //        Trial trial = trialRepository.findById(trialId)
 //                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + trialId));
 //
 //        Challenge challenge = trial.getChallenge();
 
-        Challenge challenge1 = challengeRepository.findById(1L)
+        Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + 0));
 
-        Challenge challenge2 = challengeRepository.findById(2L)
+        Trial trial = trialRepository.findById(trialId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + 1));
 
-        List<Keypoints> keypointsList1 = challenge1.getChallengePose().getKeypointsList();
-        List<Keypoints> keypointsList2 = challenge2.getChallengePose().getKeypointsList();
-        double similarity = poseService.DTWDistance(keypointsList1, keypointsList2);
+        List<Keypoints> keypointsListA = challenge.getChallengePose().getKeypointsList();
+        List<Double> keypointsA = keypointsListA.get(0).getKeypoints();
+        List<Keypoints> keypointsListB = trial.getTrialPose().getKeypointsList();
+        List<Double> keypointsB = keypointsListB.get(0).getKeypoints();
+
+        double similarity = poseService.estimateSimilarity(keypointsA , keypointsB);
 
         return similarity;
     }

@@ -16,14 +16,14 @@ public class TrialController {
 
     private final TrialService trialService;
 
-    @PostMapping("/challenges/{challengeId}/trials/test")
+    @PostMapping("/challenges/{challengeId}/trials")
     public Long save(@PathVariable("challengeId") Long challengeId, TrialRequestDto param) throws IOException, ParseException {
         return trialService.saveTrial(challengeId, param);
     }
 
-    @GetMapping("/trials/estimate")
-    public double estimate(){
-        return trialService.runSimilarity();
+    @GetMapping("/challenges/{challengeId}/trials/{trialId}/estimate")
+    public double estimate(@PathVariable("challengeId") Long challengeId, @PathVariable("trialId") Long trialId){
+        return trialService.runSimilarity(challengeId, trialId);
     }
 
     @GetMapping("/challenges/{challengeId}/trials/{id}")

@@ -1,4 +1,4 @@
-//package hometoogether.hometoogether.domain.room.domain;
+package hometoogether.hometoogether.domain.room.domain;
 //
 //import lombok.NoArgsConstructor;
 //import org.springframework.web.socket.WebSocketSession;

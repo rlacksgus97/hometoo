@@ -14,6 +14,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +32,8 @@ public class ChallengeController {
 
     @PostMapping("/challenges")
     public Long save(ChallengeRequestDto param) throws IOException, ParseException {
-//        return challengeService.saveChallengePhoto(param);
-        return challengeService.saveChallengeVideo(param);
+        return challengeService.saveChallengePhoto(param);
+//        return challengeService.saveChallengeVideo(param);
     }
 
     @GetMapping("/challenges/{id}")

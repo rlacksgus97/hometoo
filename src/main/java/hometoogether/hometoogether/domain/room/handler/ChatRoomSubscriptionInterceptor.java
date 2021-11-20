@@ -1,6 +1,5 @@
 package hometoogether.hometoogether.domain.room.handler;
 
-import hometoogether.hometoogether.config.security.JwtTokenProvider;
 import hometoogether.hometoogether.domain.room.repository.RoomRepository;
 import hometoogether.hometoogether.domain.user.domain.User;
 import hometoogether.hometoogether.domain.user.repository.UserRepository;
@@ -10,8 +9,6 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

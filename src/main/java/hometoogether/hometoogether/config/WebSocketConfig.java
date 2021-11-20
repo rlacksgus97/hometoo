@@ -1,4 +1,4 @@
-//package hometoogether.hometoogether.config;
+package hometoogether.hometoogether.config;
 //
 //import hometoogether.hometoogether.socket.SignalHandler;
 //import org.springframework.beans.factory.annotation.Autowired;

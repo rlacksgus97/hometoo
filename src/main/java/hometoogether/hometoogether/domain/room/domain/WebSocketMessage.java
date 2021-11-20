@@ -1,4 +1,4 @@
-//package hometoogether.hometoogether.domain.room.domain;
+package hometoogether.hometoogether.domain.room.domain;
 //
 //import java.util.Objects;
 //

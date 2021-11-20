@@ -1,4 +1,4 @@
-//package hometoogether.hometoogether.domain.room.service;
+package hometoogether.hometoogether.domain.room.service;
 //
 //import hometoogether.hometoogether.domain.room.domain.Room;
 //import hometoogether.hometoogether.util.Parser;
