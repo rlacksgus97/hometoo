@@ -21,9 +21,11 @@ import React, { useEffect, useState } from "react";
 
 import Hero from "./Hero";
 import axios from "axios";
+import { useHistory } from "react-router";
 import { useLocation } from "react-router";
 
 export default function ChallengeCardList() {
+  const history = useHistory();
   const location = useLocation();
   const url = "http://221.143.144.143:80/";
   const [challengeDeatil, setchallengeDeatil] = useState({
@@ -78,7 +80,21 @@ export default function ChallengeCardList() {
                           명예의 전당
                           <i className="ni ni-notification-70 px-3" />
                         </h5>
-                        <Button color="danger">지금 참가하기</Button>
+                        <Button
+                          color="danger"
+                          style={{ marginLeft: "auto" }}
+                          onClick={() => {
+                            history.push({
+                              pathname: "/trial/create",
+                              state: {
+                                cid: location.state.cid,
+                                curl: challengeDeatil.url,
+                              },
+                            });
+                          }}
+                        >
+                          지금 참가하기
+                        </Button>
                       </div>
                       <ListGroup>
                         <ListGroupItem className="d-flex justify-content-between">
@@ -102,6 +118,24 @@ export default function ChallengeCardList() {
                           <i className="ni ni-favourite-28 text-danger" />
                         </ListGroupItem>
                       </ListGroup>
+                      <div style={{ display: "flex" }}>
+                        <Button
+                          color="primary"
+                          style={{ marginLeft: "auto" }}
+                          onClick={() => {
+                            history.push({
+                              pathname: "/trial",
+                              state: {
+                                cid: location.state.cid,
+                                ctitle: challengeDeatil.title,
+                                cuname: challengeDeatil.username,
+                              },
+                            });
+                          }}
+                        >
+                          참가자 더보기
+                        </Button>
+                      </div>
                     </div>
                   </Col>
                   <FormGroup className="mt-5">

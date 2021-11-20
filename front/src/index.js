@@ -18,6 +18,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Register from "./views/Register";
 import Sample from "./views/Sample";
+import TrialCardList from "views/TrialCardList";
+import TrialCreate from "views/TrialCreate";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
@@ -65,6 +67,16 @@ ReactDOM.render(
         path="/challenge/detail"
         exact
         render={(props) => <ChallengeDetail {...props} />}
+      />
+      <Route
+        path="/trial"
+        exact
+        render={(props) => <TrialCardList {...props} />}
+      />
+      <Route
+        path="/trial/create"
+        exact
+        render={(props) => <TrialCreate {...props} />}
       />
       <Redirect to="/" />
     </Switch>
