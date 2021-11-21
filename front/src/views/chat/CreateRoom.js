@@ -59,10 +59,11 @@ function CreateRoom(){
         // console.log("link.href:" + document.getElementById(id).href);
         // document.getElementById(id).href = ref + '/' + uuid;
 
-        axios.get("/room/"+r.id+"/info")
+        axios.get("/room/"+r.id+"/usable")
             .then(res=>{
                 console.log(res.data);
                 if(res.data===true){
+                    // Room 도메인 element에 Routine 추가한 후 아래 코드 수정할 예정
                     window.location.href="/room/"+r.id+"/user/"+uuid;
                 }
                 else{
@@ -77,13 +78,16 @@ function CreateRoom(){
     }
 
     function createRoom(){
-        axios.post("/room/create", {
-            max: 2
-        })
-            .then(window.location.href="/room/create")
-            .catch(error=>{
-                console.log(error);
-            })
+        // axios.post("/room/create", {
+        //     max: 2
+        // })
+        //     .then((res)=>{
+        //         window.location.href="/room/create/routine"
+        //     })
+        //     .catch(error=>{
+        //         console.log(error);
+        //     })
+        window.location.href="/room/create/routine"
     }
 
     return(

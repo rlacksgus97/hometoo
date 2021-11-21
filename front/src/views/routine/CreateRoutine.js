@@ -80,8 +80,10 @@ function CreateRoutine(){
         }
 
         axios.post("/routine", body)
-            .then(console.log("Routine successfully stored!"))
-
+            // .then(console.log("Routine successfully stored!"))
+            .then((res)=>{
+                window.location.href="/room/create"
+            });
     }
 
 

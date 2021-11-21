@@ -1,6 +1,9 @@
 package hometoogether.hometoogether.domain.room.domain;
 
 //import hometoogether.hometoogether.domain.user.domain.User;
+import hometoogether.hometoogether.domain.training.Domain.Routine;
+import hometoogether.hometoogether.domain.training.Domain.Training;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,11 +20,16 @@ public class Room {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Getter
+    @Setter @Getter
     private Long max_num;
 
     @Setter @Getter
     private Long cur_num;
+
+    @Setter @Getter
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="routine_id")
+    private List<Training> trainings;
 
     // WebSocketSession은 spring에서 WebSocket connection이 맺어진 세션을 가리킨다 - 편하게 고수준 socket이라고 생각
 //    @OneToMany(fetch = FetchType.LAZY)
@@ -57,4 +65,11 @@ public class Room {
 //
 //        return Objects.hash(getId(), getClients());
 //    }
+
+    @Builder
+    public Room(Long cur_num, Long max_num, List<Training> trainings){
+        this.cur_num=cur_num;
+        this.max_num=max_num;
+        this.trainings=trainings;
+    }
 }

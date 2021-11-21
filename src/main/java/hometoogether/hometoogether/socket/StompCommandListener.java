@@ -5,7 +5,8 @@ import hometoogether.hometoogether.domain.room.domain.WebSocketMessage;
 import hometoogether.hometoogether.domain.room.dto.UserCountAndTimeDto;
 import hometoogether.hometoogether.domain.room.dto.WebSocketMessageDto;
 import hometoogether.hometoogether.domain.room.repository.RoomRepository;
-import hometoogether.hometoogether.domain.room.service.JspRoomService;
+//import hometoogether.hometoogether.domain.room.service.JspRoomService;
+import hometoogether.hometoogether.domain.room.service.RoomService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -30,7 +31,8 @@ public class StompCommandListener {
 
     private final SimpMessagingTemplate messagingTemplate;
 //    private final JwtTokenProvider jwtTokenProvider;
-    private final JspRoomService mainRoomService;
+//    private final JspRoomService mainRoomService;
+    private final RoomService roomService;
     private final RoomRepository roomRepository;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -165,7 +167,7 @@ public class StompCommandListener {
             case MSG_TYPE_JOIN:
                 logger.info("[ws] {} has joined Room: #{}", userName, message.getData());
 
-                room = mainRoomService.findByRoomId(Long.valueOf(data));
+                room = roomService.findByRoomId(Long.valueOf(data));
                 room.setCur_num(room.getCur_num()+1L);
                 roomRepository.save(room);
 

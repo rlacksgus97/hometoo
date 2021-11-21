@@ -24,8 +24,10 @@ public class Routine {
     private Long userId;
 
     private String routineName;
+    private float routineAvgScore;
+    private int evaluateCnt;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Training> trainings;
 
     @Builder

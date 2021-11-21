@@ -2,6 +2,7 @@ package hometoogether.hometoogether.domain.room.controller;
 
 import hometoogether.hometoogether.domain.room.dto.RoomDto;
 import hometoogether.hometoogether.domain.room.service.RoomService;
+import hometoogether.hometoogether.domain.training.Domain.TrainingVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -23,8 +24,18 @@ public class RoomController {
      * @return
      */
     @PostMapping("/room/create")
-    public void createRoom() {
-        roomService.createRoom();
+    public Long createRoom(@RequestBody String routine) {
+        return roomService.createRoom(routine);
+    }
+
+    @GetMapping("/room/{id}/usable")
+    public boolean canEnterRoom(@PathVariable Long id){
+        return roomService.canEnterRoom(id);
+    }
+
+    @GetMapping("/room/{id}")
+    public List<TrainingVO> getRoom(@PathVariable Long id){
+        return roomService.getRoom(id);
     }
 
     @GetMapping("room/{sid}/user/{uuid}/exit")

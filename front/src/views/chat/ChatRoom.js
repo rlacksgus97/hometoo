@@ -23,7 +23,6 @@ import "assets/scss/argon-design-system-react.scss";
 function ChatRoom(){
 
     const conn = new SockJS("http://localhost:8080/ws-stomp");
-    // const conn = new SockJS("http://2a97-58-122-7-167.ngrok.io/ws-stomp");
     const stompconn = Stomp.over(conn);
 
     const {id, uuid}=useParams();
@@ -48,46 +47,7 @@ function ChatRoom(){
         video: true
     };
 
-    const [training, setTraining]=useState(
-        [
-            {
-                routineId: 1,
-                routineName: "푸쉬업",
-                routineSec: 5,
-                routineSetCnt: 1,
-                seq: 1
-            },
-            {
-                routineId: 2,
-                routineName: "윗몸일으키기",
-                routineSec: 5,
-                routineSetCnt: 1,
-                seq: 2
-            },
-            {
-                routineId: 3,
-                routineName: "파이크 푸쉬업",
-                routineSec: 5,
-                routineSetCnt: 1,
-                seq: 3
-            },
-            {
-                routineId: 4,
-                routineName: "버피테스트",
-                routineSec: 5,
-                routineSetCnt: 1,
-                seq: 4
-            },
-            {
-                routineId: 5,
-                routineName: "스쿼트",
-                routineSec: 5,
-                routineSetCnt: 1,
-                seq: 5
-            }
-        ]
-    );
-    // const [count, setCount]=useState(0);
+    let routine;
     const [alarmText, setAlarmText]=useState("No message");
 
     let localStream;
@@ -373,31 +333,31 @@ function ChatRoom(){
 
         setTimeout(()=>{
             setAlarmText("User A" + " 차례입니다.\n"
-                + training[0].routineSec + "초 동안 "
-                + training[0].routineName + "을 하세요.\n" + new Date());
+                + routine[0].trainingSec + "초 동안 "
+                + routine[0].trainingName + "을 하세요.\n" + new Date());
         }, 5*1000)
-        totalWorkoutTime+=training[0].routineSec;
+        totalWorkoutTime+=routine[0].trainingSec;
 
-        for(let a=0;a<training.length;a++){
-            for(let b=0;b<training[a].routineSetCnt*2;b++){
+        for(let a=0;a<routine.length;a++){
+            for(let b=0;b<routine[a].trainingSetCnt*2;b++){
                 if(a!=0 || b!=0){
                     (function(x, y, time){
                         setTimeout(()=>{
                             if(y%2==0){
                                 setAlarmText("User A" + " 차례입니다.\n"
-                                    + training[x].routineSec + "초 동안 "
-                                    + training[x].routineName + "을 하세요.\n" + new Date());
+                                    + routine[x].trainingSec + "초 동안 "
+                                    + routine[x].trainingName + "을 하세요.\n" + new Date());
                             }
                             else{
                                 setAlarmText("User B" + " 차례입니다.\n"
-                                    + training[x].routineSec + "초 동안 "
-                                    + training[x].routineName + "을 하세요.\n" + new Date());
+                                    + routine[x].trainingSec + "초 동안 "
+                                    + routine[x].trainingName + "을 하세요.\n" + new Date());
                             }
                         }, (time+5)*1000);
                     })(a, b, totalWorkoutTime)
 
-                    if(b==0) totalWorkoutTime+=training[a-1].routineSec;
-                    else totalWorkoutTime += training[a].routineSec;
+                    if(b==0) totalWorkoutTime+=routine[a-1].trainingSec;
+                    else totalWorkoutTime += routine[a].trainingSec;
                 }
             }
         }
@@ -405,7 +365,14 @@ function ChatRoom(){
         setTimeout(()=>{
             setAlarmText("운동이 모두 종료되었습니다.");
         }, (totalWorkoutTime+5)*1000);
+
+        // setTimeout(()=>{
+        //     setAlarmText("운동 어떠셨나요? 루틴을 평가해주세요!.");
+        //     setModal()
+        // }, (totalWorkoutTime+10)*1000);
     }
+
+
 
     useEffect(()=>{
         start();
@@ -414,8 +381,17 @@ function ChatRoom(){
             axios.get("/start")
                 .then((res)=>{
                     if(res.data.count==2){
-                        setAlarmText("10초 후에 운동이 시작됩니다. 준비해주세요: " + new Date());
-                        clearInterval(workoutReady);
+                        axios.get("/room/"+id)
+                            .then((res)=>{
+                                console.log(res.data);
+                                // setRoutine(res.data);
+                                routine=res.data;
+                            })
+                            .then(()=>{
+                                setAlarmText("10초 후에 운동이 시작됩니다. 준비해주세요: " + new Date());
+                                startSession();
+                                clearInterval(workoutReady);
+                            })
                     }
                     else{
                         setAlarmText("아직 준비되지 않았습니다");
@@ -426,12 +402,14 @@ function ChatRoom(){
                 })
         }, 1000);
 
-        // setTraining()
+    }, []);
+
+    function startSession(){
         setTimeout(()=>{
             setAlarmText("지금부터 운동을 시작하겠습니다: " + new Date());
             workoutStart();
         }, 10000)
-    }, []);
+    }
 
     return(
         <div>

@@ -29,9 +29,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws-stomp")
                 .setAllowedOrigins("http://localhost:8080",
                         "http://localhost:3000"
-//                        "http://2a97-58-122-7-167.ngrok.io", // ngrok를 사용하기 때문에 도메인이 바뀔 수 있음
-//                        "https://2a97-58-122-7-167.ngrok.io"
-                ) // ngrok를 사용하기 때문에 도메인이 바뀔 수 있음
+                )
                 .setHandshakeHandler(new CustomHandshakeHandler())
                 .withSockJS();
     }
