@@ -14,5 +14,6 @@ public class RoomDto {
     private Long max_num;
     private Long cur_num;
     private List<Training> trainings;
+    private Long routineId;
 
 }

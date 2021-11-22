@@ -20,6 +20,10 @@ function SelectRoomRoutine(){
         window.location.href="/room/create/routine/"+routine.routineId;
     }
 
+    function goBackToRoomSelectPage(){
+        window.location.href="/room/create";
+    }
+
     return(
         <>
             <DemoNavbar />
@@ -101,14 +105,13 @@ function SelectRoomRoutine(){
 
                                             </tbody>
                                         </Table>
-                                        <Button id="create_button" className="btn-neutral btn-icon">
-                                            Create Room
-                                        </Button>
                                     </Card>
                                 </div>
                             </Row>
                             <input type="hidden" id="uuid" name="uuid" value="${uuid}"/>
-
+                            <Button className="col" onClick={goBackToRoomSelectPage}>
+                                Go Back
+                            </Button>
                         </Container>
                     </section>
                 </div>

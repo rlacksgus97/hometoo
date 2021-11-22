@@ -31,6 +31,9 @@ public class Room {
     @JoinColumn(name="routine_id")
     private List<Training> trainings;
 
+    @Getter
+    private Long routineId;
+
     // WebSocketSession은 spring에서 WebSocket connection이 맺어진 세션을 가리킨다 - 편하게 고수준 socket이라고 생각
 //    @OneToMany(fetch = FetchType.LAZY)
 //    private List<User> userList=new ArrayList<>();
@@ -67,9 +70,10 @@ public class Room {
 //    }
 
     @Builder
-    public Room(Long cur_num, Long max_num, List<Training> trainings){
+    public Room(Long cur_num, Long max_num, Long routineId, List<Training> trainings){
         this.cur_num=cur_num;
         this.max_num=max_num;
+        this.routineId=routineId;
         this.trainings=trainings;
     }
 }

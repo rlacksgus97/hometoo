@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router";
 import axios from "axios";
 import DemoNavbar from "../../components/Navbars/DemoNavbar";
-import {Button, CardBody, Col, Container, Form, FormGroup, Label, Row} from "reactstrap";
+import {Button, Card, CardBody, Col, Container, Form, FormGroup, Label, Row, Table} from "reactstrap";
 import SimpleFooter from "../../components/Footers/SimpleFooter";
 import $ from "jquery";
 
@@ -43,15 +43,15 @@ function ShowRoutineDetails(){
     function roomCreate(){
         let body=routine;
 
-        axios.post("/room/create", body)
+        axios.post("/room/create/"+routineId, body)
             .then((res)=>{
                 window.location.href="/room/" + res.data
-                    + "/user/" + localStorage.getItem("uuid");
+                    + "/user/" + localStorage.getItem("uuid")
+                    + "/routine/" + routineId;
             })
             .catch(error=>{
                 console.log(error);
             })
-
     }
 
     return(
@@ -69,42 +69,41 @@ function ShowRoutineDetails(){
                         <span />
                         <span />
                     </div>
-                    <Container className="pt-lg-7">
-                        <Row className="justify-content-center">
+                    <Container className="justify-content-center">
+                        <Row>
                             <Col lg="5">
                                 <div className="bg-secondary shadow border-0" style={{width: "900px", height: "auto"}}>
                                     <CardBody className="px-lg-5 py-lg-5">
                                         <div className="text-center text-muted mb-4">
-                                            <small>Routine</small>
+                                            <big>Routine</big>
                                         </div>
                                         <Form>
                                             <FormGroup className="mb-3">
-                                                {/*<Row className="mt-5">*/}
-                                                {/*    <Col className="md">*/}
-                                                {/*        <Label>Routine Name</Label>*/}
-                                                {/*        {routine.routineName}*/}
-                                                {/*    </Col>*/}
-                                                {/*</Row>*/}
-                                                {routine.map((training, i) => (
-                                                    <div key={training.trainingId}>
-                                                        <Row className="mt-5">
-                                                            <Col className="md">
-                                                                <Label>Training Name</Label>
-                                                                {training.trainingName}
-                                                            </Col>
-                                                            <Col className="md">
-                                                                <Label>Training Sec</Label>
-                                                                {training.trainingSec}
-                                                            </Col>
-                                                            <Col className="md">
-                                                                <Label>Set Cnt</Label>
-                                                                {training.trainingSetCnt}
-                                                            </Col>
-                                                        </Row>
-                                                    </div>
-                                                ))}
+                                                <Table className="align-items-center table-flush" responsive>
+                                                    <thead className="thead-light">
+                                                    <tr>
+                                                        <th scope="col">Training Name</th>
+                                                        <th scope="col">Training Sec</th>
+                                                        <th scope="col">Training Set Cnt</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {routine.map((training, i) => (
+                                                                <tr key={training.trainingId} className="mt-5">
+                                                                    <th className="md">
+                                                                        {training.trainingName}
+                                                                    </th>
+                                                                    <th className="md">
+                                                                        {training.trainingSec}
+                                                                    </th>
+                                                                    <th className="md">
+                                                                        {training.trainingSetCnt}
+                                                                    </th>
+                                                                </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </Table>
                                             </FormGroup>
-
                                             <Button
                                                 style={{float: "left"}} onClick={roomCreate}>
                                                 Create Room

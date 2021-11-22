@@ -10,7 +10,7 @@ import {
     CardHeader,
     Container,
     Row,
-    Col, Table, Media, Nav, NavItem, NavLink, Navbar
+    Col, Table, Media, Nav, NavItem, NavLink, Navbar, Modal, ModalBody, ModalFooter
 } from "reactstrap";
 
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
@@ -25,12 +25,14 @@ function ChatRoom(){
     const conn = new SockJS("http://localhost:8080/ws-stomp");
     const stompconn = Stomp.over(conn);
 
-    const {id, uuid}=useParams();
+    const {id, uuid, routineId}=useParams();
 
     const myVideoRef = useRef();
     const remoteVideoRef = useRef();
     const [localVideoState, SetLocalVideoState] = useState(true);
     const [localAudioState, SetLocalAudioState] = useState(true);
+    const [isWorkoutOver, setIsWorkoutOver]=useState(false);
+    const [modalOpen, setModalOpen]=useState(false);
 
     const localRoom = id;
     const localUserName = localStorage.getItem("uuid");
@@ -163,8 +165,23 @@ function ChatRoom(){
 
     function exit_room(){
         axios.get("/room/"+id+"/user/"+uuid+"/exit")
-            .then(window.location.href="/room/create")
-            .catch(window.location.href="/room/create")
+            .then(
+                ()=>{
+                    if(isWorkoutOver) {
+                        window.location.href="/routine/"+ routineId+"/evaluation";
+                        // window.location.href="/room/create";
+                    }
+                    else {
+                        // window.location.href="/room/create";
+                        // alert("You left the room before finishing your work out!");
+                        // window.location.href="";
+                        setModalOpen(!(modalOpen));
+                    }
+                }
+                )
+            .catch((error)=>{
+                console.log(error);
+            })
     };
 
     function log(message) {
@@ -364,12 +381,8 @@ function ChatRoom(){
 
         setTimeout(()=>{
             setAlarmText("운동이 모두 종료되었습니다.");
+            setIsWorkoutOver(!(isWorkoutOver));
         }, (totalWorkoutTime+5)*1000);
-
-        // setTimeout(()=>{
-        //     setAlarmText("운동 어떠셨나요? 루틴을 평가해주세요!.");
-        //     setModal()
-        // }, (totalWorkoutTime+10)*1000);
     }
 
 
@@ -465,6 +478,34 @@ function ChatRoom(){
                     </Container>
                 </footer>
             </div>
+            <Modal toggle={() => setModalOpen(!modalOpen)} isOpen={modalOpen}>
+                <div className=" modal-header">
+                    <h5 className=" modal-title" id="exampleModalLabel">
+                        Modal title
+                    </h5>
+                    <button
+                        aria-label="Close"
+                        className=" close"
+                        type="button"
+                        onClick={() => setModalOpen(!modalOpen)}
+                    >
+                        <span aria-hidden={true}>×</span>
+                    </button>
+                </div>
+                <ModalBody>Are you really wanna go out room?</ModalBody>
+                <ModalFooter>
+                    <Button
+                        color="secondary"
+                        type="button"
+                        onClick={() => setModalOpen(!modalOpen)}
+                    >
+                        No
+                    </Button>
+                    <Button color="primary" type="button" onClick={()=>{window.location.href="/room/create"}}>
+                        Yes
+                    </Button>
+                </ModalFooter>
+            </Modal>
         </div>
     )
 }

@@ -95,6 +95,7 @@ public class RoutineService {
 
     @Transactional
     public float editRoutineAvgScore(Long routineId, Map<String, String> evaluation){
+        System.out.println("RoutineService.editRoutineAvgScore");
         Routine routine = routineRepository.findById(routineId).orElse(null);
         Float currentEvaluateScore = Float.valueOf(evaluation.get("evaluateScore"));
 

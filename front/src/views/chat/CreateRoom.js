@@ -62,9 +62,9 @@ function CreateRoom(){
         axios.get("/room/"+r.id+"/usable")
             .then(res=>{
                 console.log(res.data);
-                if(res.data===true){
+                if(res.data.canEnter===true){
                     // Room 도메인 element에 Routine 추가한 후 아래 코드 수정할 예정
-                    window.location.href="/room/"+r.id+"/user/"+uuid;
+                    window.location.href="/room/"+r.id+"/user/"+uuid+"/routine/"+res.data.routineId;
                 }
                 else{
                     alert("This room is already full");

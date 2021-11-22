@@ -1,10 +1,13 @@
 package hometoogether.hometoogether.domain.room.service;
 
 import hometoogether.hometoogether.domain.room.domain.Room;
+import hometoogether.hometoogether.domain.room.dto.CanEnterAndRoutineIdDto;
 import hometoogether.hometoogether.domain.room.dto.RoomDto;
 import hometoogether.hometoogether.domain.room.repository.RoomRepository;
+import hometoogether.hometoogether.domain.training.Domain.Routine;
 import hometoogether.hometoogether.domain.training.Domain.Training;
 import hometoogether.hometoogether.domain.training.Domain.TrainingVO;
+import hometoogether.hometoogether.domain.training.repository.RoutineRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +21,7 @@ import java.util.*;
 public class RoomService{
 
     private final RoomRepository roomRepository;
+    private final RoutineRepository routineRepository;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public List<RoomDto> getRooms(){
@@ -29,6 +33,7 @@ public class RoomService{
                     .id(room.getId())
                     .cur_num(room.getCur_num())
                     .max_num(room.getMax_num())
+                    .routineId(room.getRoutineId())
                     .build());
         }
 
@@ -53,10 +58,18 @@ public class RoomService{
         return trainingVOList;
     }
 
-    public boolean canEnterRoom(Long roomId){
+    public CanEnterAndRoutineIdDto canEnterRoom(Long roomId){
         Room room = roomRepository.findById(roomId).orElse(null);
-        if(room.getCur_num()<room.getMax_num()) return true;
-        else return false;
+        if(room.getCur_num()<room.getMax_num()) {
+            return CanEnterAndRoutineIdDto.builder()
+                    .canEnter(true).routineId(room.getRoutineId())
+                    .build();
+        }
+        else {
+            return CanEnterAndRoutineIdDto.builder()
+                    .canEnter(false).routineId(room.getRoutineId())
+                    .build();
+        }
     }
 
     public void exitRoom(String sid, String uuid){
@@ -66,7 +79,7 @@ public class RoomService{
     }
 
     @Transactional
-    public Long createRoom(String routine){
+    public Long createRoom(String routine, Long routineId){
         List<Training> trainings=new ArrayList<>();
 
         // 1차 파싱
@@ -91,6 +104,7 @@ public class RoomService{
 
         Room room = Room.builder()
                 .cur_num(0L).max_num(2L)
+                .routineId(routineId)
                 .trainings(trainings).build();
 
         return roomRepository.save(room).getId();

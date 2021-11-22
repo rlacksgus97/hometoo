@@ -1,10 +1,13 @@
 package hometoogether.hometoogether.domain.room.controller;
 
+import hometoogether.hometoogether.domain.room.dto.CanEnterAndRoutineIdDto;
 import hometoogether.hometoogether.domain.room.dto.RoomDto;
 import hometoogether.hometoogether.domain.room.service.RoomService;
 import hometoogether.hometoogether.domain.training.Domain.TrainingVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.file.Path;
 import java.util.List;
 
 @RestController
@@ -19,17 +22,13 @@ public class RoomController {
         return rooms;
     }
 
-    /**
-     * room 만들때 실행됨
-     * @return
-     */
-    @PostMapping("/room/create")
-    public Long createRoom(@RequestBody String routine) {
-        return roomService.createRoom(routine);
+    @PostMapping("/room/create/{routineId}")
+    public Long createRoom(@RequestBody String routine, @PathVariable Long routineId) {
+        return roomService.createRoom(routine, routineId);
     }
 
     @GetMapping("/room/{id}/usable")
-    public boolean canEnterRoom(@PathVariable Long id){
+    public CanEnterAndRoutineIdDto canEnterRoom(@PathVariable Long id){
         return roomService.canEnterRoom(id);
     }
 
