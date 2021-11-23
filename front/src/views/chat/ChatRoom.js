@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import * as SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import axios from 'axios';
+import Speech from 'speak-tts';
 
 import {
     Button,
@@ -23,6 +24,7 @@ import "assets/scss/argon-design-system-react.scss";
 function ChatRoom(){
 
     const conn = new SockJS("http://localhost:8080/ws-stomp");
+    // const conn = new SockJS("192.168.35.229:8080/ws-stomp");
     const stompconn = Stomp.over(conn);
 
     const {id, uuid, routineId}=useParams();
@@ -343,6 +345,19 @@ function ChatRoom(){
         myPeerConnection.addIceCandidate(candidate).catch(handleErrorMessage);
     }
 
+    const speech = new Speech() // will throw an exception if not browser supported
+
+    if(speech.hasBrowserSupport()) { // returns a boolean
+        console.log("speech synthesis supported")
+    }
+
+    speech.init().then((data) => {
+        // The "data" object contains the list of available voices and the voice synthesis params
+        console.log("Speech is ready, voices are available", data)
+    }).catch(e => {
+        console.error("An error occured while initializing : ", e)
+    })
+
     let count=0;
 
     function workoutStart(){
@@ -351,7 +366,12 @@ function ChatRoom(){
         setTimeout(()=>{
             setAlarmText("User A" + " 차례입니다.\n"
                 + routine[0].trainingSec + "초 동안 "
-                + routine[0].trainingName + "을 하세요.\n" + new Date());
+                + routine[0].trainingName + "을 하세요.\n");
+            speech.speak({
+                text: 'User A' + '차례입니다.'
+                    + routine[0].trainingSec + '초 동안 '
+                    + routine[0].trainingName + '을 하세요.'
+            })
         }, 5*1000)
         totalWorkoutTime+=routine[0].trainingSec;
 
@@ -363,12 +383,22 @@ function ChatRoom(){
                             if(y%2==0){
                                 setAlarmText("User A" + " 차례입니다.\n"
                                     + routine[x].trainingSec + "초 동안 "
-                                    + routine[x].trainingName + "을 하세요.\n" + new Date());
+                                    + routine[x].trainingName + "을 하세요.\n");
+                                speech.speak({
+                                    text: 'User A' + '차례입니다.'
+                                        + routine[x].trainingSec + '초 동안 '
+                                        + routine[x].trainingName + '을 하세요.'
+                                })
                             }
                             else{
                                 setAlarmText("User B" + " 차례입니다.\n"
                                     + routine[x].trainingSec + "초 동안 "
-                                    + routine[x].trainingName + "을 하세요.\n" + new Date());
+                                    + routine[x].trainingName + "을 하세요.\n");
+                                speech.speak({
+                                    text: 'User B' + '차례입니다.'
+                                        + routine[x].trainingSec + '초 동안 '
+                                        + routine[x].trainingName + '을 하세요.'
+                                })
                             }
                         }, (time+5)*1000);
                     })(a, b, totalWorkoutTime)
@@ -381,6 +411,9 @@ function ChatRoom(){
 
         setTimeout(()=>{
             setAlarmText("운동이 모두 종료되었습니다.");
+            speech.speak({
+                text: '운동이 모두 종료되었습니다.'
+            })
             setIsWorkoutOver(!(isWorkoutOver));
         }, (totalWorkoutTime+5)*1000);
     }
@@ -401,13 +434,19 @@ function ChatRoom(){
                                 routine=res.data;
                             })
                             .then(()=>{
-                                setAlarmText("10초 후에 운동이 시작됩니다. 준비해주세요: " + new Date());
+                                setAlarmText("10초 후에 운동이 시작됩니다. 준비해주세요.");
+                                // speech.speak({
+                                //     text: '10초 후에 운동이 시작됩니다. 준비해주세요.'
+                                // })
                                 startSession();
                                 clearInterval(workoutReady);
                             })
                     }
                     else{
-                        setAlarmText("아직 준비되지 않았습니다");
+                        setAlarmText("다른 유저가 입장할 때까지 잠시 기다려 주세요.");
+                        // speech.speak({
+                        //     text: '다른 유저가 입장할 때까지 잠시 기다려 주세요.'
+                        // })
                     }
                 })
                 .catch((error)=>{
@@ -419,14 +458,16 @@ function ChatRoom(){
 
     function startSession(){
         setTimeout(()=>{
-            setAlarmText("지금부터 운동을 시작하겠습니다: " + new Date());
+            setAlarmText("지금부터 운동을 시작하겠습니다!");
+            // speech.speak({
+            //     text: '지금부터 운동을 시작하겠습니다!',
+            // })
             workoutStart();
         }, 10000)
     }
 
     return(
         <div>
-            <h1>Simple WebRTC Signalling Server</h1>
             <input type="hidden" id="id" name="id" value={id}/>
             <div class="col-lg-12 mb-3">
                 <Navbar fixed="top" color="light" light expand="xs" className="border-bottom border-gray bg-white" style={{ height: 80 }}>
