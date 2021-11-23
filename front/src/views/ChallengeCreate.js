@@ -23,10 +23,23 @@ import Hero from "./Hero";
 import axios from "axios";
 
 export default function ChallengeCreate() {
+  const [type, setType] = useState("");
+  const [isCheckedList, setIsCheckedList] = useState([false, false]);
   const [title, setTitle] = useState("");
   const [username, setUsername] = useState("");
   const [context, setContext] = useState("");
   const [file, setFile] = useState([]);
+
+  const typeHandler = (e) => {
+    e.preventDefault();
+    setType(e.target.value);
+    if (e.target.value == "photo") {
+      setIsCheckedList([true, false]);
+    } else {
+      setIsCheckedList([false, true]);
+    }
+    console.log(e.target.value);
+  };
 
   const titleHandler = (e) => {
     e.preventDefault();
@@ -52,6 +65,7 @@ export default function ChallengeCreate() {
     e.preventDefault();
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("type", type);
     formData.append("username", username);
     formData.append("title", title);
     formData.append("context", context);
@@ -89,6 +103,29 @@ export default function ChallengeCreate() {
                         <h1 className="font-weight-bold">챌린지 만들기</h1>
                         <h5>나만의 자세로 챌린지를 만들어 봐요!</h5>
                         <FormGroup>
+                          <div className="mb-3">
+                            <h10>*챌린지 타입을 선택하세요.</h10>
+                            <InputGroup className="input-group-alternative">
+                              <Input
+                                type="checkbox"
+                                name="type"
+                                value="photo"
+                                onChange={typeHandler}
+                                checked={isCheckedList[0] ? true : false}
+                              />
+                            </InputGroup>
+                            <h10>자세 챌린지 (사진 업로드)</h10>
+                            <InputGroup className="input-group-alternative">
+                              <Input
+                                type="checkbox"
+                                name="type"
+                                value="video"
+                                onChange={typeHandler}
+                                checked={isCheckedList[1] ? true : false}
+                              />
+                            </InputGroup>
+                            <h10>동작 챌린지 (동영상 업로드)</h10>
+                          </div>
                           <InputGroup className="input-group-alternative">
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>

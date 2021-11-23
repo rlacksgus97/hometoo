@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class ChallengeRequestDto {
     private MultipartFile file;
+    private String type;
     private String username;
     private String title;
     private String context;

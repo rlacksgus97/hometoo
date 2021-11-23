@@ -53,7 +53,7 @@ export default function TrialCreate() {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
-    window.location.href = "/trial";
+    window.location.href = "/challenge";
   };
 
   return (

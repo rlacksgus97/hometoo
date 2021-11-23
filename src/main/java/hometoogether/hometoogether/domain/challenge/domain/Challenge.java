@@ -20,6 +20,8 @@ public class Challenge {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String type;
+
     @OneToOne
     private ChallengePose challengePose;
 
@@ -36,7 +38,8 @@ public class Challenge {
     }
 
     @Builder
-    public Challenge(ChallengePose challengePose, String title, String context) {
+    public Challenge(ChallengePose challengePose, String title, String context, String type) {
+        this.type = type;
         this.challengePose = challengePose;
         this.title = title;
         this.context = context;

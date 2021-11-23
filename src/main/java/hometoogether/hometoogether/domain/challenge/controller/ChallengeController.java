@@ -32,8 +32,10 @@ public class ChallengeController {
 
     @PostMapping("/challenges")
     public Long save(ChallengeRequestDto param) throws IOException, ParseException {
-        return challengeService.saveChallengePhoto(param);
-//        return challengeService.saveChallengeVideo(param);
+        if (param.getType() == "photo"){
+            return challengeService.saveChallengePhoto(param);
+        }
+        return challengeService.saveChallengeVideo(param);
     }
 
     @GetMapping("/challenges/{id}")

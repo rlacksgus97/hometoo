@@ -75,6 +75,7 @@ public class ChallengeService {
 
         //Challenge 생성
         Challenge challenge = Challenge.builder()
+                .type("photo")
                 .challengePose(challengePose)
                 .title(challengeRequestDto.getTitle())
                 .context(challengeRequestDto.getContext())
@@ -113,6 +114,7 @@ public class ChallengeService {
 
         //Challenge 생성
         Challenge challenge = Challenge.builder()
+                .type("video")
                 .challengePose(challengePose)
                 .title(challengeRequestDto.getTitle())
                 .context(challengeRequestDto.getContext())

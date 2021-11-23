@@ -112,8 +112,8 @@ public class TrialService {
     }
 
     public List<TrialResponseDto> getTrialList() {
-        Sort sort = Sort.by(Sort.Direction.DESC, "create_date");
-        List<Trial> trials = trialRepository.findAll(sort);
+//        Sort sort = Sort.by(Sort.Direction.DESC, "create_date");
+        List<Trial> trials = trialRepository.findAll();
         return trials.stream().map(TrialResponseDto::new).collect(Collectors.toList());
     }
 
