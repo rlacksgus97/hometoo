@@ -22,6 +22,8 @@ public class TrialPose {
 
     private String url;
 
+    private String thumbnail_url;
+
     private String job_id;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "trial_pose")
@@ -39,8 +41,9 @@ public class TrialPose {
     private Trial trial;
 
     @Builder
-    private TrialPose(String url, List<Keypoints> keypointsList, User user, Trial trial) {
+    private TrialPose(String url, String thumbnail_url, List<Keypoints> keypointsList, User user, Trial trial) {
         this.url = url;
+        this.thumbnail_url = thumbnail_url;
         this.keypointsList = keypointsList;
         this.user = user;
         this.trial = trial;

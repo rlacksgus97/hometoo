@@ -44,6 +44,9 @@ dependencies {
 	implementation 'org.webjars:jquery:3.6.0'
 	implementation 'junit:junit:4.12'
 
+	implementation 'org.jcodec:jcodec:0.2.3'
+	implementation 'org.jcodec:jcodec-javase:0.2.3'
+
 	compileOnly 'org.projectlombok:lombok'
 //	compileOnly "org.springframework.boot:spring-boot-starter-security"
 	annotationProcessor 'org.projectlombok:lombok'

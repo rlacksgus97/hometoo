@@ -13,12 +13,18 @@ import hometoogether.hometoogether.domain.trial.repository.TrialRepository;
 import hometoogether.hometoogether.domain.user.domain.User;
 import hometoogether.hometoogether.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.jcodec.api.FrameGrab;
+import org.jcodec.api.JCodecException;
+import org.jcodec.common.model.Picture;
+import org.jcodec.scale.AWTUtil;
 import org.json.simple.parser.ParseException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,7 +44,7 @@ public class TrialService {
     private final PoseService poseService;
 
     @Transactional
-    public Long saveTrial(Long challengeId, TrialRequestDto trialRequestDto) throws IOException, ParseException {
+    public Long saveTrial(Long challengeId, TrialRequestDto trialRequestDto) throws IOException, ParseException, JCodecException {
         // parameter로 SessionUser 받아오게 구현 예정
 
         //TrialPose 생성
@@ -48,14 +54,16 @@ public class TrialService {
         File file = new File(url);
         multipartFile.transferTo(file);
 
+        String thumbnail_url = createThumbnail(file);
+
         User user = userRepository.findByUsername(trialRequestDto.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. username=" + trialRequestDto.getUsername()));
 
         TrialPose trialPose = TrialPose.builder()
                 .url(url)
+                .thumbnail_url(thumbnail_url)
                 .user(user)
                 .build();
-
         trialPoseRepository.save(trialPose);
 
         poseService.estimatePosePhoto(trialPose.getId(), url, "trial");
@@ -80,6 +88,15 @@ public class TrialService {
         trial.setChallenge(challenge);
 
         return trialRepository.save(trial).getId();
+    }
+
+    @Transactional
+    public String createThumbnail(File source) throws IOException, JCodecException {
+        String url = UUID.randomUUID().toString();
+        Picture picture = FrameGrab.getFrameFromFile(source, 0);
+        BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
+        ImageIO.write(bufferedImage, "jpg", new File(url));
+        return url;
     }
 
     @Transactional
