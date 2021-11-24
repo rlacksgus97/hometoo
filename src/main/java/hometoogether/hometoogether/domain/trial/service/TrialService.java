@@ -18,7 +18,6 @@ import org.jcodec.api.JCodecException;
 import org.jcodec.common.model.Picture;
 import org.jcodec.scale.AWTUtil;
 import org.json.simple.parser.ParseException;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,9 +26,8 @@ import javax.transaction.Transactional;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -164,6 +162,9 @@ public class TrialService {
         List<Double> keypointsB = keypointsListB.get(0).getKeypoints();
 
         double similarity = poseService.estimateSimilarity(keypointsA , keypointsB);
+        similarity = similarity * 100;
+        trial.setScore(similarity);
+        trialRepository.save(trial);
 
         return similarity;
     }
@@ -173,6 +174,8 @@ public class TrialService {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + 0));
         List<Trial> trials = challenge.getTrialList();
+        MyComparator comparator = new MyComparator();
+        Collections.sort(trials, comparator);
         List<Trial> best_trials;
         if (trials.size() < 5){
             best_trials = trials.subList(0, trials.size());

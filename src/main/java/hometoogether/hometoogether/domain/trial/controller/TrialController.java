@@ -1,9 +1,7 @@
 package hometoogether.hometoogether.domain.trial.controller;
 
 import hometoogether.hometoogether.domain.challenge.domain.Challenge;
-import hometoogether.hometoogether.domain.challenge.dto.ChallengeDetailResponseDto;
 import hometoogether.hometoogether.domain.challenge.repository.ChallengeRepository;
-import hometoogether.hometoogether.domain.challenge.service.ChallengeService;
 import hometoogether.hometoogether.domain.trial.dto.TrialRequestDto;
 import hometoogether.hometoogether.domain.trial.dto.TrialResponseDto;
 import hometoogether.hometoogether.domain.trial.service.TrialService;
