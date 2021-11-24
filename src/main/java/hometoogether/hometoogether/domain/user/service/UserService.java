@@ -42,6 +42,7 @@ public class UserService {
 
     @Transactional
     public String singUp(SignUpRequest signUpRequest) {
+        //TODO: username 중복체크 같이
         if (userRepository.existsUserByEmail(signUpRequest.getEmail())) {
             return "EXIST";
         }
