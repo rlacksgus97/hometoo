@@ -105,7 +105,7 @@ class Register extends React.Component {
                   <Card className="bg-secondary shadow border-0">
                     <CardHeader className="bg-white pb-5">
                       <div className="text-muted text-center mb-3">
-                        <small>구글 이메일을 통한 회원가입</small>
+                        <h2>회원가입</h2>
                       </div>
                       <div className="text-center">
                         {/*<Button*/}
@@ -122,20 +122,20 @@ class Register extends React.Component {
                         {/*  </span>*/}
                         {/*  <span className="btn-inner--text">Github</span>*/}
                         {/*</Button>*/}
-                        <Button
-                          className="btn-neutral btn-icon ml-1"
-                          color="default"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <span className="btn-inner--icon mr-1">
-                            <img
-                              alt="..."
-                              src={require("assets/img/icons/common/google.svg")}
-                            />
-                          </span>
-                          <span className="btn-inner--text">Google</span>
-                        </Button>
+                        {/*<Button*/}
+                        {/*  className="btn-neutral btn-icon ml-1"*/}
+                        {/*  color="default"*/}
+                        {/*  href="#pablo"*/}
+                        {/*  onClick={e => e.preventDefault()}*/}
+                        {/*>*/}
+                        {/*  <span className="btn-inner--icon mr-1">*/}
+                        {/*    <img*/}
+                        {/*      alt="..."*/}
+                        {/*      src={require("assets/img/icons/common/google.svg")}*/}
+                        {/*    />*/}
+                        {/*  </span>*/}
+                        {/*  <span className="btn-inner--text">Google</span>*/}
+                        {/*</Button>*/}
                       </div>
                     </CardHeader>
                     <CardBody className="px-lg-5 py-lg-5">
