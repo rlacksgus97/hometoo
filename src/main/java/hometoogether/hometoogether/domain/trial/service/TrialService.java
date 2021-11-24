@@ -168,15 +168,32 @@ public class TrialService {
         return similarity;
     }
 
+    @Transactional
+    public List<TrialResponseDto> getBestTrials(Long challengeId) {
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + 0));
+        List<Trial> trials = challenge.getTrialList();
+        List<Trial> best_trials;
+        if (trials.size() < 5){
+            best_trials = trials.subList(0, trials.size());
+        } else{
+            best_trials = trials.subList(0, 5);
+        }
+        return best_trials.stream().map(TrialResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Transactional
     public TrialResponseDto getTrial(Long trialId) {
         Trial trial = trialRepository.findById(trialId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + trialId));
         return new TrialResponseDto(trial);
     }
 
-    public List<TrialResponseDto> getTrialList() {
-//        Sort sort = Sort.by(Sort.Direction.DESC, "create_date");
-        List<Trial> trials = trialRepository.findAll();
+    @Transactional
+    public List<TrialResponseDto> getTrialList(Long challengeId) {
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + 0));
+        List<Trial> trials = challenge.getTrialList();
         return trials.stream().map(TrialResponseDto::new).collect(Collectors.toList());
     }
 

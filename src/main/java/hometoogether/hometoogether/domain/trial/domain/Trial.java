@@ -19,6 +19,8 @@ public class Trial {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Double score;
+
     @OneToOne
     private TrialPose trialPose;
 

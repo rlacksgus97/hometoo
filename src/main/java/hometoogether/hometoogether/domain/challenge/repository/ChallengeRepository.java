@@ -8,6 +8,5 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
-
     List<Challenge> findTop5ByOrderByTrial_countDesc();
 }

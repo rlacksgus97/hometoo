@@ -38,18 +38,23 @@ public class TrialController {
         return trialService.runSimilarity(challengeId, trialId);
     }
 
-    @GetMapping("/challenges/{challengeId}/trials/{id}")
-    public TrialResponseDto getDetail(@PathVariable("id") Long trialId){
+    @GetMapping("/challenges/{challengeId}/best_trials")
+    public List<TrialResponseDto> getBestTrialList(@PathVariable("challengeId") Long challengeId){
+        return trialService.getBestTrials(challengeId);
+    }
+
+    @GetMapping("/challenges/{challengeId}/trials/{trialid}")
+    public TrialResponseDto getDetail(@PathVariable("trialid") Long trialId){
         return trialService.getTrial(trialId);
     }
 
     @GetMapping("/challenges/{challengeId}/trials")
-    public List<TrialResponseDto> getList(){
-        return trialService.getTrialList();
+    public List<TrialResponseDto> getList(@PathVariable("challengeId") Long challengeId){
+        return trialService.getTrialList(challengeId);
     }
 
-    @DeleteMapping("/challenges/{challengeId}/trials/{id}")
-    public Long delete(@PathVariable("id") Long trialId){
+    @DeleteMapping("/challenges/{challengeId}/trials/{trialid}")
+    public Long delete(@PathVariable("trialid") Long trialId){
         return trialService.deleteTrial(trialId);
     }
 }
