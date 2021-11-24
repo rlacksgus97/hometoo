@@ -153,19 +153,8 @@ public class PoseService {
         }
 
         try {
-            Thread.sleep(300000);
-            List<Keypoints> keypoints = estimatePoseDetailVideo(job_id);
-            if (pose_type == "challenge")
-            {
-                ChallengePose challengePose = challengePoseRepository.getById(pose_id);
-                challengePose.setKeypointsList(keypoints);
-                challengePoseRepository.save(challengePose);
-            }
-            else if (pose_type == "trial"){
-                TrialPose trialPose = trialPoseRepository.getById(pose_id);
-                trialPose.setKeypointsList(keypoints);
-                trialPoseRepository.save(trialPose);
-            }
+            Thread.sleep(60000);
+            estimatePoseDetailVideo(job_id, pose_id, pose_type);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -174,7 +163,7 @@ public class PoseService {
     }
 
     @Transactional
-    public List<Keypoints> estimatePoseDetailVideo(String job_id) throws ParseException {
+    public void estimatePoseDetailVideo(String job_id, Long pose_id, String pose_type) throws ParseException, InterruptedException {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -195,6 +184,20 @@ public class PoseService {
 
         JSONParser jsonParse = new JSONParser();
         JSONObject jsonObj = (JSONObject) jsonParse.parse(response.getBody());
+
+        String status = (String) jsonObj.get("status");
+        while ("success".equals(status) == false){
+            Thread.sleep(60000);
+            response = rt.exchange(
+                    "https://cv-api.kakaobrain.com/pose/job/"+job_id,
+                    HttpMethod.GET,
+                    entity,
+                    String.class
+            );
+            jsonObj = (JSONObject) jsonParse.parse(response.getBody());
+            status = (String) jsonObj.get("status");
+        }
+
         JSONArray jsonArr = (JSONArray) jsonObj.get("annotations");
 
         JSONObject example = (JSONObject) jsonArr.get(5);
@@ -204,24 +207,64 @@ public class PoseService {
         List<Double> example5 = (List<Double>) example4;
         System.out.println("example = " + example5);
 
-        List<Keypoints> keypointsList = new ArrayList<Keypoints>();
-        for (int i=0; i<jsonArr.size(); i++) {
-            JSONObject jsonPart = (JSONObject) jsonArr.get(i);
-            JSONArray objectArr = (JSONArray) jsonPart.get("objects");
-            System.out.println("i = " + i);
-            if (objectArr.size() != 0){
-                JSONObject object = (JSONObject) objectArr.get(0);
-                JSONArray JSON_keypoints = (JSONArray) object.get("keypoints");
-                List<Double> keypoints = (List<Double>) JSON_keypoints;
-                Keypoints kp = Keypoints.builder()
-                        .keypoints(keypoints)
-                        .build();
-                keypointsRepository.save(kp);
-                keypointsList.add(kp);
+        if ("challenge".equals(pose_type))
+        {
+            ChallengePose challengePose = challengePoseRepository.getById(pose_id);
+            for (int i=0; i<jsonArr.size(); i++) {
+                JSONObject jsonPart = (JSONObject) jsonArr.get(i);
+                JSONArray objectArr = (JSONArray) jsonPart.get("objects");
+                System.out.println("i = " + i);
+                if (objectArr.size() != 0){
+                    JSONObject object = (JSONObject) objectArr.get(0);
+                    JSONArray JSON_keypoints = (JSONArray) object.get("keypoints");
+                    List<Double> keypoints = (List<Double>) JSON_keypoints;
+                    Keypoints kp = Keypoints.builder()
+                            .keypoints(keypoints)
+                            .build();
+                    challengePose.addKeypoints(kp);
+                    keypointsRepository.save(kp);
+                }
             }
+            challengePoseRepository.save(challengePose);
+        }
+        else if ("trial".equals(pose_type)){
+            TrialPose trialPose = trialPoseRepository.getById(pose_id);
+            for (int i=0; i<jsonArr.size(); i++) {
+                JSONObject jsonPart = (JSONObject) jsonArr.get(i);
+                JSONArray objectArr = (JSONArray) jsonPart.get("objects");
+                System.out.println("i = " + i);
+                if (objectArr.size() != 0){
+                    JSONObject object = (JSONObject) objectArr.get(0);
+                    JSONArray JSON_keypoints = (JSONArray) object.get("keypoints");
+                    List<Double> keypoints = (List<Double>) JSON_keypoints;
+                    Keypoints kp = Keypoints.builder()
+                            .keypoints(keypoints)
+                            .build();
+                    trialPose.addKeypoints(kp);
+                    keypointsRepository.save(kp);
+                }
+            }
+            trialPoseRepository.save(trialPose);
         }
 
-        return keypointsList;
+//        List<Keypoints> keypointsList = new ArrayList<Keypoints>();
+//        for (int i=0; i<jsonArr.size(); i++) {
+//            JSONObject jsonPart = (JSONObject) jsonArr.get(i);
+//            JSONArray objectArr = (JSONArray) jsonPart.get("objects");
+//            System.out.println("i = " + i);
+//            if (objectArr.size() != 0){
+//                JSONObject object = (JSONObject) objectArr.get(0);
+//                JSONArray JSON_keypoints = (JSONArray) object.get("keypoints");
+//                List<Double> keypoints = (List<Double>) JSON_keypoints;
+//                Keypoints kp = Keypoints.builder()
+//                        .keypoints(keypoints)
+//                        .build();
+//                keypointsRepository.save(kp);
+//                keypointsList.add(kp);
+//            }
+//        }
+
+        return;
     }
 
     public double estimateSimilarity(List<Double> pose1, List<Double> pose2){

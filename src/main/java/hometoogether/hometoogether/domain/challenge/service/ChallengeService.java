@@ -155,7 +155,7 @@ public class ChallengeService {
 
     @Transactional
     public List<ChallengeResponseDto> getTrendingChallenges() {
-        List<Challenge> challenges = challengeRepository.findTop5ByOrderByTrial_countDesc();
+        List<Challenge> challenges = challengeRepository.findTop5ByOrderByTrialCountDesc();
         return challenges.stream().map(ChallengeResponseDto::new).collect(Collectors.toList());
     }
 
