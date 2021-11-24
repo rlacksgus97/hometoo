@@ -94,7 +94,7 @@ public class ChallengeService {
     }
 
     @Transactional
-    public Long saveChallengeVideo(ChallengeRequestDto challengeRequestDto) throws IOException, ParseException, JCodecException {
+    public Long saveChallengeVideo(ChallengeRequestDto challengeRequestDto) throws IOException, ParseException, JCodecException, InterruptedException {
         // parameter로 SessionUser 받아오게 구현 예정
 
         //ChallengePose 생성
@@ -104,14 +104,18 @@ public class ChallengeService {
         File file = new File(url);
         multipartFile.transferTo(file);
 
-        String thumbnail_url = createThumbnail(file);
+//        Thread.sleep(5000);
+//        String thumbnail_url = UUID.randomUUID().toString();
+//        Picture picture = FrameGrab.getFrameFromFile(file, 15);
+//        BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
+//        ImageIO.write(bufferedImage, "jpg", new File(url));
 
         User user = userRepository.findByUsername(challengeRequestDto.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. username=" + challengeRequestDto.getUsername()));
 
         ChallengePose challengePose = ChallengePose.builder()
                 .url(url)
-                .thumbnail_url(thumbnail_url)
+//                .thumbnail_url(thumbnail_url)
                 .user(user)
                 .build();
         challengePoseRepository.save(challengePose);

@@ -5,23 +5,11 @@ import hometoogether.hometoogether.domain.challenge.dto.ChallengeRequestDto;
 import hometoogether.hometoogether.domain.challenge.dto.ChallengeResponseDto;
 import hometoogether.hometoogether.domain.challenge.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.IOUtils;
+import org.jcodec.api.JCodecException;
 import org.json.simple.parser.ParseException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -31,10 +19,13 @@ public class ChallengeController {
     private final ChallengeService challengeService;
 
     @PostMapping("/challenges")
-    public Long save(ChallengeRequestDto param) throws IOException, ParseException {
-        if (param.getType() == "photo"){
+    public Long save(ChallengeRequestDto param) throws IOException, ParseException, JCodecException, InterruptedException {
+        System.out.println("param.getType() = " + param.getType());
+        if ("photo".equals(param.getType())){
+            System.out.println("HI IM HERE");
             return challengeService.saveChallengePhoto(param);
         }
+        System.out.println("NO IM THERE");
         return challengeService.saveChallengeVideo(param);
     }
 

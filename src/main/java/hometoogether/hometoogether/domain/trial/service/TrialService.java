@@ -44,7 +44,7 @@ public class TrialService {
     private final PoseService poseService;
 
     @Transactional
-    public Long saveTrial(Long challengeId, TrialRequestDto trialRequestDto) throws IOException, ParseException, JCodecException {
+    public Long saveTrialPhoto(Long challengeId, TrialRequestDto trialRequestDto) throws IOException, ParseException, JCodecException {
         // parameter로 SessionUser 받아오게 구현 예정
 
         //TrialPose 생성
@@ -54,20 +54,66 @@ public class TrialService {
         File file = new File(url);
         multipartFile.transferTo(file);
 
-        String thumbnail_url = createThumbnail(file);
+//        String thumbnail_url = createThumbnail(file);
 
         User user = userRepository.findByUsername(trialRequestDto.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. username=" + trialRequestDto.getUsername()));
 
         TrialPose trialPose = TrialPose.builder()
                 .url(url)
-                .thumbnail_url(thumbnail_url)
+//                .thumbnail_url(thumbnail_url)
                 .user(user)
                 .build();
         trialPoseRepository.save(trialPose);
 
         poseService.estimatePosePhoto(trialPose.getId(), url, "trial");
 //        poseService.estimatePoseVideo(trialPose.getId(), url, "trial");
+
+        //User <-> ChallengePose 매핑
+        user.addTrialPose(trialPose);
+
+        //Trial 생성
+        Trial trial = Trial.builder()
+                .trialPose(trialPose)
+                .build();
+
+        //trialPose <-> trial 상호 매핑
+        trialPose.setTrial(trial);
+
+        //Trial <-> Challenge 상호 매핑
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + challengeId));
+        challenge.addTrial(trial);
+
+        trial.setChallenge(challenge);
+
+        return trialRepository.save(trial).getId();
+    }
+
+    @Transactional
+    public Long saveTrialVideo(Long challengeId, TrialRequestDto trialRequestDto) throws IOException, ParseException, JCodecException {
+        // parameter로 SessionUser 받아오게 구현 예정
+
+        //TrialPose 생성
+        //url, poseInfoList, user
+        MultipartFile multipartFile = trialRequestDto.getFile();
+        String url = UUID.randomUUID().toString() + "_" + multipartFile.getOriginalFilename();
+        File file = new File(url);
+        multipartFile.transferTo(file);
+
+//        String thumbnail_url = createThumbnail(file);
+
+        User user = userRepository.findByUsername(trialRequestDto.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. username=" + trialRequestDto.getUsername()));
+
+        TrialPose trialPose = TrialPose.builder()
+                .url(url)
+//                .thumbnail_url(thumbnail_url)
+                .user(user)
+                .build();
+        trialPoseRepository.save(trialPose);
+
+        poseService.estimatePoseVideo(trialPose.getId(), url, "trial");
 
         //User <-> ChallengePose 매핑
         user.addTrialPose(trialPose);

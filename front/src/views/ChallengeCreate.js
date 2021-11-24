@@ -174,6 +174,7 @@ export default function ChallengeCreate() {
                           <InputGroup className="input-group-alternative">
                             <Input
                               type="file"
+                              accept="image/*, video/*"
                               // name="file"
                               // value={file}
                               onChange={fileHandler}

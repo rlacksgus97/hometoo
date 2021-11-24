@@ -116,7 +116,7 @@ public class PoseService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add("Authorization", "KakaoAK 19a4097fe8917a985bb1a7acc9ce2fb1");
+        headers.add("Authorization", "KakaoAK e77f96acc7076a928b06d2fa9a480474");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("video_url", "http://221.143.144.143:80/"+url);
@@ -141,13 +141,15 @@ public class PoseService {
             System.out.println("I'm challenge\n");
             ChallengePose challengePose = challengePoseRepository.findById(pose_id)
                     .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + pose_id));
-            challengePose.update_Job_id(job_id);
+            challengePose.setJob_id(job_id);
+            challengePoseRepository.save(challengePose);
         }
         else if (pose_type == "trial"){
             System.out.println("I'm trial\n");
             TrialPose trialPose = trialPoseRepository.findById(pose_id)
                     .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + pose_id));
-            trialPose.update(job_id);
+            trialPose.setJob_id(job_id);
+            trialPoseRepository.save(trialPose);
         }
 
         try {
@@ -156,11 +158,13 @@ public class PoseService {
             if (pose_type == "challenge")
             {
                 ChallengePose challengePose = challengePoseRepository.getById(pose_id);
-                challengePose.update_KeypointsList(keypoints);
+                challengePose.setKeypointsList(keypoints);
+                challengePoseRepository.save(challengePose);
             }
             else if (pose_type == "trial"){
                 TrialPose trialPose = trialPoseRepository.getById(pose_id);
                 trialPose.setKeypointsList(keypoints);
+                trialPoseRepository.save(trialPose);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -174,7 +178,7 @@ public class PoseService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add("Authorization", "KakaoAK 19a4097fe8917a985bb1a7acc9ce2fb1");
+        headers.add("Authorization", "KakaoAK e77f96acc7076a928b06d2fa9a480474");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("job_id", job_id);
@@ -373,7 +377,7 @@ public class PoseService {
                 DTW[i][j] = 10000;
             }
         }
-        DTW[lengthA-1][lengthB-1] = 0;
+        DTW[0][0] = 0;
 
         double cost = 0;
         for (int i = 1; i < lengthA+1; i++){
@@ -383,7 +387,15 @@ public class PoseService {
                 ArrayList<Double> kpListB = new ArrayList<Double>();
                 kpListB.addAll(keypointsListB.get(j-1).getKeypoints());
                 cost = estimateSimilarity(kpListA , kpListB);
-                DTW[i][j] = cost + Math.max(Math.max(DTW[i-1][j], DTW[i][j-1]), DTW[i-1][j-1]);
+                if (DTW[i-1][j] == 10000 && DTW[i][j-1] == 10000){
+                    DTW[i][j] = (cost + DTW[i-1][j-1]) / 2;
+                } else if (DTW[i-1][j-1] == 10000 && DTW[i-1][j] == 10000){
+                    DTW[i][j] = (cost + DTW[i][j-1]) / 2;
+                } else if (DTW[i-1][j-1] == 10000 && DTW[i][j-1] == 10000){
+                    DTW[i][j] = (cost + DTW[i-1][j]) / 2;
+                } else {
+                    DTW[i][j] = (cost + Math.max(Math.max(DTW[i-1][j], DTW[i][j-1]), DTW[i-1][j-1])) / 2;
+                }
             }
         }
 

@@ -33,6 +33,12 @@ export default function ChallengeCard(props) {
         <CardText>{props.challenge.context}</CardText>
         <div style={{ display: "flex" }}>
           <Button
+            color={props.challenge.type === "photo" ? "success" : "warning"}
+            style={{ marginRight: "auto" }}
+          >
+            {props.challenge.type}
+          </Button>
+          <Button
             color="primary"
             style={{ marginLeft: "auto" }}
             onClick={() => {
