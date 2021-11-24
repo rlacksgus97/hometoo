@@ -79,6 +79,13 @@ class Login extends React.Component {
     }).catch(() => {
       alert('이메일 혹은 비밀번호가 틀립니다.');
     });
+
+    let userName = "";
+    UserService.getUserName(user).then(res => {
+      console.log("testname => " + user);
+      userName = res.data['userName'];
+      localStorage.setItem("authenticatedUserName", userName);
+    });
   }
 
 
@@ -109,38 +116,38 @@ class Login extends React.Component {
                   <Card className="bg-secondary shadow border-0">
                     <CardHeader className="bg-white pb-5">
                       <div className="text-muted text-center mb-3">
-                        <small>구글 로그인</small>
+                        <h2>로그인</h2>
                       </div>
-                      <div className="btn-wrapper text-center">
-                        {/*<Button*/}
-                        {/*  className="btn-neutral btn-icon"*/}
-                        {/*  color="default"*/}
-                        {/*  href="#pablo"*/}
-                        {/*  onClick={e => e.preventDefault()}*/}
-                        {/*>*/}
-                        {/*  <span className="btn-inner--icon mr-1">*/}
-                        {/*    <img*/}
-                        {/*      alt="..."*/}
-                        {/*      src={require("assets/img/icons/common/github.svg")}*/}
-                        {/*    />*/}
-                        {/*  </span>*/}
-                        {/*  <span className="btn-inner--text">Github</span>*/}
-                        {/*</Button>*/}
-                        <Button
-                          className="btn-neutral btn-icon ml-1"
-                          color="default"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <span className="btn-inner--icon mr-1">
-                            <img
-                              alt="..."
-                              src={require("assets/img/icons/common/google.svg")}
-                            />
-                          </span>
-                          <span className="btn-inner--text">Google</span>
-                        </Button>
-                      </div>
+                      {/*<div className="btn-wrapper text-center">*/}
+                      {/*  /!*<Button*!/*/}
+                      {/*  /!*  className="btn-neutral btn-icon"*!/*/}
+                      {/*  /!*  color="default"*!/*/}
+                      {/*  /!*  href="#pablo"*!/*/}
+                      {/*  /!*  onClick={e => e.preventDefault()}*!/*/}
+                      {/*  /!*>*!/*/}
+                      {/*  /!*  <span className="btn-inner--icon mr-1">*!/*/}
+                      {/*  /!*    <img*!/*/}
+                      {/*  /!*      alt="..."*!/*/}
+                      {/*  /!*      src={require("assets/img/icons/common/github.svg")}*!/*/}
+                      {/*  /!*    />*!/*/}
+                      {/*  /!*  </span>*!/*/}
+                      {/*  /!*  <span className="btn-inner--text">Github</span>*!/*/}
+                      {/*  /!*</Button>*!/*/}
+                      {/*  <Button*/}
+                      {/*    className="btn-neutral btn-icon ml-1"*/}
+                      {/*    color="default"*/}
+                      {/*    href="#pablo"*/}
+                      {/*    onClick={e => e.preventDefault()}*/}
+                      {/*  >*/}
+                      {/*    <span className="btn-inner--icon mr-1">*/}
+                      {/*      <img*/}
+                      {/*        alt="..."*/}
+                      {/*        src={require("assets/img/icons/common/google.svg")}*/}
+                      {/*      />*/}
+                      {/*    </span>*/}
+                      {/*    <span className="btn-inner--text">Google</span>*/}
+                      {/*  </Button>*/}
+                      {/*</div>*/}
                     </CardHeader>
                     <CardBody className="px-lg-5 py-lg-5">
                       <div className="text-center text-muted mb-4">
@@ -192,7 +199,7 @@ class Login extends React.Component {
                             type="button"
                             onClick={this.loginUser}
                           >
-                            Sign in
+                            로그인
                           </Button>
                         </div>
                       </Form>

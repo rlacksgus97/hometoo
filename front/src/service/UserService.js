@@ -13,14 +13,14 @@ class UserService {
     }
 
     logout() {
-        localStorage.removeItem("authenticatedUser");
+        localStorage.removeItem("authenticatedUserName");
+        localStorage.removeItem("authenticatedUserEmail");
         localStorage.removeItem("token");
         window.location.href='/login';
     }
 
     isUserLoggedIn() {
         const token = localStorage.getItem("token");
-        console.log("Userloggedincheck => " + token);
 
         if (token) {
             return true;
@@ -30,11 +30,18 @@ class UserService {
     }
 
     getLoggedInUserName() {
-        let user = localStorage.getItem("authenticatedUser");
+        let user = localStorage.getItem("authenticatedUserName");
         if (user === null) {
             return '';
         } else {
             return user;
+        }
+    }
+
+    pageLoginCheck() {
+        if (!this.isUserLoggedIn()) {
+            alert('로그인 해주세요');
+            window.location.href = '/login';
         }
     }
 
@@ -44,8 +51,7 @@ class UserService {
 
     registerSuccessfulLoginForJwt(user, token) {
         localStorage.setItem("token", token);
-        // localStorage.setItem("userName", user.name);
-        localStorage.setItem("authenticatedUser", user.email);
+        localStorage.setItem("authenticatedUserEmail", user.email);
         this.setupAxiosInterceptors();
     }
 
@@ -71,6 +77,10 @@ class UserService {
 
     findPassword(email) {
         return axios.patch(USER_API_BASE_URL+"/find/password", email);
+    }
+
+    getUserName(user) {
+        return axios.get(USER_API_BASE_URL+"/find/userName/"+user.email);
     }
 
 }

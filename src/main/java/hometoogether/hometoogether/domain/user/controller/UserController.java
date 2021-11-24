@@ -6,6 +6,7 @@ import hometoogether.hometoogether.config.jwt.JwtTokenProvider;
 import hometoogether.hometoogether.domain.user.domain.LoginRequest;
 import hometoogether.hometoogether.domain.user.domain.PasswordFindReqeust;
 import hometoogether.hometoogether.domain.user.domain.SignUpRequest;
+import hometoogether.hometoogether.domain.user.domain.User;
 import hometoogether.hometoogether.domain.user.repository.UserRepository;
 import hometoogether.hometoogether.domain.user.service.UserService;
 import lombok.Getter;
@@ -50,4 +51,8 @@ public class UserController {
         return ResponseEntity.ok(userService.resetPassword(passwordFindReqeust));
     }
 
+    @GetMapping("/find/userName/{email}")
+    public User findUser(@PathVariable String email) {
+        return userService.findUser(email);
+    }
 }
