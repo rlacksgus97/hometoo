@@ -43,7 +43,7 @@ class BoardCreate extends React.Component {
 
         this.state = {
             title: '',
-            writer: '',
+            writer: localStorage.getItem("authenticatedUserEmail"),
             contents: '',
             type: 'F',
             delYn: 'N'
@@ -226,6 +226,7 @@ class BoardCreate extends React.Component {
                                                         onBlur={e => this.setState({ emailFocused: false })}
                                                         value={this.state.writer}
                                                         onChange={this.changeWriterHandler}
+                                                        disabled={true}
                                                     />
                                                 </InputGroup>
                                             </FormGroup>

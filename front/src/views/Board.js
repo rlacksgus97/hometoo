@@ -43,6 +43,7 @@ import "assets/scss/argon-design-system-react.scss";
 
 // axios BoardService
 import BoardService from '../service/BoardService';
+import UserService from "../service/UserService";
 
 // index page sections
 // import Download from "../IndexSections/Download.js";
@@ -319,146 +320,8 @@ class Board extends React.Component {
                         </Row>
                     </Container>
                     </section>
-                    {/*정보게시판*/}
-                    {/*<section className="section section-lg pt-lg-0 section-contact-us">*/}
-                    {/*<Container className="justify-content-md-center" fluid>*/}
-                    {/*    /!* Table *!/*/}
-                    {/*    <Row>*/}
-                    {/*        <div className="col">*/}
-                    {/*            <Card className="shadow">*/}
-                    {/*                <CardHeader className="border-0">*/}
-                    {/*                    <Row>*/}
-                    {/*                        <Col className="col-sm">*/}
-                    {/*                            <h1 className="display-3 text-black">정보게시판</h1>*/}
-                    {/*                        </Col>*/}
-                    {/*                        <Button*/}
-                    {/*                            className="btn-white btn-icon mb-3 mb-sm-0 ml-1"*/}
-                    {/*                            color="default"*/}
-                    {/*                            onClick={this.createBoard}*/}
-                    {/*                        >*/}
-                    {/*      <span className="btn-inner--icon mr-1">*/}
-                    {/*        <i className="ni ni-fat-add" />*/}
-                    {/*      </span>*/}
-                    {/*                            <span className="btn-inner--text">*/}
-                    {/*        글 쓰기*/}
-                    {/*      </span>*/}
-                    {/*                        </Button>*/}
-                    {/*                    </Row>*/}
-                    {/*                </CardHeader>*/}
-                    {/*                <Table className="align-items-center table-flush" responsive>*/}
-                    {/*                    <thead className="thead-light">*/}
-                    {/*                    <tr>*/}
-                    {/*                        <th scope="col">글 번호</th>*/}
-                    {/*                        <th scope="col">제목</th>*/}
-                    {/*                        <th scope="col">작성자</th>*/}
-                    {/*                        <th scope="col">작성일</th>*/}
-                    {/*                        <th scope="col">수정일</th>*/}
-                    {/*                        <th scope="col">조회수</th>*/}
-                    {/*                        <th scope="col" />*/}
-                    {/*                    </tr>*/}
-                    {/*                    </thead>*/}
-                    {/*                    <tbody>*/}
-                    {/*                    {*/}
-                    {/*                        this.state.boards.map(*/}
-                    {/*                            board =>*/}
-                    {/*                                <tr key={board.forumId}>*/}
-                    {/*                                    <td> {board.forumId} </td>*/}
-                    {/*                                    <td id="cursor"> <a onClick={() => this.readBoard(board.forumId)}> {board.title} </a></td>*/}
-                    {/*                                    <td> {board.writer}</td>*/}
-                    {/*                                    <td id="createDate"> {board.createDate}</td>*/}
-                    {/*                                    <td id="updateDate"> {board.updateDate}</td>*/}
-                    {/*                                    <td> {board.hits}</td>*/}
-                    {/*                                    <td className="text-right">*/}
-                    {/*                                        <UncontrolledDropdown>*/}
-                    {/*                                            <DropdownToggle*/}
-                    {/*                                                className="btn-icon-only text-light"*/}
-                    {/*                                                href="#pablo"*/}
-                    {/*                                                role="button"*/}
-                    {/*                                                size="sm"*/}
-                    {/*                                                color=""*/}
-                    {/*                                                onClick={(e) => e.preventDefault()}*/}
-                    {/*                                            >*/}
-                    {/*                                                <i className="ni ni-bold-down"/>*/}
-                    {/*                                            </DropdownToggle>*/}
-                    {/*                                            <DropdownMenu className="dropdown-menu-arrow" right>*/}
-                    {/*                                                <DropdownItem*/}
-                    {/*                                                    onClick={() => this.updateBoard(board.forumId)}*/}
-                    {/*                                                >*/}
-                    {/*                                                    수정*/}
-                    {/*                                                </DropdownItem>*/}
-                    {/*                                                <DropdownItem*/}
-                    {/*                                                    onClick={() => this.deleteBoardView(board.forumId)}*/}
-                    {/*                                                >*/}
-                    {/*                                                    삭제*/}
-                    {/*                                                </DropdownItem>*/}
-                    {/*                                            </DropdownMenu>*/}
-                    {/*                                        </UncontrolledDropdown>*/}
-                    {/*                                    </td>*/}
-                    {/*                                </tr>*/}
-                    {/*                        )*/}
-                    {/*                    }*/}
-                    {/*                    </tbody>*/}
-                    {/*                </Table>*/}
-                    {/*                <CardFooter className="py-4">*/}
-                    {/*                    <nav aria-label="...">*/}
-                    {/*                        <Pagination*/}
-                    {/*                            className="pagination justify-content-end mb-0"*/}
-                    {/*                            listClassName="justify-content-end mb-0"*/}
-                    {/*                        >*/}
-                    {/*                            <PaginationItem className="disabled">*/}
-                    {/*                                <PaginationLink*/}
-                    {/*                                    href="#pablo"*/}
-                    {/*                                    onClick={(e) => e.preventDefault()}*/}
-                    {/*                                    tabIndex="-1"*/}
-                    {/*                                >*/}
-                    {/*                                    <i className="fa fa-angle-left" />*/}
-                    {/*                                    <span className="sr-only">Previous</span>*/}
-                    {/*                                </PaginationLink>*/}
-                    {/*                            </PaginationItem>*/}
-                    {/*                            <PaginationItem className="active">*/}
-                    {/*                                <PaginationLink*/}
-                    {/*                                    href="#pablo"*/}
-                    {/*                                    onClick={(e) => e.preventDefault()}*/}
-                    {/*                                >*/}
-                    {/*                                    1*/}
-                    {/*                                </PaginationLink>*/}
-                    {/*                            </PaginationItem>*/}
-                    {/*                            <PaginationItem>*/}
-                    {/*                                <PaginationLink*/}
-                    {/*                                    href="#pablo"*/}
-                    {/*                                    onClick={(e) => e.preventDefault()}*/}
-                    {/*                                >*/}
-                    {/*                                    2 <span className="sr-only">(current)</span>*/}
-                    {/*                                </PaginationLink>*/}
-                    {/*                            </PaginationItem>*/}
-                    {/*                            <PaginationItem>*/}
-                    {/*                                <PaginationLink*/}
-                    {/*                                    href="#pablo"*/}
-                    {/*                                    onClick={(e) => e.preventDefault()}*/}
-                    {/*                                >*/}
-                    {/*                                    3*/}
-                    {/*                                </PaginationLink>*/}
-                    {/*                            </PaginationItem>*/}
-                    {/*                            <PaginationItem>*/}
-                    {/*                                <PaginationLink*/}
-                    {/*                                    href="#pablo"*/}
-                    {/*                                    onClick={(e) => e.preventDefault()}*/}
-                    {/*                                >*/}
-                    {/*                                    <i className="fa fa-angle-right" />*/}
-                    {/*                                    <span className="sr-only">Next</span>*/}
-                    {/*                                </PaginationLink>*/}
-                    {/*                            </PaginationItem>*/}
-                    {/*                        </Pagination>*/}
-                    {/*                    </nav>*/}
-                    {/*                </CardFooter>*/}
-                    {/*            </Card>*/}
-                    {/*        </div>*/}
-                    {/*    </Row>*/}
-                    {/*</Container>*/}
-                    {/*</section>*/}
-                    {/*<Download />*/}
                 </main>
-                <CardsFooter />
+                {/*<CardsFooter />*/}
             </>
         );
     }
