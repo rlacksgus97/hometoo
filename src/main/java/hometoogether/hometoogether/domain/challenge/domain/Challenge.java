@@ -32,9 +32,12 @@ public class Challenge {
     @OneToMany
     private List<Trial> trialList;
 
+    private Integer trial_count = 0;
+
     public void addTrial(Trial trial) {
         trial.setChallenge(this);
         this.trialList.add(trial);
+        this.trial_count += 1;
     }
 
     @Builder

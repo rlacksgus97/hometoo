@@ -39,6 +39,11 @@ public class ChallengeController {
         return challengeService.getChallengeList();
     }
 
+    @GetMapping("/challenges/trending")
+    public List<ChallengeResponseDto> getTrendingList(){
+        return challengeService.getTrendingChallenges();
+    }
+
     @PutMapping("/challenges/{id}")
     public Long update(@PathVariable("id") Long challengeId, ChallengeRequestDto param){
         return challengeService.updateChallenge(challengeId, param);

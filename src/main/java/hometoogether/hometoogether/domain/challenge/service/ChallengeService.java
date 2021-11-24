@@ -156,6 +156,12 @@ public class ChallengeService {
     }
 
     @Transactional
+    public List<ChallengeResponseDto> getTrendingChallenges() {
+        List<Challenge> challenges = challengeRepository.findTop5ByOrderByTrial_countDesc();
+        return challenges.stream().map(ChallengeResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Transactional
     public List<ChallengeResponseDto> getChallengeList() {
 //        Sort sort = Sort.by(Sort.Direction.DESC, "create_date");
         List<Challenge> challenges = challengeRepository.findAll();
