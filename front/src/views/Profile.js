@@ -17,8 +17,17 @@ import "assets/scss/argon-design-system-react.scss";
 import UserService from "../service/UserService";
 
 class Profile extends React.Component {
+  state = {};
+
   constructor(props) {
     super(props);
+    this.state = {
+      email: localStorage.getItem("authenticatedUserEmail"),
+      name: localStorage.getItem("authenticatedUserName"),
+      posts: '',
+      comments: '',
+      challenges: '',
+    };
   }
 
   logoutUser = (event) => {
@@ -27,16 +36,18 @@ class Profile extends React.Component {
     this.props.history.push('/board');
   };
 
+  clickBoard = (event) => {
+    event.preventDefault();
+    this.props.history.push('/board');
+  }
+
+  // clickChanllenge 메소드 필요
 
   componentDidMount() {
+    UserService.pageLoginCheck();
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     this.refs.main.scrollTop = 0;
-
-    UserService.userInfo().then(res => {
-      console.log("userInfo = > ", res.data);
-    });
-
   }
 
   render() {
@@ -78,15 +89,15 @@ class Profile extends React.Component {
                 <div className="px-4">
                   <Row className="justify-content-center">
                     <Col className="order-lg-2" lg="3">
-                      <div className="card-profile-image">
-                        <a href="#pablo" onClick={e => e.preventDefault()}>
-                          <img
-                            alt="..."
-                            className="rounded-circle"
-                            src={require("assets/img/theme/team-4-800x800.jpg")}
-                          />
-                        </a>
-                      </div>
+                      {/*<div className="card-profile-image">*/}
+                      {/*  <a href="#pablo" onClick={e => e.preventDefault()}>*/}
+                      {/*    <img*/}
+                      {/*      alt="..."*/}
+                      {/*      className="rounded-circle"*/}
+                      {/*      src={require("assets/img/theme/team-4-800x800.jpg")}*/}
+                      {/*    />*/}
+                      {/*  </a>*/}
+                      {/*</div>*/}
                     </Col>
                     <Col
                       className="order-lg-3 text-lg-right align-self-lg-center"
@@ -99,30 +110,30 @@ class Profile extends React.Component {
                           onClick={this.logoutUser}
                           size="sm"
                         >
-                          Logout
+                          로그아웃
                         </Button>
-                        <Button
-                          className="float-right"
-                          color="default"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          Message
-                        </Button>
+                        {/*<Button*/}
+                        {/*  className="float-right"*/}
+                        {/*  color="default"*/}
+                        {/*  href="#pablo"*/}
+                        {/*  onClick={e => e.preventDefault()}*/}
+                        {/*  size="sm"*/}
+                        {/*>*/}
+                        {/*  Message*/}
+                        {/*</Button>*/}
                       </div>
                     </Col>
                     <Col className="order-lg-1" lg="4">
                       <div className="card-profile-stats d-flex justify-content-center">
                         <div>
                           <span className="heading">22</span>
-                          <span className="description">Friends</span>
+                          <span className="description">Chanllenges</span>
                         </div>
-                        <div>
+                        <div onClick={this.clickBoard} style={{cursor:'pointer'}}>
                           <span className="heading">10</span>
-                          <span className="description">Photos</span>
+                          <span className="description">Posts</span>
                         </div>
-                        <div>
+                        <div onClick={this.clickBoard} style={{cursor:'pointer'}}>
                           <span className="heading">89</span>
                           <span className="description">Comments</span>
                         </div>
@@ -131,44 +142,47 @@ class Profile extends React.Component {
                   </Row>
                   <div className="text-center mt-5">
                     <h3>
-                      Jessica Jones{" "}
-                      <span className="font-weight-light">, 27</span>
+                      {this.state.name}
                     </h3>
                     <div className="h6 font-weight-300">
                       <i className="ni location_pin mr-2" />
-                      Bucharest, Romania
+                      {this.state.email}
                     </div>
-                    <div className="h6 mt-4">
-                      <i className="ni business_briefcase-24 mr-2" />
-                      Solution Manager - Creative Tim Officer
+                    <div className="h6 font-weight-500">
+                      <i className="ni location_pin mr-2" />
+                      챌린지 등수 : 1등
                     </div>
-                    <div>
-                      <i className="ni education_hat mr-2" />
-                      University of Computer Science
-                    </div>
+                    {/*<div className="h6 mt-4">*/}
+                    {/*  <i className="ni business_briefcase-24 mr-2" />*/}
+                    {/*  Solution Manager - Creative Tim Officer*/}
+                    {/*</div>*/}
+                    {/*<div>*/}
+                    {/*  <i className="ni education_hat mr-2" />*/}
+                    {/*  University of Computer Science*/}
+                    {/*</div>*/}
                   </div>
                   <div className="mt-5 py-5 border-top text-center">
-                    <Row className="justify-content-center">
-                      <Col lg="9">
-                        <p>
-                          An artist of considerable range, Ryan — the name taken
-                          by Melbourne-raised, Brooklyn-based Nick Murphy —
-                          writes, performs and records all of his own music,
-                          giving it a warm, intimate feel with a solid groove
-                          structure. An artist of considerable range.
-                        </p>
-                        <a href="#pablo" onClick={e => e.preventDefault()}>
-                          Show more
-                        </a>
-                      </Col>
-                    </Row>
+                    {/*<Row className="justify-content-center">*/}
+                    {/*  <Col lg="9">*/}
+                    {/*    <p>*/}
+                    {/*      An artist of considerable range, Ryan — the name taken*/}
+                    {/*      by Melbourne-raised, Brooklyn-based Nick Murphy —*/}
+                    {/*      writes, performs and records all of his own music,*/}
+                    {/*      giving it a warm, intimate feel with a solid groove*/}
+                    {/*      structure. An artist of considerable range.*/}
+                    {/*    </p>*/}
+                    {/*    <a href="#pablo" onClick={e => e.preventDefault()}>*/}
+                    {/*      Show more*/}
+                    {/*    </a>*/}
+                    {/*  </Col>*/}
+                    {/*</Row>*/}
                   </div>
                 </div>
               </Card>
             </Container>
           </section>
         </main>
-        <SimpleFooter />
+        {/*<SimpleFooter />*/}
       </>
     );
   }

@@ -43,5 +43,8 @@ public class ForumController {
         return forumService.saveForum(params);
     }
 
-
+    @GetMapping("/forums/count/{email}")
+    public Long getForumCount(@PathVariable("email") String email) {
+        return forumService.userForumCount(email);
+    }
 }
