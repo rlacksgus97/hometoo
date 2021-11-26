@@ -13,6 +13,7 @@ export default function ChallengeCardList() {
   const [challengeList, setchallengeList] = useState([
     {
       id: 0,
+      type: "",
       title: "",
       url: "",
       username: "",
@@ -56,7 +57,7 @@ export default function ChallengeCardList() {
                             + 새 챌린지
                           </Button>
                         </Col>
-                        {challengeList !== [] ? (
+                        {challengeList[0].id !== 0 ? (
                           <>
                             {challengeList.map((challenge) => {
                               return (
@@ -69,22 +70,12 @@ export default function ChallengeCardList() {
                             })}
                           </>
                         ) : (
-                          <div>
-                            <Col md="4">
-                              <ChallengeCard />
+                          <>
+                            <Col md="12">
+                              아직 등록된 챌린지가 없어요! 챌린지를 만들어봐요!
                             </Col>
-                            <Col md="4">
-                              <ChallengeCard />
-                            </Col>
-                            <Col md="4">
-                              <ChallengeCard />
-                            </Col>
-                          </div>
+                          </>
                         )}
-
-                        {/* <Col md="4">
-                              <ChallengeCard />
-                            </Col> */}
                       </Row>
                     </Container>
                   </div>

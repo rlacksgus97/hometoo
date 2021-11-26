@@ -18,13 +18,27 @@ export default function TrialCard(props) {
 
   return (
     <Card>
-      <CardImg
-        alt="Card image cap"
-        // src="https://picsum.photos/256/186"
-        src={url}
-        top
-        width="100%"
-      />
+      <div>
+        {props.trial.type == "photo" ? (
+          <CardImg
+            alt="Card image cap"
+            // src="https://picsum.photos/256/186"
+            src={url}
+            top
+            width="100%"
+          />
+        ) : (
+          <video
+            src={url}
+            crossOrigin="anonymous"
+            type="type/mp4"
+            controls
+            width="100%"
+          >
+            비디오 재생 중 에러가 발생했습니다.
+          </video>
+        )}
+      </div>
       <CardBody>
         <CardTitle tag="h5">{props.trial.title}</CardTitle>
         <CardSubtitle className="mb-2 text-muted" tag="h6">

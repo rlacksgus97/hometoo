@@ -83,6 +83,7 @@ public class TrialService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + challengeId));
         challenge.addTrial(trial);
 
+        trial.setType(challenge.getType());
         trial.setChallenge(challenge);
 
         return trialRepository.save(trial).getId();
@@ -129,6 +130,7 @@ public class TrialService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + challengeId));
         challenge.addTrial(trial);
 
+        trial.setType(challenge.getType());
         trial.setChallenge(challenge);
 
         return trialRepository.save(trial).getId();

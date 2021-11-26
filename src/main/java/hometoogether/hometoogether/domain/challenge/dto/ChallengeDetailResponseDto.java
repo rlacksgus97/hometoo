@@ -9,6 +9,8 @@ import java.util.List;
 
 @Getter
 public class ChallengeDetailResponseDto {
+    private Long id;
+    private String type;
     private String url;
     private String username;
     private String title;
@@ -16,6 +18,8 @@ public class ChallengeDetailResponseDto {
     private List<String> trial_user_List;
 
     public ChallengeDetailResponseDto(Challenge entity) {
+        this.id = entity.getId();
+        this.type = entity.getType();
         this.url = entity.getChallengePose().getUrl();
         this.username = entity.getChallengePose().getUser().getUsername();
         this.title = entity.getTitle();

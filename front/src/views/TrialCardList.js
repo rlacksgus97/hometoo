@@ -15,8 +15,10 @@ export default function TrialCardList() {
   const [trialList, settrialList] = useState([
     {
       id: 0,
+      type: "",
       url: "",
       username: "",
+      score: 0.0,
     },
   ]);
 

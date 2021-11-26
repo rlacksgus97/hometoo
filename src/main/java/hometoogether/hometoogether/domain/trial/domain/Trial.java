@@ -19,6 +19,8 @@ public class Trial {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String type;
+
     private Double score;
 
     @OneToOne
@@ -29,6 +31,7 @@ public class Trial {
 
     @Builder
     public Trial(TrialPose trialPose, Challenge challenge) {
+        this.type = challenge.getType();
         this.trialPose = trialPose;
         this.challenge = challenge;
     }

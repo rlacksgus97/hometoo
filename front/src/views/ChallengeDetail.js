@@ -6,6 +6,7 @@ import {
   Button,
   Card,
   CardBody,
+  CardImg,
   Col,
   Container,
   FormGroup,
@@ -27,14 +28,33 @@ import { useLocation } from "react-router";
 export default function ChallengeCardList() {
   const history = useHistory();
   const location = useLocation();
-  const url = "http://221.143.144.143:80/";
+  const url = "http://221.143.144.143:80/" + challengeDeatil.url;
   const [challengeDeatil, setchallengeDeatil] = useState({
+    id: 0,
+    type: "",
     url: "",
     username: "",
     title: "",
     context: "",
     trial_user_List: [],
   });
+
+  const [bestTrialList, setbestTrialList] = useState([
+    {
+      id: 0,
+      username: "",
+      score: 0.0,
+    },
+  ]);
+
+  useEffect(() => {
+    axios
+      .get("/challenges/" + String(location.state.cid) + "/best_trials")
+      .then((res) => {
+        console.log(res.data);
+        setbestTrialList(res.data);
+      });
+  }, []);
 
   useEffect(() => {
     // console.log("/challenges/" + String(location.state.cid));
@@ -57,22 +77,27 @@ export default function ChallengeCardList() {
               <Card className="bg-gradient-secondary shadow">
                 <CardBody className="p-lg-5">
                   <Col className="d-flex justify-content-between">
-                    {/* <video
-                      src="C:\Users\jin\Downloads\다빈치스포츠-10.mp4"
-                      crossOrigin="anonymous"
-                      type="type/mp4"
-                      controls
-                      width="50%"
-                    >
-                      비디오 재생 중 에러가 발생했습니다.
-                    </video> */}
-                    <img
-                      src={url + challengeDeatil.url}
-                      crossOrigin="anonymous"
-                      type="type/jpg"
-                      controls
-                      width="50%"
-                    ></img>
+                    <div>
+                      {challengeDeatil.type == "photo" ? (
+                        <CardImg
+                          alt="Card image cap"
+                          // src="https://picsum.photos/256/186"
+                          src={url}
+                          top
+                          width="100%"
+                        />
+                      ) : (
+                        <video
+                          src={url}
+                          crossOrigin="anonymous"
+                          type="type/mp4"
+                          controls
+                          width="100%"
+                        >
+                          비디오 재생 중 에러가 발생했습니다.
+                        </video>
+                      )}
+                    </div>
                     <div className="w-50 px-2">
                       <div className="d-flex justify-content-between">
                         <h5>
@@ -97,7 +122,27 @@ export default function ChallengeCardList() {
                         </Button>
                       </div>
                       <ListGroup>
-                        <ListGroupItem className="d-flex justify-content-between">
+                        {bestTrialList[0].id !== 0 ? (
+                          <>
+                            {bestTrialList.map((bestTrial) => {
+                              return (
+                                <>
+                                  <ListGroupItem className="d-flex justify-content-between">
+                                    {bestTrial.username} {bestTrial.score}
+                                    {/* <i className="ni ni-favourite-28 text-danger" /> */}
+                                  </ListGroupItem>
+                                </>
+                              );
+                            })}
+                          </>
+                        ) : (
+                          <>
+                            <ListGroupItem className="d-flex justify-content-between">
+                              아직 참가자가 없어요! 가장 먼저 참가해보세요!
+                            </ListGroupItem>
+                          </>
+                        )}
+                        {/* <ListGroupItem className="d-flex justify-content-between">
                           Cras justo odio
                           <i className="ni ni-favourite-28 text-danger" />
                         </ListGroupItem>
@@ -116,7 +161,7 @@ export default function ChallengeCardList() {
                         <ListGroupItem className="d-flex justify-content-between">
                           Cras justo odio
                           <i className="ni ni-favourite-28 text-danger" />
-                        </ListGroupItem>
+                        </ListGroupItem> */}
                       </ListGroup>
                       <div style={{ display: "flex" }}>
                         <Button
