@@ -24,7 +24,9 @@ import "assets/scss/argon-design-system-react.scss";
 function ChatRoom(){
 
     const conn = new SockJS("http://localhost:8080/ws-stomp");
-    // const conn = new SockJS("192.168.35.229:8080/ws-stomp");
+    // const conn = new SockJS("http://58.122.7.167:8080/ws-stomp");
+
+    // const conn = new SockJS("http://192.168.35.229:8080/ws-stomp");
     const stompconn = Stomp.over(conn);
 
     const {id, uuid, routineId}=useParams();
@@ -171,12 +173,8 @@ function ChatRoom(){
                 ()=>{
                     if(isWorkoutOver) {
                         window.location.href="/routine/"+ routineId+"/evaluation";
-                        // window.location.href="/room/create";
                     }
                     else {
-                        // window.location.href="/room/create";
-                        // alert("You left the room before finishing your work out!");
-                        // window.location.href="";
                         setModalOpen(!(modalOpen));
                     }
                 }
@@ -368,7 +366,7 @@ function ChatRoom(){
                 + routine[0].trainingSec + "초 동안 "
                 + routine[0].trainingName + "을 하세요.\n");
             speech.speak({
-                text: 'User A' + '차례입니다.'
+                text: 'User A' + '차례입니다'
                     + routine[0].trainingSec + '초 동안 '
                     + routine[0].trainingName + '을 하세요.'
             })
@@ -381,21 +379,21 @@ function ChatRoom(){
                     (function(x, y, time){
                         setTimeout(()=>{
                             if(y%2==0){
-                                setAlarmText("User A" + " 차례입니다.\n"
+                                setAlarmText("User A" + " 차례입니다\n"
                                     + routine[x].trainingSec + "초 동안 "
                                     + routine[x].trainingName + "을 하세요.\n");
                                 speech.speak({
-                                    text: 'User A' + '차례입니다.'
+                                    text: 'User A' + '차례입니다'
                                         + routine[x].trainingSec + '초 동안 '
                                         + routine[x].trainingName + '을 하세요.'
                                 })
                             }
                             else{
-                                setAlarmText("User B" + " 차례입니다.\n"
+                                setAlarmText("User B" + " 차례입니다\n"
                                     + routine[x].trainingSec + "초 동안 "
                                     + routine[x].trainingName + "을 하세요.\n");
                                 speech.speak({
-                                    text: 'User B' + '차례입니다.'
+                                    text: 'User B' + '차례입니다'
                                         + routine[x].trainingSec + '초 동안 '
                                         + routine[x].trainingName + '을 하세요.'
                                 })
@@ -435,18 +433,12 @@ function ChatRoom(){
                             })
                             .then(()=>{
                                 setAlarmText("10초 후에 운동이 시작됩니다. 준비해주세요.");
-                                // speech.speak({
-                                //     text: '10초 후에 운동이 시작됩니다. 준비해주세요.'
-                                // })
                                 startSession();
                                 clearInterval(workoutReady);
                             })
                     }
                     else{
                         setAlarmText("다른 유저가 입장할 때까지 잠시 기다려 주세요.");
-                        // speech.speak({
-                        //     text: '다른 유저가 입장할 때까지 잠시 기다려 주세요.'
-                        // })
                     }
                 })
                 .catch((error)=>{
