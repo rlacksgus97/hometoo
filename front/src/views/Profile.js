@@ -30,11 +30,17 @@ import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss";
 
 class Profile extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     this.refs.main.scrollTop = 0;
   }
+
   render() {
     return (
       <>
@@ -162,6 +168,20 @@ class Profile extends React.Component {
                   </div>
                 </div>
               </Card>
+              <div className="">
+                <Button value="1"
+                    onClick={window.location.href="/"}>
+                  Give me Routines
+                </Button>
+                <Button value="2"
+                    onClick={window.location.href="/"}>
+                  Give me Challenges
+                </Button>
+                <Button value="3"
+                    onClick={window.location.href="/"}>
+                  Give me Trials
+                </Button>
+              </div>
             </Container>
           </section>
         </main>
