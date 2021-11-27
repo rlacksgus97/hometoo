@@ -10,6 +10,6 @@ public class TrialResponseDto {
 
     public TrialResponseDto(Trial entity) {
         this.url = entity.getTrialPose().getUrl();
-        this.username = entity.getTrialPose().getUser().getUsername();
+        this.username = entity.getTrialPose().getUser().getUserName();
     }
 }
