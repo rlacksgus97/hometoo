@@ -1,51 +1,4 @@
-package hometoogether.hometoogether.domain.user.domain;
-
-import hometoogether.hometoogether.domain.pose.domain.ChallengePose;
-import hometoogether.hometoogether.domain.pose.domain.TrialPose;
-import lombok.*;
-
-import javax.persistence.*;
-import java.util.List;
-
-@Getter
-@Setter
-@NoArgsConstructor
-@Entity
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String username;
-    private String email;
-    private String password;
-
-    @OneToMany
-    private List<ChallengePose> challengePoseList;
-
-    public void addChallengePose(ChallengePose challengePose) {
-        challengePose.setUser(this);
-        this.challengePoseList.add(challengePose);
-    }
-
-    @OneToMany
-    private List<TrialPose> trialPoseList;
-
-    public void addTrialPose(TrialPose trialPose) {
-        trialPose.setUser(this);
-        this.trialPoseList.add(trialPose);
-    }
-
-    @Builder
-    private User(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
-}
-
-//package hometoogether.hometoogether.domain.user.domain;
+package hometoogether.hometoogether.domain.user.domain;//package hometoogether.hometoogether.domain.user.domain;
 //
 //import lombok.*;
 //import org.springframework.security.core.GrantedAuthority;
@@ -117,3 +70,39 @@ public class User {
 //        return true;
 //    }
 //}
+
+import lombok.*;
+import javax.persistence.*;
+
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+@Builder
+@Setter
+@AllArgsConstructor
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long userId;
+
+    @Column(name = "routine_id")
+    private Long routineId;
+
+    @Column(name = "forum_id")
+    private Long forumId;
+
+    @Column(name = "user_name", nullable = false)
+    private String userName;
+
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    public void update(String password) {
+        this.password = password;
+    }
+
+}

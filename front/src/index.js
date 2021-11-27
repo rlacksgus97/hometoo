@@ -15,6 +15,7 @@ import BoardUpdate from "views/BoardUpdate";
 import BoardDetail from "./views/BoardDetail";
 import BoardCreate from "./views/BoardCreate";
 import ChallengeDetail from "./views/ChallengeDetail";
+import FindPassword from "./views/FindPassword";
 
 ReactDOM.render(
     <BrowserRouter>
@@ -83,6 +84,11 @@ ReactDOM.render(
                 path="/challenge/detail"
                 exact
                 render={props => <ChallengeDetail {...props} />}
+            />
+            <Route
+                path="/find/password"
+                exact
+                render={props => <FindPassword {...props} />}
             />
             <Redirect to="/" />
         </Switch>

@@ -15,6 +15,8 @@ public class WebConfig implements WebMvcConfigurer {
         this.uploadImagesPath = uploadImagesPath;
     }
 
+    private final long MAX_AGE_SECS = 3600;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**")
@@ -23,7 +25,9 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/test/**")
-            .allowedOrigins("http://localhost:3000");
+        registry.addMapping("/**")
+            .allowedOrigins("http://localhost:3000", "http://localhost:8081")
+                .allowedMethods("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE")
+                .maxAge(MAX_AGE_SECS);
     }
 }
