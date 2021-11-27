@@ -59,6 +59,7 @@ class Board extends React.Component {
             boards: []
         }
         this.createBoard = this.createBoard.bind(this);
+        this.loginCheck = this.loginCheck.bind(this);
     }
 
     componentDidMount() {
@@ -86,21 +87,36 @@ class Board extends React.Component {
         this.props.history.push('/board/create');
     }
 
-    updateBoard(no) {
-        this.props.history.push('/board/update/'+no);
+    loginCheck(writer) {
+        if (writer == localStorage.getItem("authenticatedUserName")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    deleteBoardView = async function (no) {
-        //TODO: board writer와 로그인된 id 체크하는 로직필요
-        if(window.confirm("삭제된 글은 복구 할 수 없습니다.\n정말로 글을 삭제하시겠습니까?")) {
-            BoardService.deleteBoard(no).then((res) => {
-                console.log("delete result => " + JSON.stringify(res.data));
-                if (res.data == "Delete Success") {
-                    window.location.reload(true);
-                } else {
-                    alert("글 삭제가 실패했습니다.");
-                }
-            });
+    updateBoard(writer, no) {
+        if (!this.loginCheck(writer)) {
+            alert("작성한 유저가 아닙니다.");
+        } else {
+            this.props.history.push('/board/update/'+no);
+        }
+    }
+
+    deleteBoardView = async function (writer, no) {
+        if (!this.loginCheck(writer)) {
+            alert("작성한 유저가 아닙니다.");
+        } else {
+            if(window.confirm("삭제된 글은 복구 할 수 없습니다.\n정말로 글을 삭제하시겠습니까?")) {
+                BoardService.deleteBoard(no).then((res) => {
+                    console.log("delete result => " + JSON.stringify(res.data));
+                    if (res.data == "Delete Success") {
+                        window.location.reload(true);
+                    } else {
+                        alert("글 삭제가 실패했습니다.");
+                    }
+                });
+            }
         }
     }
 
@@ -246,12 +262,12 @@ class Board extends React.Component {
                                                                     </DropdownToggle>
                                                                     <DropdownMenu className="dropdown-menu-arrow" right>
                                                                         <DropdownItem
-                                                                            onClick={() => this.updateBoard(board.forumId)}
+                                                                            onClick={() => this.updateBoard(board.writer, board.forumId)}
                                                                         >
                                                                             수정
                                                                         </DropdownItem>
                                                                         <DropdownItem
-                                                                            onClick={() => this.deleteBoardView(board.forumId)}
+                                                                            onClick={() => this.deleteBoardView(board.writer, board.forumId)}
                                                                         >
                                                                             삭제
                                                                         </DropdownItem>

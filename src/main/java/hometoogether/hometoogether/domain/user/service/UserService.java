@@ -44,7 +44,9 @@ public class UserService {
     public String singUp(SignUpRequest signUpRequest) {
         //TODO: username 중복체크 같이
         if (userRepository.existsUserByEmail(signUpRequest.getEmail())) {
-            return "EXIST";
+            return "Email EXIST";
+        } else if (userRepository.existsUserByUserName(signUpRequest.getUserName())) {
+            return "USERNAME EXIST";
         }
 
         // Creating user's account

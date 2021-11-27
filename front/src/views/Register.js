@@ -59,10 +59,11 @@ class Register extends React.Component {
     UserService.signup(user).then(res => {
       // 유저 데이터
       console.log(res.data);
-      // UserService.registerSuccessfulLoginForJwt(user.email, res.data['accessToken']);
       this.props.history.push('/login');
-    }).catch(() => {
-      alert('중복된 이메일이 존재합니다.');
+    }).catch((error) => {
+      console.log("signup fail = > " , error.data.message);
+      console.log(error.message);
+      alert('이메일 또는 닉네임이 존재합니다.');
     })
   }
 
@@ -140,7 +141,7 @@ class Register extends React.Component {
                     </CardHeader>
                     <CardBody className="px-lg-5 py-lg-5">
                       <div className="text-center text-muted mb-4">
-                        <small>성명, 이메일과 비밀번호를 통해 가입해주세요.</small>
+                        <small>닉네임, 이메일과 비밀번호를 통해 가입해주세요.</small>
                       </div>
                       <Form role="form">
                         <FormGroup>

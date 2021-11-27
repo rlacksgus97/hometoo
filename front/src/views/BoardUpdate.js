@@ -73,7 +73,7 @@ class BoardUpdate extends React.Component {
         document.scrollingElement.scrollTop = 0;
         this.refs.main.scrollTop = 0;
 
-        BoardService.getOneBoard(this.state.no).then(res => {
+        BoardService.getUpdateBoard(this.state.no).then(res => {
             let board = res.data;
             // this.setState({board: res.data});
             console.log("board => " + JSON.stringify(board));

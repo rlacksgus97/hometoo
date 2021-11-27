@@ -39,8 +39,10 @@ public class UserController {
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
         String result = userService.singUp(signUpRequest);
 
-        if (result.equals("EXIST")) {
+        if (result.equals("EMAIL EXIST")) {
             return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"), HttpStatus.BAD_REQUEST);
+        } else if (result.equals("USERNAME EXIST")) {
+            return new ResponseEntity(new ApiResponse(false, "User Name already in use!"), HttpStatus.BAD_REQUEST);
         } else {
             return ResponseEntity.created(URI.create(result)).body(new ApiResponse(true, "User registered successfully"));
         }

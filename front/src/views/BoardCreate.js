@@ -43,7 +43,7 @@ class BoardCreate extends React.Component {
 
         this.state = {
             title: '',
-            writer: localStorage.getItem("authenticatedUserEmail"),
+            writer: localStorage.getItem("authenticatedUserName"),
             contents: '',
             type: 'F',
             delYn: 'N'

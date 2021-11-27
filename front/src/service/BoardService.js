@@ -19,6 +19,11 @@ class BoardService {
         return axios.get(BOARD_API_BASE_URL+"/"+no);
     }
 
+    getUpdateBoard(no) {
+        UserService.setupAxiosInterceptors();
+        return axios.get(BOARD_API_BASE_URL+"/update/"+no);
+    }
+
     updateBoard(no, board) {
         UserService.setupAxiosInterceptors();
         return axios.patch(BOARD_API_BASE_URL+"/"+no, board);
