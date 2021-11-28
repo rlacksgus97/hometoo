@@ -20,6 +20,7 @@ import CreateRoutine from "./views/routine/CreateRoutine";
 import SelectRoomRoutine from "./views/chat/SelectRoomRoutine";
 import ShowRoutineDetails from "./views/routine/ShowRoutineDetails";
 import EvaluateRoutine from "./views/routine/EvaluateRoutine";
+import ShowTop5Routine from "./views/routine/ShowTop5Routine";
 
 ReactDOM.render(
     <BrowserRouter>
@@ -105,6 +106,10 @@ ReactDOM.render(
             <Route
                 path="/routine/:routineId/evaluation"
                 render={props => <EvaluateRoutine {...props} />}
+            />
+            <Route
+                path="/routine/rank"
+                render={props => <ShowTop5Routine {...props} />}
             />
             <Redirect to="/" />
         </Switch>

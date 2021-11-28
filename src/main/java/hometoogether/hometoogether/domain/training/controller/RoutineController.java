@@ -1,9 +1,6 @@
 package hometoogether.hometoogether.domain.training.controller;
 
-import hometoogether.hometoogether.domain.training.Domain.Routine;
-import hometoogether.hometoogether.domain.training.Domain.RoutineDto;
-import hometoogether.hometoogether.domain.training.Domain.Training;
-import hometoogether.hometoogether.domain.training.Domain.TrainingVO;
+import hometoogether.hometoogether.domain.training.Domain.*;
 import hometoogether.hometoogether.domain.training.service.RoutineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -40,5 +37,10 @@ public class RoutineController {
     @PutMapping("/routine/{routineId}")
     public float editRoutineAvgScore(@PathVariable Long routineId, @RequestBody Map<String, String> evaluation){
         return routineService.editRoutineAvgScore(routineId, evaluation);
+    }
+
+    @GetMapping("/routine/top5")
+    public List<RoutineScoreDto> getTop5RoutineList(){
+        return routineService.getTop5RoutineList();
     }
 }

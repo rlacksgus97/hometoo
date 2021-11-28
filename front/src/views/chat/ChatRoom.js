@@ -50,6 +50,7 @@ function ChatRoom(){
 
     const mediaConstraints = {
         audio: true,
+        // video: true
         video: true
     };
 
@@ -459,19 +460,33 @@ function ChatRoom(){
     }
 
     return(
-        <div>
+        <>
+            <main>
+                <div className="position-relative">
+                    <section className="section section-lg section-shaped pb-250">
+                        <div className="shape shape-style-1 shape-default">
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                        </div>
             <input type="hidden" id="id" name="id" value={id}/>
-            <div class="col-lg-12 mb-3">
-                <Navbar fixed="top" color="light" light expand="xs" className="border-bottom border-gray bg-white" style={{ height: 80 }}>
-                <Container>
+            <div class="mb-3">
+                <Navbar fixed="top" color="" light expand="xs" className="border-bottom border-gray bg-white" style={{ height: 80 }}>
+                {/*<Container>*/}
                     <Row noGutters className="position-relative w-100 align-items-center">
 
                         <Col className="d-none d-lg-flex justify-content-start">
-                            <div className="h4 mx-auto" text={"User: " + localUserName}>
-                                User: {localUserName}
+                            <div className="h4 mx-auto" text="User: Random User">
+                                User: Random User
                             </div>
                             <div className="h4 mx-auto" text={"Room #" + id}>
-                                Room #: {id}
+                                Room # {id}
                             </div>
                             <Button id="video_button" onClick={videoButtonOff}>
                                 {localVideoState ? (
@@ -492,14 +507,14 @@ function ChatRoom(){
                             </Button>
                         </Col>
                     </Row>
-                </Container>
+                {/*</Container>*/}
                 </Navbar>
 
-                <div className="row justify-content-around mb-3">
-                    <div className="col-lg-6 mb-3 mx-auto">
+                <div className="row justify-content-around">
+                    <div className="col-lg-6 mb-3 mr-auto">
                         <video id="local_video" autoPlay playsInline ref={myVideoRef}></video>
                     </div>
-                    <div className="col-lg-6 mb-3 mx-auto">
+                    <div className="col-lg-6 mb-3">
                         <video id="remote_video" autoPlay playsInline ref={remoteVideoRef}></video>
                     </div>
                 </div>
@@ -539,7 +554,10 @@ function ChatRoom(){
                     </Button>
                 </ModalFooter>
             </Modal>
-        </div>
+                    </section>
+                </div>
+            </main>
+        </>
     )
 }
 

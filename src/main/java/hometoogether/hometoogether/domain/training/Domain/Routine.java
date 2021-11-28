@@ -31,9 +31,11 @@ public class Routine {
     private List<Training> trainings;
 
     @Builder
-    public Routine(Long userId, String routineName, List<Training> trainings) {
+    public Routine(Long userId, String routineName, List<Training> trainings, float routineAvgScore, int evaluateCnt) {
         this.userId = userId;
         this.routineName=routineName;
         this.trainings=trainings;
+        this.routineAvgScore=routineAvgScore;
+        this.evaluateCnt=evaluateCnt;
     }
 }

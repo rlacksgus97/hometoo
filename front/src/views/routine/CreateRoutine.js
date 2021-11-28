@@ -10,7 +10,7 @@ import {
     Form,
     FormGroup, Input,
     InputGroup,
-    InputGroupAddon, InputGroupText, Label,
+    InputGroupAddon, InputGroupText, Label, Media,
     Row, Table
 } from "reactstrap";
 import SimpleFooter from "../../components/Footers/SimpleFooter";
@@ -80,7 +80,6 @@ function CreateRoutine(){
         }
 
         axios.post("/routine", body)
-            // .then(console.log("Routine successfully stored!"))
             .then((res)=>{
                 window.location.href="/room/create"
             });
@@ -92,8 +91,9 @@ function CreateRoutine(){
       <>
           <DemoNavbar />
           <main>
-              <section className="section section-shaped section-lg">
-                  <div className="shape shape-style-1 bg-gradient-default">
+              <section className="section section-lg section-shaped pb-250">
+                  <div className="shape shape-style-1 shape-default">
+                      <span />
                       <span />
                       <span />
                       <span />
@@ -103,67 +103,98 @@ function CreateRoutine(){
                       <span />
                       <span />
                   </div>
-                  <Container className="pt-lg-7">
-                      <Row className="justify-content-center">
-                          <Col lg="5">
-                              <div className="bg-secondary shadow border-0" style={{width: "900px", height: "auto"}}>
-                                  <CardBody className="px-lg-5 py-lg-5">
-                                      <div className="text-center text-muted mb-4">
-                                          <small>Make routine</small>
-                                      </div>
-                                      <Form>
-                                          <FormGroup className="mb-3" controlId="formBasicEmail">
-                                              <Row className="mt-5">
-                                                  <Col className="md">
-                                                      <Label>Routine Name</Label>
-                                                      <input type="text" placeholder="Enter Routine Name"
-                                                             name="trainingName" value={routineName}
-                                                             onChange={e=>handleChangeRoutineName(e)} />
-                                                  </Col>
-                                              </Row>
-                                              {trainings.map((training, i) => (
-                                                  <div key={training.id}>
-                                                      <Row className="mt-5">
-                                                          <Col className="md">
-                                                              <Label>Training Name</Label>
-                                                              <input type="text" placeholder="Enter Training Name"
-                                                                     name="trainingName" value={training.trainingName}
-                                                                     onChange={e=>handleChangeInput(i, e)} />
-                                                          </Col>
-                                                          <Col className="md">
-                                                              <Label>Training Sec</Label>
-                                                              <input type="text" placeholder="Enter Training Sec"
-                                                                     name="trainingSec" value={training.trainingSec}
-                                                                     onChange={e=>handleChangeInput(i, e)} />
-                                                          </Col>
-                                                          <Col className="md">
-                                                              <Label>Set Cnt</Label>
-                                                              <input type="text" placeholder="Enter Set Cnt"
-                                                                     name="trainingSetCnt" value={training.trainingSetCnt}
-                                                                     onChange={e=>handleChangeInput(i, e)} />
-                                                          </Col>
-                                                          <Col className="md">
-                                                              <Button className="mt-4 mr-5" onClick={()=>{handleAdd(i)}}>
-                                                                  +
-                                                              </Button>
-                                                              <Button className="mt-4" disabled={training.id===1} onClick={()=>{handleSubtract(i)}}>
-                                                                  -
-                                                              </Button>
-                                                          </Col>
-                                                      </Row>
-                                                  </div>
-                                              ))}
-                                          </FormGroup>
-
-                                          <Button
-                                                  style={{float: "left"}} onClick={registerRoutine}>
-                                              Send
-                                          </Button>
-                                      </Form>
-                                  </CardBody>
-                              </div>
-                          </Col>
+                  <Container className="justify-content-md-center" fluid>
+                      <Row>
+                          <div className="col">
+                              <Card className="shadow">
+                                  <CardHeader className="border-0">
+                                      <h5 className="display-3 text-black">
+                                          Routine Name
+                                          <Input type="text" placeholder="Enter Routine Name"
+                                                 name="trainingName" value={routineName}
+                                                 onChange={e=>handleChangeRoutineName(e)} />
+                                      </h5>
+                                  </CardHeader>
+                                  <Table className="align-items-center table-flush" responsive>
+                                      <thead className="thead-light">
+                                      <tr>
+                                          <th scope="col">Training Name</th>
+                                          <th scope="col">Training Sec</th>
+                                          <th scope="col">Set Cnt</th>
+                                          <th scope="col">Add</th>
+                                          <th scope="col">Delete</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                          {trainings.map((training, i) => {
+                                              return(
+                                                      <tr>
+                                                          <th scope="row">
+                                                              <Media className="align-items-center">
+                                                                  <Media>
+                                                              <span className="mb-0 text-sm">
+                                                                  <Input className="mt-4" type="text" placeholder="Enter Training Name"
+                                                                         name="trainingName" value={training.trainingName}
+                                                                         onChange={e=>handleChangeInput(i, e)} />
+                                                              </span>
+                                                                  </Media>
+                                                              </Media>
+                                                          </th>
+                                                          <th scope="row">
+                                                              <Media className="align-items-center">
+                                                                  <Media>
+                                                              <span className="mb-0 text-sm">
+                                                                  <Input className="mt-4" type="text" placeholder="Enter Training Sec"
+                                                                         name="trainingSec" value={training.trainingSec}
+                                                                         onChange={e=>handleChangeInput(i, e)} />
+                                                              </span>
+                                                                  </Media>
+                                                              </Media>
+                                                          </th>
+                                                          <th scope="row">
+                                                              <Media className="align-items-center">
+                                                                  <Media>
+                                                              <span className="mb-0 text-sm">
+                                                                  <Input className="mt-4" type="text" placeholder="Enter Set Cnt"
+                                                                         name="trainingSetCnt" value={training.trainingSetCnt}
+                                                                         onChange={e=>handleChangeInput(i, e)} />
+                                                              </span>
+                                                                  </Media>
+                                                              </Media>
+                                                          </th>
+                                                          <th scope="row">
+                                                              <Media className="align-items-center">
+                                                                  <Media>
+                                                              <span className="mb-0 text-sm">
+                                                                  <Button className="mt-4" onClick={()=>{handleAdd(i)}}>
+                                                                      +
+                                                                  </Button>
+                                                              </span>
+                                                                  </Media>
+                                                              </Media>
+                                                          </th>
+                                                          <th scope="row">
+                                                              <Media className="align-items-center">
+                                                                  <Media>
+                                                              <span className="mb-0 text-sm">
+                                                                  <Button className="mt-4" disabled={training.id===1} onClick={()=>{handleSubtract(i)}}>
+                                                                      -
+                                                                  </Button>
+                                                              </span>
+                                                                  </Media>
+                                                              </Media>
+                                                          </th>
+                                                      </tr>
+                                              )
+                                          })}
+                                      </tbody>
+                                  </Table>
+                              </Card>
+                          </div>
                       </Row>
+                      <Button className="col" onClick={registerRoutine}>
+                          Send
+                      </Button>
                   </Container>
               </section>
           </main>

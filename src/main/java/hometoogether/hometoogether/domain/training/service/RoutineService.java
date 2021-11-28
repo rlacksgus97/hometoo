@@ -1,9 +1,6 @@
 package hometoogether.hometoogether.domain.training.service;
 
-import hometoogether.hometoogether.domain.training.Domain.Routine;
-import hometoogether.hometoogether.domain.training.Domain.RoutineDto;
-import hometoogether.hometoogether.domain.training.Domain.Training;
-import hometoogether.hometoogether.domain.training.Domain.TrainingVO;
+import hometoogether.hometoogether.domain.training.Domain.*;
 import hometoogether.hometoogether.domain.training.repository.RoutineRepository;
 import hometoogether.hometoogether.domain.training.repository.TrainingRepository;
 import lombok.RequiredArgsConstructor;
@@ -111,6 +108,25 @@ public class RoutineService {
         routineRepository.save(routine);
 
         return routineAvgScore;
+    }
+
+    public List<RoutineScoreDto> getTop5RoutineList(){
+        List<Routine> top5ByRoutineAvgScore = routineRepository.findTop5ByOrderByRoutineAvgScoreDesc();
+        List<RoutineScoreDto> dtoList=new ArrayList<>();
+
+
+        for(Routine routine : top5ByRoutineAvgScore){
+            RoutineScoreDto dto = RoutineScoreDto.builder()
+                    .routineId(routine.getRoutineId())
+                    .userId(routine.getUserId())
+                    .routineName(routine.getRoutineName())
+                    .routineAvgScore(routine.getRoutineAvgScore())
+                    .evaluateCnt(routine.getEvaluateCnt())
+                    .build();
+            dtoList.add(dto);
+        }
+
+        return dtoList;
     }
 
     private Object[] arrayParse(String notParsedString){

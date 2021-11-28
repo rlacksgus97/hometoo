@@ -63,74 +63,104 @@ function EvaluateRoutine(){
                                 <Card className="bg-secondary shadow border-0">
                                     <CardHeader className="bg-white pb-5">
                                         <div className="text-muted text-center mb-3">
-                                            <big>Evaluate Routine</big>
+                                            <h1>Evaluate Routine</h1>
                                         </div>
                                     </CardHeader>
                                     <CardBody className="px-lg-5 py-lg-5">
-                                        <div className="text-center text-muted mb-4">
-                                            <small>
-                                                1: 매우나쁨
-                                                &nbsp;
-                                                2: 나쁨
-                                                &nbsp;
-                                                3: 보통
-                                                &nbsp;
-                                                4: 좋음
-                                                &nbsp;
-                                                5: 아주좋음
-                                            </small>
-                                        </div>
+                                        {/*<div className="text-center text-muted mb-4">*/}
+                                        {/*    <small>*/}
+                                        {/*        1: 매우나쁨*/}
+                                        {/*        &nbsp;*/}
+                                        {/*        2: 나쁨*/}
+                                        {/*        &nbsp;*/}
+                                        {/*        3: 보통*/}
+                                        {/*        &nbsp;*/}
+                                        {/*        4: 좋음*/}
+                                        {/*        &nbsp;*/}
+                                        {/*        5: 아주좋음*/}
+                                        {/*    </small>*/}
+                                        {/*</div>*/}
 
 
                                         <Form role="form">
                                             <FormGroup>
-                                                <InputGroup className="input-group-alternative mb-3">
-
-                                                    <label for="1">
-                                                        1
-                                                        <input type="radio" id="1" name="evaluate" value="1"
-                                                               onClick={(e)=>{changeEvaluation(e)}} />
-                                                    </label>
+                                                <InputGroup className="input-group-alternative mb-5">
+                                                    <div className="custom-control custom-radio mt-2">
+                                                        <input className="custom-control-input" type="radio" id="1"
+                                                               name="evaluate" value="1"
+                                                               onClick={(e) => {
+                                                                   changeEvaluation(e)
+                                                               }}/>
+                                                        <label className="custom-control-label" htmlFor="1">
+                                                            <h6>
+                                                                매우나쁨
+                                                            </h6>
+                                                        </label>
+                                                    </div>
                                                 </InputGroup>
                                             </FormGroup>
                                             <FormGroup>
-                                                <InputGroup className="input-group-alternative mb-3">
-
-                                                    <label  for="2">
-                                                        2
-                                                        <input type="radio" id="2" name="evaluate" value="2"
-                                                               onClick={(e)=>{changeEvaluation(e)}} />
-                                                    </label>
+                                                <InputGroup className="input-group-alternative mb-5">
+                                                    <div className="custom-control custom-radio mt-2">
+                                                        <input className="custom-control-input" type="radio" id="2"
+                                                               name="evaluate" value="2"
+                                                               onClick={(e) => {
+                                                                   changeEvaluation(e)
+                                                               }}/>
+                                                        <label className="custom-control-label" htmlFor="2">
+                                                            <h6>
+                                                                나쁨
+                                                            </h6>
+                                                        </label>
+                                                    </div>
                                                 </InputGroup>
                                             </FormGroup>
                                             <FormGroup>
-                                                <InputGroup className="input-group-alternative">
-
-                                                    <label  for="3">
-                                                        3
-                                                        <input type="radio" id="3" name="evaluate" value="3"
-                                                               onClick={(e)=>{changeEvaluation(e)}} />
-                                                    </label>
+                                                <InputGroup className="input-group-alternative mb-5">
+                                                    <div className="custom-control custom-radio mt-2">
+                                                        <input className="custom-control-input" type="radio" id="3"
+                                                               name="evaluate" value="3"
+                                                               onClick={(e) => {
+                                                                   changeEvaluation(e)
+                                                               }}/>
+                                                        <label className="custom-control-label" htmlFor="3">
+                                                            <h6>
+                                                                보통
+                                                            </h6>
+                                                        </label>
+                                                    </div>
                                                 </InputGroup>
                                             </FormGroup>
                                             <FormGroup>
-                                                <InputGroup className="input-group-alternative">
-
-                                                    <label  for="4">
-                                                        4
-                                                        <input type="radio" id="4" name="evaluate" value="4"
-                                                               onClick={(e)=>{changeEvaluation(e)}} />
-                                                    </label>
+                                                <InputGroup className="input-group-alternative mb-5">
+                                                    <div className="custom-control custom-radio mt-2">
+                                                        <input className="custom-control-input" type="radio" id="4"
+                                                               name="evaluate" value="4"
+                                                               onClick={(e) => {
+                                                                   changeEvaluation(e)
+                                                               }}/>
+                                                        <label className="custom-control-label" htmlFor="4">
+                                                            <h6>
+                                                                좋음
+                                                            </h6>
+                                                        </label>
+                                                    </div>
                                                 </InputGroup>
                                             </FormGroup>
                                             <FormGroup>
-                                                <InputGroup className="input-group-alternative">
-
-                                                    <label  for="5">
-                                                        5
-                                                        <input type="radio" id="5" name="evaluate" value="5"
-                                                               onClick={(e)=>{changeEvaluation(e)}} />
-                                                    </label>
+                                                <InputGroup className="input-group-alternative mb-5">
+                                                    <div className="custom-control custom-radio mt-2">
+                                                        <input className="custom-control-input" type="radio" id="5"
+                                                               name="evaluate" value="5"
+                                                               onClick={(e) => {
+                                                                   changeEvaluation(e)
+                                                               }}/>
+                                                        <label className="custom-control-label" htmlFor="5">
+                                                            <h6>
+                                                                아주좋음
+                                                            </h6>
+                                                        </label>
+                                                    </div>
                                                 </InputGroup>
                                             </FormGroup>
 

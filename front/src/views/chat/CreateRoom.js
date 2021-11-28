@@ -78,15 +78,6 @@ function CreateRoom(){
     }
 
     function createRoom(){
-        // axios.post("/room/create", {
-        //     max: 2
-        // })
-        //     .then((res)=>{
-        //         window.location.href="/room/create/routine"
-        //     })
-        //     .catch(error=>{
-        //         console.log(error);
-        //     })
         window.location.href="/room/create/routine"
     }
 
