@@ -1,7 +1,6 @@
 package hometoogether.hometoogether.domain.training.service;
 
 import hometoogether.hometoogether.domain.training.domain.*;
-
 import hometoogether.hometoogether.domain.training.repository.RoutineRepository;
 import hometoogether.hometoogether.domain.training.repository.TrainingRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-
 import java.util.*;
 
 @Service
@@ -140,3 +138,4 @@ public class RoutineService {
         return parsedString;
     }
 }
+

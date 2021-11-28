@@ -1,12 +1,16 @@
 package hometoogether.hometoogether.domain.trial.controller;
 
+import hometoogether.hometoogether.domain.challenge.domain.Challenge;
+import hometoogether.hometoogether.domain.challenge.repository.ChallengeRepository;
 import hometoogether.hometoogether.domain.trial.dto.TrialRequestDto;
 import hometoogether.hometoogether.domain.trial.dto.TrialResponseDto;
 import hometoogether.hometoogether.domain.trial.service.TrialService;
 import lombok.RequiredArgsConstructor;
+import org.jcodec.api.JCodecException;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 
@@ -15,29 +19,40 @@ import java.util.List;
 public class TrialController {
 
     private final TrialService trialService;
+    private final ChallengeRepository challengeRepository;
 
-    @PostMapping("/challenges/{challengeId}/trials/test")
-    public Long save(@PathVariable("challengeId") Long challengeId, TrialRequestDto param) throws IOException, ParseException {
-        return trialService.saveTrial(challengeId, param);
+    @Transactional
+    @PostMapping("/challenges/{challengeId}/trials")
+    public Long save(@PathVariable("challengeId") Long challengeId, TrialRequestDto param) throws IOException, ParseException, JCodecException {
+        Challenge challenge = challengeRepository.getById(challengeId);
+        if ("photo".equals(challenge.getType())){
+            return trialService.saveTrialPhoto(challengeId, param);
+        }
+        return trialService.saveTrialVideo(challengeId, param);
     }
 
-    @GetMapping("/trials/estimate")
-    public double estimate(){
-        return trialService.runSimilarity();
+    @GetMapping("/challenges/{challengeId}/trials/{trialId}/estimate")
+    public double estimate(@PathVariable("challengeId") Long challengeId, @PathVariable("trialId") Long trialId){
+        return trialService.runSimilarity(challengeId, trialId);
     }
 
-    @GetMapping("/challenges/{challengeId}/trials/{id}")
-    public TrialResponseDto getDetail(@PathVariable("id") Long trialId){
+    @GetMapping("/challenges/{challengeId}/best_trials")
+    public List<TrialResponseDto> getBestTrialList(@PathVariable("challengeId") Long challengeId){
+        return trialService.getBestTrials(challengeId);
+    }
+
+    @GetMapping("/challenges/{challengeId}/trials/{trialid}")
+    public TrialResponseDto getDetail(@PathVariable("trialid") Long trialId){
         return trialService.getTrial(trialId);
     }
 
     @GetMapping("/challenges/{challengeId}/trials")
-    public List<TrialResponseDto> getList(){
-        return trialService.getTrialList();
+    public List<TrialResponseDto> getList(@PathVariable("challengeId") Long challengeId){
+        return trialService.getTrialList(challengeId);
     }
 
-    @DeleteMapping("/challenges/{challengeId}/trials/{id}")
-    public Long delete(@PathVariable("id") Long trialId){
+    @DeleteMapping("/challenges/{challengeId}/trials/{trialid}")
+    public Long delete(@PathVariable("trialid") Long trialId){
         return trialService.deleteTrial(trialId);
     }
 }

@@ -41,6 +41,10 @@ public class ChatRoomSubscriptionInterceptor implements ChannelInterceptor {
 //            SecurityContextHolder.getContext().setAuthentication(authentication);
 //        }
 
+//        else {
+//            SecurityContextHolder.getContext().setAuthentication(null);
+//        }
+
         switch (accessor.getCommand()) {
             case SUBSCRIBE:
                 System.out.println("Subscribe");
@@ -68,7 +72,7 @@ public class ChatRoomSubscriptionInterceptor implements ChannelInterceptor {
             default:
                 break;
         }
-//
+
         return message;
     }
 
@@ -103,6 +107,17 @@ public class ChatRoomSubscriptionInterceptor implements ChannelInterceptor {
 //        }
 //        else {
 //            roomId2SessionIDs.put(roomId, new HashSet<>(Arrays.asList(sessionId)));
+
+//        }
+//        sessionId2RoomId.forEach((key, val) -> log.info("key = {}, val = {}", key, val));
+//    }
+
+//    public void removeSessionUser(String sessionId) {
+//        if(sessionId2RoomId.containsKey(sessionId)) {
+//            roomId2SessionIDs.remove(sessionId2RoomId.get(sessionId));
+//            sessionId2RoomId.remove(sessionId);
+//            System.out.println("DISCONNECTED");
+//            sessionId2RoomId.forEach((key, val) -> log.info("key = {}, val = {}", key, val));
 //        }
 //        sessionId2RoomId.forEach((key, val) -> log.info("key = {}, val = {}", key, val));
 //    }

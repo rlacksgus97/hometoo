@@ -23,6 +23,7 @@ public class RoomController {
         return rooms;
     }
 
+
     @PostMapping("/room/create/{routineId}/host/{email}")
     public Long createRoom(@RequestBody String routine, @PathVariable Long routineId, @PathVariable String email) {
         return roomService.createRoom(routine, routineId, email);
@@ -42,6 +43,7 @@ public class RoomController {
     public HostAndClientDto getRoomMembers(@PathVariable Long id){
         return roomService.getRoomMembers(id);
     }
+
 
     @GetMapping("/room/{id}")
     public List<TrainingVO> getRoom(@PathVariable Long id){

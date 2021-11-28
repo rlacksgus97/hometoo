@@ -4,6 +4,7 @@ package hometoogether.hometoogether.domain.room.domain;
 import hometoogether.hometoogether.domain.training.domain.Routine;
 import hometoogether.hometoogether.domain.training.domain.Training;
 import hometoogether.hometoogether.domain.user.domain.User;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -74,6 +75,7 @@ public class Room {
     @Builder
     public Room(Long cur_num, Long max_num, Long routineId, List<Training> trainings,
                 String hostUserName, String clientUserName){
+
         this.cur_num=cur_num;
         this.max_num=max_num;
         this.routineId=routineId;

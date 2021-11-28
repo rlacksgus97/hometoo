@@ -18,6 +18,7 @@ public class Routine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long routineId;
 
+
 //    @ManyToOne
 //    @JoinColumn(name = "user_id", nullable = false)
     @Column(name = "user_id", nullable = false)
@@ -39,3 +40,4 @@ public class Routine {
         this.evaluateCnt=evaluateCnt;
     }
 }
+

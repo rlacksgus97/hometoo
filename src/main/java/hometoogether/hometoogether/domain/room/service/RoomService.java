@@ -3,6 +3,7 @@ package hometoogether.hometoogether.domain.room.service;
 import hometoogether.hometoogether.domain.room.domain.Room;
 import hometoogether.hometoogether.domain.room.dto.CanEnterAndRoutineIdDto;
 import hometoogether.hometoogether.domain.room.dto.HostAndClientDto;
+
 import hometoogether.hometoogether.domain.room.dto.RoomDto;
 import hometoogether.hometoogether.domain.room.repository.RoomRepository;
 import hometoogether.hometoogether.domain.training.domain.Routine;
@@ -10,6 +11,7 @@ import hometoogether.hometoogether.domain.training.domain.Training;
 import hometoogether.hometoogether.domain.training.domain.TrainingVO;
 import hometoogether.hometoogether.domain.training.repository.RoutineRepository;
 import hometoogether.hometoogether.domain.user.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,6 +102,7 @@ public class RoomService{
 
     @Transactional
     public Long createRoom(String routine, Long routineId, String email){
+
         List<Training> trainings=new ArrayList<>();
 
         // 1차 파싱
@@ -143,7 +146,7 @@ public class RoomService{
         notParsedString=notParsedString.replace(" ", "");
 
         String[] notFullyParsedString = notParsedString.split(",");
-        
+
         for(String string : notFullyParsedString){
 
             String[] split = string.split(":");
@@ -153,3 +156,4 @@ public class RoomService{
         return resultTraining;
     }
 }
+

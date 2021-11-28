@@ -31,4 +31,6 @@ public class TrainingVO {
                 .trainingSetCnt(trainingSetCnt)
                 .seq(seq).build();
     }
+
 }
+

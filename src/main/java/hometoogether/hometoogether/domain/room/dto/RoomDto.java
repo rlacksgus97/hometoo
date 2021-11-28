@@ -17,3 +17,4 @@ public class RoomDto {
     private Long routineId;
 
 }
+

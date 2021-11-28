@@ -1,8 +1,6 @@
 package hometoogether.hometoogether.domain.training.controller;
 
-
 import hometoogether.hometoogether.domain.training.domain.*;
-
 import hometoogether.hometoogether.domain.training.service.RoutineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -42,3 +40,4 @@ public class RoutineController {
         return routineService.getTop5RoutineList();
     }
 }
+

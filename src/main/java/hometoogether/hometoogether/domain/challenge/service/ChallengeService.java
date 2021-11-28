@@ -11,16 +11,20 @@ import hometoogether.hometoogether.domain.pose.service.PoseService;
 import hometoogether.hometoogether.domain.user.domain.User;
 import hometoogether.hometoogether.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.jcodec.api.FrameGrab;
+import org.jcodec.api.JCodecException;
+import org.jcodec.common.model.Picture;
+import org.jcodec.scale.AWTUtil;
 import org.json.simple.parser.ParseException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -75,6 +79,7 @@ public class ChallengeService {
 
         //Challenge 생성
         Challenge challenge = Challenge.builder()
+                .type("photo")
                 .challengePose(challengePose)
                 .title(challengeRequestDto.getTitle())
                 .context(challengeRequestDto.getContext())
@@ -87,7 +92,7 @@ public class ChallengeService {
     }
 
     @Transactional
-    public Long saveChallengeVideo(ChallengeRequestDto challengeRequestDto) throws IOException, ParseException {
+    public Long saveChallengeVideo(ChallengeRequestDto challengeRequestDto) throws IOException, ParseException, JCodecException, InterruptedException {
         // parameter로 SessionUser 받아오게 구현 예정
 
         //ChallengePose 생성
@@ -97,11 +102,19 @@ public class ChallengeService {
         File file = new File(url);
         multipartFile.transferTo(file);
 
+
+//        Thread.sleep(5000);
+//        String thumbnail_url = UUID.randomUUID().toString();
+//        Picture picture = FrameGrab.getFrameFromFile(file, 15);
+//        BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
+//        ImageIO.write(bufferedImage, "jpg", new File(url));
+
         User user = userRepository.findUserByUserName(challengeRequestDto.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. username=" + challengeRequestDto.getUsername()));
 
         ChallengePose challengePose = ChallengePose.builder()
                 .url(url)
+//                .thumbnail_url(thumbnail_url)
                 .user(user)
                 .build();
         challengePoseRepository.save(challengePose);
@@ -113,6 +126,7 @@ public class ChallengeService {
 
         //Challenge 생성
         Challenge challenge = Challenge.builder()
+                .type("video")
                 .challengePose(challengePose)
                 .title(challengeRequestDto.getTitle())
                 .context(challengeRequestDto.getContext())
@@ -125,10 +139,25 @@ public class ChallengeService {
     }
 
     @Transactional
+    public String createThumbnail(File source) throws IOException, JCodecException {
+        String url = UUID.randomUUID().toString();
+        Picture picture = FrameGrab.getFrameFromFile(source, 0);
+        BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
+        ImageIO.write(bufferedImage, "jpg", new File(url));
+        return url;
+    }
+
+    @Transactional
     public ChallengeDetailResponseDto getChallenge(Long challengeId) {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + challengeId));
         return new ChallengeDetailResponseDto(challenge);
+    }
+
+    @Transactional
+    public List<ChallengeResponseDto> getTrendingChallenges() {
+        List<Challenge> challenges = challengeRepository.findTop5ByOrderByTrialCountDesc();
+        return challenges.stream().map(ChallengeResponseDto::new).collect(Collectors.toList());
     }
 
     @Transactional
