@@ -1,40 +1,39 @@
 package hometoogether.hometoogether.domain.training.domain;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Data
 public class RoutineDto {
+    private Long routineId;
     private Long userId;
-    private List<TrainingVO> trainings;
-//    private List<Routine> routineDtoList;
+    private String routineName;
 
-    //    @Builder
-//    public RoutineDto(List<Routine> routineDtoList) {
-//        this.routineDtoList = routineDtoList;
-//    }
     @Builder
-    public RoutineDto(Long userId, List<TrainingVO> trainings) {
+    public RoutineDto(Long routineId, Long userId, String routineName) {
+        this.routineId=routineId;
         this.userId = userId;
-        this.trainings = trainings;
+        this.routineName=routineName;
     }
 
-    public List<Routine> toEntity(RoutineDto routineDto) {
-        List<Routine> entities = new LinkedList<>();
+    public Routine toEntity(RoutineDto routineDto) {
+//        Routine entity=new Routine();
+//        List<Training> trainingList=new ArrayList<>();
 
-        for (TrainingVO t : routineDto.getTrainings()) {
-            Routine routine = Routine.builder()
-                    .userId(userId)
-                    .seq(t.getSeq())
-                    .trainingName(t.getTrainingName())
-                    .trainingId(t.getTrainingId())
-                    .build();
-            entities.add(routine);
-        }
+//        for (TrainingVO t : routineDto.getTrainings()) {
+//            Training training = t.toEntity();
+//            trainingList.add(training);
+//        }
 
-        return entities;
+        return Routine.builder()
+                .userId(userId)
+                .routineName(routineName)
+//                .trainings(trainingList)
+                .build();
     }
 }

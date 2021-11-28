@@ -53,4 +53,8 @@ public class CommentService {
         return commentId;
     }
 
+    public Long userCommentsCount(String email) {
+        return Long.valueOf(commentRepository.findCommentsByWriter(email).size());
+    }
+
 }

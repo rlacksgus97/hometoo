@@ -27,6 +27,11 @@ public class ForumController {
         return forumService.getForumInfo(forumId);
     }
 
+    @GetMapping("/forums/update/{id}")
+    public ForumResponseDto getUpdateDetail(@PathVariable("id") Long forumId) {
+        return forumService.getForumInfo(forumId);
+    }
+
     @DeleteMapping("/forums/{id}")
     public String delete(@PathVariable("id") Long forumId) {
         forumService.deleteForum(forumId);
@@ -43,5 +48,8 @@ public class ForumController {
         return forumService.saveForum(params);
     }
 
-
+    @GetMapping("/forums/count/{email}")
+    public Long getForumCount(@PathVariable("email") String email) {
+        return forumService.userForumCount(email);
+    }
 }

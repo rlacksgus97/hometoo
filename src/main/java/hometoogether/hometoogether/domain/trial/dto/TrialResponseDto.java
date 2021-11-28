@@ -15,7 +15,7 @@ public class TrialResponseDto {
         this.id = entity.getId();
         this.type = entity.getType();
         this.url = entity.getTrialPose().getUrl();
-        this.username = entity.getTrialPose().getUser().getUsername();
+        this.username = entity.getTrialPose().getUser().getUserName();
         this.score = entity.getScore();
     }
 }

@@ -43,6 +43,7 @@ import "assets/scss/argon-design-system-react.scss";
 
 // axios BoardService
 import BoardService from '../service/BoardService';
+import UserService from "../service/UserService";
 
 // index page sections
 // import Download from "../IndexSections/Download.js";
@@ -58,6 +59,7 @@ class Board extends React.Component {
             boards: []
         }
         this.createBoard = this.createBoard.bind(this);
+        this.loginCheck = this.loginCheck.bind(this);
     }
 
     componentDidMount() {
@@ -85,21 +87,36 @@ class Board extends React.Component {
         this.props.history.push('/board/create');
     }
 
-    updateBoard(no) {
-        this.props.history.push('/board/update/'+no);
+    loginCheck(writer) {
+        if (writer == localStorage.getItem("authenticatedUserName")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    deleteBoardView = async function (no) {
-        //TODO: board writer와 로그인된 id 체크하는 로직필요
-        if(window.confirm("삭제된 글은 복구 할 수 없습니다.\n정말로 글을 삭제하시겠습니까?")) {
-            BoardService.deleteBoard(no).then((res) => {
-                console.log("delete result => " + JSON.stringify(res.data));
-                if (res.data == "Delete Success") {
-                    window.location.reload(true);
-                } else {
-                    alert("글 삭제가 실패했습니다.");
-                }
-            });
+    updateBoard(writer, no) {
+        if (!this.loginCheck(writer)) {
+            alert("작성한 유저가 아닙니다.");
+        } else {
+            this.props.history.push('/board/update/'+no);
+        }
+    }
+
+    deleteBoardView = async function (writer, no) {
+        if (!this.loginCheck(writer)) {
+            alert("작성한 유저가 아닙니다.");
+        } else {
+            if(window.confirm("삭제된 글은 복구 할 수 없습니다.\n정말로 글을 삭제하시겠습니까?")) {
+                BoardService.deleteBoard(no).then((res) => {
+                    console.log("delete result => " + JSON.stringify(res.data));
+                    if (res.data == "Delete Success") {
+                        window.location.reload(true);
+                    } else {
+                        alert("글 삭제가 실패했습니다.");
+                    }
+                });
+            }
         }
     }
 
@@ -245,12 +262,12 @@ class Board extends React.Component {
                                                                     </DropdownToggle>
                                                                     <DropdownMenu className="dropdown-menu-arrow" right>
                                                                         <DropdownItem
-                                                                            onClick={() => this.updateBoard(board.forumId)}
+                                                                            onClick={() => this.updateBoard(board.writer, board.forumId)}
                                                                         >
                                                                             수정
                                                                         </DropdownItem>
                                                                         <DropdownItem
-                                                                            onClick={() => this.deleteBoardView(board.forumId)}
+                                                                            onClick={() => this.deleteBoardView(board.writer, board.forumId)}
                                                                         >
                                                                             삭제
                                                                         </DropdownItem>
@@ -319,146 +336,8 @@ class Board extends React.Component {
                         </Row>
                     </Container>
                     </section>
-                    {/*정보게시판*/}
-                    {/*<section className="section section-lg pt-lg-0 section-contact-us">*/}
-                    {/*<Container className="justify-content-md-center" fluid>*/}
-                    {/*    /!* Table *!/*/}
-                    {/*    <Row>*/}
-                    {/*        <div className="col">*/}
-                    {/*            <Card className="shadow">*/}
-                    {/*                <CardHeader className="border-0">*/}
-                    {/*                    <Row>*/}
-                    {/*                        <Col className="col-sm">*/}
-                    {/*                            <h1 className="display-3 text-black">정보게시판</h1>*/}
-                    {/*                        </Col>*/}
-                    {/*                        <Button*/}
-                    {/*                            className="btn-white btn-icon mb-3 mb-sm-0 ml-1"*/}
-                    {/*                            color="default"*/}
-                    {/*                            onClick={this.createBoard}*/}
-                    {/*                        >*/}
-                    {/*      <span className="btn-inner--icon mr-1">*/}
-                    {/*        <i className="ni ni-fat-add" />*/}
-                    {/*      </span>*/}
-                    {/*                            <span className="btn-inner--text">*/}
-                    {/*        글 쓰기*/}
-                    {/*      </span>*/}
-                    {/*                        </Button>*/}
-                    {/*                    </Row>*/}
-                    {/*                </CardHeader>*/}
-                    {/*                <Table className="align-items-center table-flush" responsive>*/}
-                    {/*                    <thead className="thead-light">*/}
-                    {/*                    <tr>*/}
-                    {/*                        <th scope="col">글 번호</th>*/}
-                    {/*                        <th scope="col">제목</th>*/}
-                    {/*                        <th scope="col">작성자</th>*/}
-                    {/*                        <th scope="col">작성일</th>*/}
-                    {/*                        <th scope="col">수정일</th>*/}
-                    {/*                        <th scope="col">조회수</th>*/}
-                    {/*                        <th scope="col" />*/}
-                    {/*                    </tr>*/}
-                    {/*                    </thead>*/}
-                    {/*                    <tbody>*/}
-                    {/*                    {*/}
-                    {/*                        this.state.boards.map(*/}
-                    {/*                            board =>*/}
-                    {/*                                <tr key={board.forumId}>*/}
-                    {/*                                    <td> {board.forumId} </td>*/}
-                    {/*                                    <td id="cursor"> <a onClick={() => this.readBoard(board.forumId)}> {board.title} </a></td>*/}
-                    {/*                                    <td> {board.writer}</td>*/}
-                    {/*                                    <td id="createDate"> {board.createDate}</td>*/}
-                    {/*                                    <td id="updateDate"> {board.updateDate}</td>*/}
-                    {/*                                    <td> {board.hits}</td>*/}
-                    {/*                                    <td className="text-right">*/}
-                    {/*                                        <UncontrolledDropdown>*/}
-                    {/*                                            <DropdownToggle*/}
-                    {/*                                                className="btn-icon-only text-light"*/}
-                    {/*                                                href="#pablo"*/}
-                    {/*                                                role="button"*/}
-                    {/*                                                size="sm"*/}
-                    {/*                                                color=""*/}
-                    {/*                                                onClick={(e) => e.preventDefault()}*/}
-                    {/*                                            >*/}
-                    {/*                                                <i className="ni ni-bold-down"/>*/}
-                    {/*                                            </DropdownToggle>*/}
-                    {/*                                            <DropdownMenu className="dropdown-menu-arrow" right>*/}
-                    {/*                                                <DropdownItem*/}
-                    {/*                                                    onClick={() => this.updateBoard(board.forumId)}*/}
-                    {/*                                                >*/}
-                    {/*                                                    수정*/}
-                    {/*                                                </DropdownItem>*/}
-                    {/*                                                <DropdownItem*/}
-                    {/*                                                    onClick={() => this.deleteBoardView(board.forumId)}*/}
-                    {/*                                                >*/}
-                    {/*                                                    삭제*/}
-                    {/*                                                </DropdownItem>*/}
-                    {/*                                            </DropdownMenu>*/}
-                    {/*                                        </UncontrolledDropdown>*/}
-                    {/*                                    </td>*/}
-                    {/*                                </tr>*/}
-                    {/*                        )*/}
-                    {/*                    }*/}
-                    {/*                    </tbody>*/}
-                    {/*                </Table>*/}
-                    {/*                <CardFooter className="py-4">*/}
-                    {/*                    <nav aria-label="...">*/}
-                    {/*                        <Pagination*/}
-                    {/*                            className="pagination justify-content-end mb-0"*/}
-                    {/*                            listClassName="justify-content-end mb-0"*/}
-                    {/*                        >*/}
-                    {/*                            <PaginationItem className="disabled">*/}
-                    {/*                                <PaginationLink*/}
-                    {/*                                    href="#pablo"*/}
-                    {/*                                    onClick={(e) => e.preventDefault()}*/}
-                    {/*                                    tabIndex="-1"*/}
-                    {/*                                >*/}
-                    {/*                                    <i className="fa fa-angle-left" />*/}
-                    {/*                                    <span className="sr-only">Previous</span>*/}
-                    {/*                                </PaginationLink>*/}
-                    {/*                            </PaginationItem>*/}
-                    {/*                            <PaginationItem className="active">*/}
-                    {/*                                <PaginationLink*/}
-                    {/*                                    href="#pablo"*/}
-                    {/*                                    onClick={(e) => e.preventDefault()}*/}
-                    {/*                                >*/}
-                    {/*                                    1*/}
-                    {/*                                </PaginationLink>*/}
-                    {/*                            </PaginationItem>*/}
-                    {/*                            <PaginationItem>*/}
-                    {/*                                <PaginationLink*/}
-                    {/*                                    href="#pablo"*/}
-                    {/*                                    onClick={(e) => e.preventDefault()}*/}
-                    {/*                                >*/}
-                    {/*                                    2 <span className="sr-only">(current)</span>*/}
-                    {/*                                </PaginationLink>*/}
-                    {/*                            </PaginationItem>*/}
-                    {/*                            <PaginationItem>*/}
-                    {/*                                <PaginationLink*/}
-                    {/*                                    href="#pablo"*/}
-                    {/*                                    onClick={(e) => e.preventDefault()}*/}
-                    {/*                                >*/}
-                    {/*                                    3*/}
-                    {/*                                </PaginationLink>*/}
-                    {/*                            </PaginationItem>*/}
-                    {/*                            <PaginationItem>*/}
-                    {/*                                <PaginationLink*/}
-                    {/*                                    href="#pablo"*/}
-                    {/*                                    onClick={(e) => e.preventDefault()}*/}
-                    {/*                                >*/}
-                    {/*                                    <i className="fa fa-angle-right" />*/}
-                    {/*                                    <span className="sr-only">Next</span>*/}
-                    {/*                                </PaginationLink>*/}
-                    {/*                            </PaginationItem>*/}
-                    {/*                        </Pagination>*/}
-                    {/*                    </nav>*/}
-                    {/*                </CardFooter>*/}
-                    {/*            </Card>*/}
-                    {/*        </div>*/}
-                    {/*    </Row>*/}
-                    {/*</Container>*/}
-                    {/*</section>*/}
-                    {/*<Download />*/}
                 </main>
-                <CardsFooter />
+                {/*<CardsFooter />*/}
             </>
         );
     }

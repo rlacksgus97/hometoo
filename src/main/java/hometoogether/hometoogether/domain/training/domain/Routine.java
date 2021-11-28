@@ -6,40 +6,36 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "ROUTINE")
+@Table(name="ROUTINE")
 public class Routine {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long routineId;
 
-    @Column(name = "seq", nullable = false)
-    private int seq;
-
-//    @ManyToOne
+    //    @ManyToOne
 //    @JoinColumn(name = "user_id", nullable = false)
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-//    @ManyToOne
-//    @JoinColumn(name = "training_id", nullable = false)
-    @Column(name = "training_id", nullable = false)
-    private Long trainingId;
+    private String routineName;
+    private float routineAvgScore;
+    private int evaluateCnt;
 
-    @Column(name = "training_name", nullable = false)
-    private String trainingName;
-    // 루틴 - 운동간 매핑이 아니라 유저 - 루틴 - 운동간 매핑이 낫다(n:m)
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Training> trainings;
 
     @Builder
-    public Routine(Long userId, Long trainingId, String trainingName, int seq) {
+    public Routine(Long userId, String routineName, List<Training> trainings, float routineAvgScore, int evaluateCnt) {
         this.userId = userId;
-        this.trainingId = trainingId;
-        this.trainingName = trainingName;
-        this.seq = seq;
+        this.routineName=routineName;
+        this.trainings=trainings;
+        this.routineAvgScore=routineAvgScore;
+        this.evaluateCnt=evaluateCnt;
     }
-
 }

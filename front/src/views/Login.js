@@ -1,20 +1,3 @@
-/*!
-
-=========================================================
-* Argon Design System React - v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-design-system-react
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-design-system-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 
 // reactstrap components
@@ -43,7 +26,69 @@ import "assets/vendor/nucleo/css/nucleo.css";
 import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss";
 
+// 유저기능
+import UserService from "../service/UserService";
+
 class Login extends React.Component {
+  state = {};
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email : '',
+      password: ''
+    };
+
+    this.changeEmailHandler = this.changeEmailHandler.bind(this);
+    this.changePasswordHandler = this.changePasswordHandler.bind(this);
+    this.loginUser = this.loginUser.bind(this);
+  }
+
+  clickFindPassword = (event) => {
+    event.preventDefault();
+    window.location.href='/find/password';
+  }
+
+  clickRegisterUser = (event) => {
+    event.preventDefault();
+    window.location.href='/register';
+  }
+
+  changeEmailHandler = (event) => {
+    this.setState({email: event.target.value});
+  }
+
+  changePasswordHandler = (event) => {
+    this.setState({password: event.target.value});
+  }
+
+  loginUser = (event) => {
+    event.preventDefault();
+    let user = {
+      email: this.state.email,
+      password: this.state.password
+    };
+
+    console.log("user => " + JSON.stringify(user));
+    UserService.signIn(user).then(res => {
+      // 로그인 정보 저장
+      console.log(res.data);
+      UserService.registerSuccessfulLoginForJwt(user, res.data['accessToken']);
+      this.props.history.push('/board');
+    }).catch(() => {
+      alert('이메일 혹은 비밀번호가 틀립니다.');
+    });
+
+    let userName = "";
+    UserService.getUserName(user).then(res => {
+      console.log("testname => " + user);
+      userName = res.data['userName'];
+      localStorage.setItem("authenticatedUserName", userName);
+    });
+  }
+
+
   componentDidMount() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -71,42 +116,42 @@ class Login extends React.Component {
                   <Card className="bg-secondary shadow border-0">
                     <CardHeader className="bg-white pb-5">
                       <div className="text-muted text-center mb-3">
-                        <small>Sign in with</small>
+                        <h2>로그인</h2>
                       </div>
-                      <div className="btn-wrapper text-center">
-                        <Button
-                          className="btn-neutral btn-icon"
-                          color="default"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <span className="btn-inner--icon mr-1">
-                            <img
-                              alt="..."
-                              src={require("assets/img/icons/common/github.svg")}
-                            />
-                          </span>
-                          <span className="btn-inner--text">Github</span>
-                        </Button>
-                        <Button
-                          className="btn-neutral btn-icon ml-1"
-                          color="default"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <span className="btn-inner--icon mr-1">
-                            <img
-                              alt="..."
-                              src={require("assets/img/icons/common/google.svg")}
-                            />
-                          </span>
-                          <span className="btn-inner--text">Google</span>
-                        </Button>
-                      </div>
+                      {/*<div className="btn-wrapper text-center">*/}
+                      {/*  /!*<Button*!/*/}
+                      {/*  /!*  className="btn-neutral btn-icon"*!/*/}
+                      {/*  /!*  color="default"*!/*/}
+                      {/*  /!*  href="#pablo"*!/*/}
+                      {/*  /!*  onClick={e => e.preventDefault()}*!/*/}
+                      {/*  /!*>*!/*/}
+                      {/*  /!*  <span className="btn-inner--icon mr-1">*!/*/}
+                      {/*  /!*    <img*!/*/}
+                      {/*  /!*      alt="..."*!/*/}
+                      {/*  /!*      src={require("assets/img/icons/common/github.svg")}*!/*/}
+                      {/*  /!*    />*!/*/}
+                      {/*  /!*  </span>*!/*/}
+                      {/*  /!*  <span className="btn-inner--text">Github</span>*!/*/}
+                      {/*  /!*</Button>*!/*/}
+                      {/*  <Button*/}
+                      {/*    className="btn-neutral btn-icon ml-1"*/}
+                      {/*    color="default"*/}
+                      {/*    href="#pablo"*/}
+                      {/*    onClick={e => e.preventDefault()}*/}
+                      {/*  >*/}
+                      {/*    <span className="btn-inner--icon mr-1">*/}
+                      {/*      <img*/}
+                      {/*        alt="..."*/}
+                      {/*        src={require("assets/img/icons/common/google.svg")}*/}
+                      {/*      />*/}
+                      {/*    </span>*/}
+                      {/*    <span className="btn-inner--text">Google</span>*/}
+                      {/*  </Button>*/}
+                      {/*</div>*/}
                     </CardHeader>
                     <CardBody className="px-lg-5 py-lg-5">
                       <div className="text-center text-muted mb-4">
-                        <small>Or sign in with credentials</small>
+                        <small>이메일과 비밀번호로 로그인하세요.</small>
                       </div>
                       <Form role="form">
                         <FormGroup className="mb-3">
@@ -116,7 +161,7 @@ class Login extends React.Component {
                                 <i className="ni ni-email-83" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Email" type="email" />
+                            <Input placeholder="Email" type="email" onChange={this.changeEmailHandler}/>
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -130,6 +175,7 @@ class Login extends React.Component {
                               placeholder="Password"
                               type="password"
                               autoComplete="off"
+                              onChange={this.changePasswordHandler}
                             />
                           </InputGroup>
                         </FormGroup>
@@ -139,20 +185,21 @@ class Login extends React.Component {
                             id=" customCheckLogin"
                             type="checkbox"
                           />
-                          <label
-                            className="custom-control-label"
-                            htmlFor=" customCheckLogin"
-                          >
-                            <span>Remember me</span>
-                          </label>
+                          {/*<label*/}
+                          {/*  className="custom-control-label"*/}
+                          {/*  htmlFor=" customCheckLogin"*/}
+                          {/*>*/}
+                          {/*  <span>Remember me</span>*/}
+                          {/*</label>*/}
                         </div>
                         <div className="text-center">
                           <Button
                             className="my-4"
                             color="primary"
                             type="button"
+                            onClick={this.loginUser}
                           >
-                            Sign in
+                            로그인
                           </Button>
                         </div>
                       </Form>
@@ -162,19 +209,19 @@ class Login extends React.Component {
                     <Col xs="6">
                       <a
                         className="text-light"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        style={{cursor:'pointer'}}
+                        onClick={this.clickFindPassword}
                       >
-                        <small>Forgot password?</small>
+                        <small>비밀번호찾기</small>
                       </a>
                     </Col>
                     <Col className="text-right" xs="6">
                       <a
                         className="text-light"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        style={{cursor:'pointer'}}
+                        onClick={this.clickRegisterUser}
                       >
-                        <small>Create new account</small>
+                        <small>계정 생성</small>
                       </a>
                     </Col>
                   </Row>

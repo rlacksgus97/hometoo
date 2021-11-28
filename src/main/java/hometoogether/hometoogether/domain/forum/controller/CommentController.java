@@ -36,4 +36,10 @@ public class CommentController {
     public Long update(@PathVariable("commentId") Long commentId, @RequestBody CommentRequestDto params) {
         return commentService.updateComment(commentId, params);
     }
+
+    @GetMapping("/comments/count/{email}")
+    public Long getForumCount(@PathVariable("email") String email) {
+        return commentService.userCommentsCount(email);
+    }
+
 }

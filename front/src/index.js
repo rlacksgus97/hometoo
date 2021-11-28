@@ -9,6 +9,7 @@ import BoardUpdate from "views/BoardUpdate";
 import ChallengeCardList from "views/ChallengeCardList";
 import ChallengeCreate from "views/ChallengeCreate";
 import ChallengeDetail from "./views/ChallengeDetail";
+import FindPassword from "./views/FindPassword";
 import Home from "views/Home.js";
 import Landing from "./views/Landing.js";
 import Login from "./views/Login.js";
@@ -77,6 +78,11 @@ ReactDOM.render(
         path="/trial/create"
         exact
         render={(props) => <TrialCreate {...props} />}
+      />
+      <Route
+        path="/find/password"
+        exact
+        render={(props) => <FindPassword {...props} />}
       />
       <Redirect to="/" />
     </Switch>

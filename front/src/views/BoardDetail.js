@@ -254,7 +254,7 @@ class BoardDetail extends React.Component {
                                                             // });
                                                             var temp = new Object();
                                                             temp.createdAt = new Date(Date.now());
-                                                            temp.fullName = this.state.board.writer;
+                                                            temp.fullName = localStorage.getItem("authenticatedUserName");
                                                             temp.contents = text;
                                                             this.state.comments.push(temp);
                                                             console.log('submit:', text, temp);

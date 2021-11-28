@@ -54,8 +54,8 @@ public class TrialService {
 
 //        String thumbnail_url = createThumbnail(file);
 
-        User user = userRepository.findByUsername(trialRequestDto.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. username=" + trialRequestDto.getUsername()));
+        User user = userRepository.findUserByUserName(trialRequestDto.getUserName())
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. username=" + trialRequestDto.getUserName()));
 
         TrialPose trialPose = TrialPose.builder()
                 .url(url)
@@ -102,8 +102,8 @@ public class TrialService {
 
 //        String thumbnail_url = createThumbnail(file);
 
-        User user = userRepository.findByUsername(trialRequestDto.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. username=" + trialRequestDto.getUsername()));
+        User user = userRepository.findUserByUserName(trialRequestDto.getUserName())
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. username=" + trialRequestDto.getUserName()));
 
         TrialPose trialPose = TrialPose.builder()
                 .url(url)

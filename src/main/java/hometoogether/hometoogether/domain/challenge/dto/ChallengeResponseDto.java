@@ -20,7 +20,7 @@ public class ChallengeResponseDto {
         else{
             this.url = entity.getChallengePose().getUrl();
         }
-        this.username = entity.getChallengePose().getUser().getUsername();
+        this.username = entity.getChallengePose().getUser().getUserName();
         this.title = entity.getTitle();
     }
 }

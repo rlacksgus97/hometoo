@@ -39,15 +39,34 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 
+// user
+import UserService from "../../service/UserService";
+
 class DemoNavbar extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.onLoginClick = this.onLoginClick.bind(this);
+    this.onLogoutClick = this.onLogoutClick.bind(this);
+  }
+
   componentDidMount() {
     let headroom = new Headroom(document.getElementById("navbar-main"));
     // initialise
     headroom.init();
+    this.onLogin();
   }
+
   state = {
     collapseClasses: "",
-    collapseOpen: false
+    collapseOpen: false,
+    flag: false
+  };
+
+  onLogin = () => {
+    this.setState({
+      flag: UserService.isUserLoggedIn()
+    });
   };
 
   onExiting = () => {
@@ -61,6 +80,16 @@ class DemoNavbar extends React.Component {
       collapseClasses: ""
     });
   };
+
+  onLoginClick = (event) => {
+    event.preventDefault();
+    window.location.href='/login';
+  }
+
+  onLogoutClick = (event) => {
+    event.preventDefault();
+    UserService.logout();
+  }
 
   render() {
     return (
@@ -257,21 +286,42 @@ class DemoNavbar extends React.Component {
                       Star us on Github
                     </UncontrolledTooltip>
                   </NavItem>
-                  <NavItem className="d-none d-lg-block ml-lg-4">
-                    <Button
-                      className="btn-neutral btn-icon"
-                      color="default"
-                      href="https://www.creative-tim.com/product/argon-design-system-react?ref=adsr-navbar"
-                      target="_blank"
-                    >
+                  {
+                    this.state.flag
+                    ?
+                        (<NavItem className="d-none d-lg-block ml-lg-4">
+                      <Button
+                          className="btn-neutral btn-icon"
+                          color="default"
+                          onClick={this.onLogoutClick}
+                          target="_blank"
+                      >
                       <span className="btn-inner--icon">
-                        <i className="fa fa-cloud-download mr-2" />
+                        <i className="ni ni-fat-remove mr-2"/>
                       </span>
-                      <span className="nav-link-inner--text ml-1">
-                        Download
+                        <span className="nav-link-inner--text ml-1">
+                        Logout
                       </span>
-                    </Button>
-                  </NavItem>
+                      </Button>
+                    </NavItem>)
+                        :(
+                            <NavItem className="d-none d-lg-block ml-lg-4">
+                              <Button
+                                  className="btn-neutral btn-icon"
+                                  color="default"
+                                  onClick={this.onLoginClick}
+                                  target="_blank"
+                              >
+                      <span className="btn-inner--icon">
+                        <i className="ni ni-curved-next mr-2"/>
+                      </span>
+                                <span className="nav-link-inner--text ml-1">
+                        Login
+                      </span>
+                              </Button>
+                            </NavItem>
+                        )
+                  }
                 </Nav>
               </UncontrolledCollapse>
             </Container>

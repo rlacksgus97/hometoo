@@ -64,4 +64,8 @@ public class ForumService {
         return forum.getForumId();
     }
 
+    public Long userForumCount(String email) {
+        return Long.valueOf(forumRepository.findForumsByWriter(email).size());
+    }
+
 }

@@ -1,21 +1,60 @@
 package hometoogether.hometoogether.domain.user.controller;
 
-import hometoogether.hometoogether.domain.user.domain.UserRequestDto;
+import hometoogether.hometoogether.common.ApiResponse;
+import hometoogether.hometoogether.common.JwtAuthenticationResponse;
+import hometoogether.hometoogether.config.jwt.JwtTokenProvider;
+import hometoogether.hometoogether.domain.user.domain.LoginRequest;
+import hometoogether.hometoogether.domain.user.domain.PasswordFindReqeust;
+import hometoogether.hometoogether.domain.user.domain.SignUpRequest;
+import hometoogether.hometoogether.domain.user.domain.User;
+import hometoogether.hometoogether.domain.user.repository.UserRepository;
 import hometoogether.hometoogether.domain.user.service.UserService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
+import java.net.URI;
+
 @RestController
+@RequestMapping("/api/users")
+@RequiredArgsConstructor
+@CrossOrigin("*")
 public class UserController {
 
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    @PostMapping("/users")
-    public Long save(@RequestBody UserRequestDto param){
-        System.out.println("param.getUsername() = " + param.getUsername());
-        return userService.saveUser(param);
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) throws Exception {
+        return ResponseEntity.ok(new JwtAuthenticationResponse(userService.signIn(loginRequest)));
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
+        String result = userService.singUp(signUpRequest);
+
+        if (result.equals("EMAIL EXIST")) {
+            return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"), HttpStatus.BAD_REQUEST);
+        } else if (result.equals("USERNAME EXIST")) {
+            return new ResponseEntity(new ApiResponse(false, "User Name already in use!"), HttpStatus.BAD_REQUEST);
+        } else {
+            return ResponseEntity.created(URI.create(result)).body(new ApiResponse(true, "User registered successfully"));
+        }
+    }
+
+    @PatchMapping("/find/password")
+    public ResponseEntity<?> findPassword(@RequestBody PasswordFindReqeust passwordFindReqeust) throws Exception {
+        return ResponseEntity.ok(userService.resetPassword(passwordFindReqeust));
+    }
+
+    @GetMapping("/find/userName/{email}")
+    public User findUser(@PathVariable String email) {
+        return userService.findUser(email);
     }
 }
