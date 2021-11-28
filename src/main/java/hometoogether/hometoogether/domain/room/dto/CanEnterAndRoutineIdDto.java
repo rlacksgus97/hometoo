@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class UserCountAndTimeDto {
-    private String time;
-    private Long count;
+public class CanEnterAndRoutineIdDto {
+
+    private boolean canEnter;
+    private Long routineId;
 }

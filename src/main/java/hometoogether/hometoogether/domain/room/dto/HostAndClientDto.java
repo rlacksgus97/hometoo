@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class UserCountAndTimeDto {
-    private String time;
-    private Long count;
+public class HostAndClientDto {
+    private String hostUser;
+    private String clientUser;
 }

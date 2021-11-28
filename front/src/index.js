@@ -17,6 +17,14 @@ import BoardCreate from "./views/BoardCreate";
 import ChallengeDetail from "./views/ChallengeDetail";
 import FindPassword from "./views/FindPassword";
 
+import ChatRoom from "./views/chat/ChatRoom";
+import CreateRoom from "./views/chat/CreateRoom";
+import CreateRoutine from "./views/routine/CreateRoutine";
+import SelectRoomRoutine from "./views/chat/SelectRoomRoutine";
+import ShowRoutineDetails from "./views/routine/ShowRoutineDetails";
+import EvaluateRoutine from "./views/routine/EvaluateRoutine";
+import ShowTop5Routine from "./views/routine/ShowTop5Routine";
+
 ReactDOM.render(
     <BrowserRouter>
         <Switch>
@@ -89,6 +97,37 @@ ReactDOM.render(
                 path="/find/password"
                 exact
                 render={props => <FindPassword {...props} />}
+            />
+            <Route
+                path="/room/create"
+                exact
+                render={props => <CreateRoom {...props} />}
+            />
+            <Route
+                path="/room/:id/user/:uuid/routine/:routineId"
+                render={props => <ChatRoom {...props} />}
+            />
+            <Route
+                path="/routine"
+                exact
+                render={props => <CreateRoutine {...props} />}
+            />
+            <Route
+                path="/room/create/routine"
+                exact
+                render={props => <SelectRoomRoutine {...props} />}
+            />
+            <Route
+                path="/room/create/routine/:routineId"
+                render={props => <ShowRoutineDetails {...props} />}
+            />
+            <Route
+                path="/routine/:routineId/evaluation"
+                render={props => <EvaluateRoutine {...props} />}
+            />
+            <Route
+                path="/routine/rank"
+                render={props => <ShowTop5Routine {...props} />}
             />
             <Redirect to="/" />
         </Switch>

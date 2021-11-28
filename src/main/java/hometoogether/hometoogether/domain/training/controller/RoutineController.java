@@ -1,35 +1,44 @@
 package hometoogether.hometoogether.domain.training.controller;
 
-import hometoogether.hometoogether.domain.training.domain.RoutineDto;
-import hometoogether.hometoogether.domain.training.domain.Training;
+
+import hometoogether.hometoogether.domain.training.domain.*;
+
 import hometoogether.hometoogether.domain.training.service.RoutineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class RoutineController {
 
     private final RoutineService routineService;
 
-    @GetMapping("/routines/{id}")
-    public RoutineDto getRoutineList(@PathVariable("id") Long userId) {
-        return routineService.getRoutine(userId);
-    }
-
     @GetMapping("/routines")
-    public List<Training> getTraining() {
-        return routineService.getTrainingList();
+    public List<RoutineDto> getRoutineList() {
+        return routineService.getRoutines();
     }
 
-    @PostMapping(value = "/routines/{id}")
-    public String updateRoutine(@PathVariable("id") Long userId, @RequestBody RoutineDto params) {
-        routineService.saveRoutine(userId, params);
-        return "Routine Update Success";
+    @GetMapping("/routine/{routineId}")
+    public List<TrainingVO> getTrainings(@PathVariable Long routineId) {
+        return routineService.getTrainingList(routineId);
     }
 
+    @PostMapping("/routine")
+    public void saveRoutine(@RequestBody Map<String, Object> routine) {
+        routineService.saveRoutine(routine);
+    }
 
+    @PutMapping("/routine/{routineId}")
+    public float editRoutineAvgScore(@PathVariable Long routineId, @RequestBody Map<String, String> evaluation){
+        return routineService.editRoutineAvgScore(routineId, evaluation);
+    }
+
+    @GetMapping("/routine/top5")
+    public List<RoutineScoreDto> getTop5RoutineList(){
+        return routineService.getTop5RoutineList();
+    }
 }

@@ -50,7 +50,7 @@ public class ChallengeService {
         File file = new File(url);
         multipartFile.transferTo(file);
 
-        User user = userRepository.findByUsername(challengeRequestDto.getUsername())
+        User user = userRepository.findUserByUserName(challengeRequestDto.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. username=" + challengeRequestDto.getUsername()));
 
         ChallengePose challengePose = ChallengePose.builder()
@@ -97,7 +97,7 @@ public class ChallengeService {
         File file = new File(url);
         multipartFile.transferTo(file);
 
-        User user = userRepository.findByUsername(challengeRequestDto.getUsername())
+        User user = userRepository.findUserByUserName(challengeRequestDto.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. username=" + challengeRequestDto.getUsername()));
 
         ChallengePose challengePose = ChallengePose.builder()

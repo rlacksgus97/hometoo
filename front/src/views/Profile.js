@@ -17,6 +17,7 @@ import "assets/scss/argon-design-system-react.scss";
 import UserService from "../service/UserService";
 
 class Profile extends React.Component {
+
   state = {};
 
   constructor(props) {
@@ -179,6 +180,20 @@ class Profile extends React.Component {
                   </div>
                 </div>
               </Card>
+              <div className="">
+                <Button value="1"
+                    onClick={window.location.href="/"}>
+                  Give me Routines
+                </Button>
+                <Button value="2"
+                    onClick={window.location.href="/"}>
+                  Give me Challenges
+                </Button>
+                <Button value="3"
+                    onClick={window.location.href="/"}>
+                  Give me Trials
+                </Button>
+              </div>
             </Container>
           </section>
         </main>

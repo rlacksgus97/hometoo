@@ -62,7 +62,7 @@ public class UserService {
 
     @Transactional
     public String resetPassword(PasswordFindReqeust passwordFindReqeust) throws Exception {
-        User user = userRepository.findUserByEmail(passwordFindReqeust.getEmail());
+        User user = userRepository.findByEmail(passwordFindReqeust.getEmail());
 
         if (user == null) {
             throw new Exception("유저가 없습니다.");
@@ -84,6 +84,6 @@ public class UserService {
     }
 
     public User findUser(String email) {
-        return userRepository.findUserByEmail(email);
+        return userRepository.findByEmail(email);
     }
 }

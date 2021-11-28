@@ -17,13 +17,13 @@ public class ChallengeDetailResponseDto {
 
     public ChallengeDetailResponseDto(Challenge entity) {
         this.url = entity.getChallengePose().getUrl();
-        this.username = entity.getChallengePose().getUser().getUsername();
+        this.username = entity.getChallengePose().getUser().getUserName();
         this.title = entity.getTitle();
         this.context = entity.getContext();
         if(!entity.getTrialList().isEmpty()){
             List<String> trial_user_List = new ArrayList<>();
             for (Trial t : entity.getTrialList()){
-                trial_user_List.add(t.getTrialPose().getUser().getUsername());
+                trial_user_List.add(t.getTrialPose().getUser().getUserName());
             }
             this.trial_user_List = trial_user_List;
         }

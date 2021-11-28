@@ -1,19 +1,16 @@
 package hometoogether.hometoogether.domain.training.service;
 
-import hometoogether.hometoogether.domain.training.domain.Routine;
-import hometoogether.hometoogether.domain.training.domain.RoutineDto;
-import hometoogether.hometoogether.domain.training.domain.Training;
-import hometoogether.hometoogether.domain.training.domain.TrainingVO;
+import hometoogether.hometoogether.domain.training.domain.*;
+
 import hometoogether.hometoogether.domain.training.repository.RoutineRepository;
 import hometoogether.hometoogether.domain.training.repository.TrainingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,45 +18,125 @@ public class RoutineService {
     private final RoutineRepository routineRepository;
     private final TrainingRepository trainingRepository;
 
-    // 루틴을 개인이 계속 업데이트 하는게 아니라 화상채팅하기전에
-    // 단순 등록하는 형식이라면, update할때 delete -> save하는게 낫다
+    public List<RoutineDto> getRoutines() {
+        List<Routine> all = routineRepository.findAll();
+        List<RoutineDto> result=new ArrayList<>();
 
-    public RoutineDto getRoutine(Long userId) {
-        List<Routine> routines = routineRepository.findAllByUserId(userId);
-        // seq 기반 sort
-        routines.sort(Comparator.comparing((Routine r) -> r.getSeq()));
-        List<TrainingVO> trainings = new LinkedList<>();
-        for (Routine r : routines) {
-            trainings.add(new TrainingVO(r.getTrainingId(), r.getTrainingName(), r.getSeq()));
+        for(Routine routine : all){
+
+            RoutineDto build = RoutineDto.builder()
+                    .routineId(routine.getRoutineId())
+                    .routineName(routine.getRoutineName())
+                    .userId(routine.getUserId())
+                    .build();
+            result.add(build);
         }
-        return new RoutineDto(userId, trainings);
+
+        return result;
     }
 
-    public List<Training> getTrainingList() {
-        return trainingRepository.findAll();
+    public List<TrainingVO> getTrainingList(Long routineId) {
+        Routine routine = routineRepository.findById(routineId).orElse(null);
+        List<Training> trainings = routine.getTrainings();
+        List<TrainingVO> trainingVOs=new ArrayList<>();
+
+        for (Training training : trainings) {
+            TrainingVO build = TrainingVO.builder()
+                    .trainingId(training.getTrainingId())
+                    .trainingName(training.getTrainingName())
+                    .trainingSec(training.getTrainingSec())
+                    .trainingSetCnt(training.getTrainingSetCnt())
+                    .build();
+            trainingVOs.add(build);
+        }
+
+        return trainingVOs;
     }
 
     @Transactional
-    public void saveRoutine(Long userId, RoutineDto routineDto) {
-        Optional<List<Routine>> routines = Optional.ofNullable(routineRepository.findAllByUserId(userId));
-        if (routines.isPresent()) {
-            routineRepository.deleteAll(routines.get());
+    public void saveRoutine(Map<String, Object> routine) {
+        List<Training> trainings=new ArrayList<>();
+        Routine myRoutine=new Routine();
+
+        String routineName = routine.get("routineName").toString();
+
+        String trainingName = routine.get("trainingName").toString();
+        String trainingSec = routine.get("trainingSec").toString();
+        String trainingSetCnt = routine.get("trainingSetCnt").toString();
+        String trainingSeq = routine.get("seq").toString();
+
+        String[] nameArray = (String[]) arrayParse(trainingName);
+        String[] secArray = (String[]) arrayParse(trainingSec);
+        String[] setCntArray = (String[]) arrayParse(trainingSetCnt);
+        String[] seqArray = (String[]) arrayParse(trainingSeq);
+
+        for(int i=0;i<nameArray.length;i++){
+            Training training = Training.builder()
+                    .trainingName(nameArray[i])
+                    .trainingSec(Integer.valueOf(secArray[i]))
+                    .trainingSetCnt(Integer.valueOf(setCntArray[i]))
+                    .seq(Integer.valueOf(seqArray[i])).build();
+
+            trainings.add(training);
+            trainingRepository.save(training);
         }
-//            for (int i = 0; i < routineDto.getTrainings().size(); i++) {
-//                routineRepository.save(routineDto.);
-//            }
-        List<Routine> entities = routineDto.toEntity(routineDto);
-        for (Routine r : entities) {
-            routineRepository.save(r);
-        }
 
+        myRoutine.setTrainings(trainings);
+        myRoutine.setRoutineName(routineName);
+        myRoutine.setUserId(10L); // 임의로 유저 아이디 지정. 추후에 바꿀것임
+        myRoutine.setRoutineAvgScore(0);
+        myRoutine.setEvaluateCnt(0);
 
-//        List<Routine> routineList = new LinkedList<>();
-//        for (int i = 0; i < routineDto.getRoutineDtoList().size(); i++) {
-//            routineList.add(routineDto.getRoutineDtoList().get(i));
-//        }
+        routineRepository.save(myRoutine);
 
-//        return routineList;
     }
 
+    @Transactional
+    public float editRoutineAvgScore(Long routineId, Map<String, String> evaluation){
+        System.out.println("RoutineService.editRoutineAvgScore");
+        Routine routine = routineRepository.findById(routineId).orElse(null);
+        Float currentEvaluateScore = Float.valueOf(evaluation.get("evaluateScore"));
+
+        float routineAvgScore = routine.getRoutineAvgScore();
+        int evaluateCnt = routine.getEvaluateCnt();
+
+        routineAvgScore=(routineAvgScore*evaluateCnt+currentEvaluateScore)/(evaluateCnt+1);
+        routineAvgScore = (float) (Math.floor(routineAvgScore * 100) / 100.0);
+
+        routine.setRoutineAvgScore(routineAvgScore);
+        routine.setEvaluateCnt(evaluateCnt+1);
+
+        routineRepository.save(routine);
+
+        return routineAvgScore;
+    }
+
+    public List<RoutineScoreDto> getTop5RoutineList(){
+        List<Routine> top5ByRoutineAvgScore = routineRepository.findTop5ByOrderByRoutineAvgScoreDesc();
+        List<RoutineScoreDto> dtoList=new ArrayList<>();
+
+
+        for(Routine routine : top5ByRoutineAvgScore){
+            RoutineScoreDto dto = RoutineScoreDto.builder()
+                    .routineId(routine.getRoutineId())
+                    .userId(routine.getUserId())
+                    .routineName(routine.getRoutineName())
+                    .routineAvgScore(routine.getRoutineAvgScore())
+                    .evaluateCnt(routine.getEvaluateCnt())
+                    .build();
+            dtoList.add(dto);
+        }
+
+        return dtoList;
+    }
+
+    private Object[] arrayParse(String notParsedString){
+
+        notParsedString=notParsedString.replace("[", "");
+        notParsedString=notParsedString.replace("]", "");
+        notParsedString=notParsedString.replace(" ", "");
+
+        Object[] parsedString = notParsedString.split(",");
+        return parsedString;
+    }
 }
