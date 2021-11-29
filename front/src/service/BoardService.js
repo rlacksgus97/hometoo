@@ -1,7 +1,7 @@
 import axios from 'axios';
 import UserService from "./UserService";
 
-const BOARD_API_BASE_URL = "http://localhost:8080/api/forums";
+const BOARD_API_BASE_URL = "http://localhost:8081/api/forums";
 
 class BoardService {
     getBoards() {
@@ -42,6 +42,20 @@ class BoardService {
     createComment(no, comment) {
         UserService.setupAxiosInterceptors();
         return axios.post(BOARD_API_BASE_URL+"/"+no+"/comments", comment);
+    }
+
+    getForumCount(userName) {
+        UserService.setupAxiosInterceptors();
+        return axios.get(BOARD_API_BASE_URL+"/count/"+userName);
+    }
+
+    getCommentCount(userName) {
+        UserService.setupAxiosInterceptors();
+        return axios.get(BOARD_API_BASE_URL+'/comments/count/'+userName);
+    }
+
+    deleteForumsByWithdraw(userName) {
+        UserService.setupAxiosInterceptors();
     }
 
 }

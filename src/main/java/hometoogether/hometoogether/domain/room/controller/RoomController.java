@@ -5,10 +5,10 @@ import hometoogether.hometoogether.domain.room.dto.HostAndClientDto;
 import hometoogether.hometoogether.domain.room.dto.RoomDto;
 import hometoogether.hometoogether.domain.room.service.RoomService;
 import hometoogether.hometoogether.domain.training.domain.TrainingVO;
+//import hometoogether.hometoogether.domain.training.domain.TrainingVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.Path;
 import java.util.List;
 
 @RestController

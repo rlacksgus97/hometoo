@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface ForumRepository extends JpaRepository<Forum, Long> {
-    public List<Forum> findForumsByWriter(String email);
+    public List<Forum> findForumsByWriter(String userName);
+    public void deleteForumsByWriter(String userName);
 }

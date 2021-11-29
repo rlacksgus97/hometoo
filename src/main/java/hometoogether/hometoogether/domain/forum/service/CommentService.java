@@ -53,8 +53,13 @@ public class CommentService {
         return commentId;
     }
 
-    public Long userCommentsCount(String email) {
-        return Long.valueOf(commentRepository.findCommentsByWriter(email).size());
+    public Long userCommentsCount(String userName) {
+        return Long.valueOf(commentRepository.findCommentsByWriter(userName).size());
+    }
+
+    @Transactional
+    public void deleteCommentsByUser(String userName) {
+        commentRepository.deleteCommentsByWriter(userName);
     }
 
 }

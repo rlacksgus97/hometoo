@@ -3,19 +3,12 @@ package hometoogether.hometoogether.domain.user.controller;
 import hometoogether.hometoogether.common.ApiResponse;
 import hometoogether.hometoogether.common.JwtAuthenticationResponse;
 import hometoogether.hometoogether.config.jwt.JwtTokenProvider;
-import hometoogether.hometoogether.domain.user.domain.LoginRequest;
-import hometoogether.hometoogether.domain.user.domain.PasswordFindReqeust;
-import hometoogether.hometoogether.domain.user.domain.SignUpRequest;
-import hometoogether.hometoogether.domain.user.domain.User;
-import hometoogether.hometoogether.domain.user.repository.UserRepository;
+import hometoogether.hometoogether.domain.user.domain.*;
 import hometoogether.hometoogether.domain.user.service.UserService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -54,7 +47,13 @@ public class UserController {
     }
 
     @GetMapping("/find/userName/{email}")
-    public User findUser(@PathVariable String email) {
+    public String findUser(@PathVariable String email) {
         return userService.findUser(email);
+    }
+
+    @DeleteMapping("/withdraw/{email}")
+    public String withdrawUser(@PathVariable String email) {
+        userService.deleteUser(email);
+        return "SUCCESS";
     }
 }
