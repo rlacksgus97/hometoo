@@ -60,8 +60,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/api/users/login", "/api/users/signup", "/api/users/find/password",
-                        "/api/users/find/userName/**", "/api/forums/count/**", "/routine/**", "/rooms", "/routines",
+                        "/api/users/find/userName/**", "/api/forums/count/**", "/routine/**", "/rooms", "/routines", "/routine",
 //                        "/room/create/**",
+                        "/api/forums/**",
                         "/room/**", "/start", "/ws-stomp/**", "/api/challenges/**", "/demo/similarity").permitAll().
                 // all other requests need to be authenticated
                         anyRequest().authenticated().and().

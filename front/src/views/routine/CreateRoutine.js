@@ -76,7 +76,8 @@ function CreateRoutine(){
             trainingName: tName,
             trainingSec: tSec,
             trainingSetCnt: tSetCnt,
-            seq: tSeq
+            seq: tSeq,
+            userName: localStorage.getItem("authenticatedUserName")
         }
 
         axios.post("/routine", body)

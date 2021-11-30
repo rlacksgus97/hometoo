@@ -12,7 +12,7 @@ function ShowTop5Routine(){
         axios.get("/routine/top5").then(res => {
             setTop5Routine(res.data);
         })
-    })
+    }, [])
 
     function showRoutineDetail(routine){
         window.location.href="/room/create/routine/"+routine.routineId;
@@ -45,7 +45,7 @@ function ShowTop5Routine(){
                                       <Table className="align-items-center table-flush" responsive>
                                           <thead className="thead-light">
                                           <tr>
-                                              <th scope="col">User Id</th>
+                                              <th scope="col">User Name</th>
                                               <th scope="col">Routine Name</th>
                                               <th scope="col">Routine Score</th>
                                               <th scope="col">Evaluate Cnt</th>
@@ -63,7 +63,7 @@ function ShowTop5Routine(){
                                                                       <Media className="align-items-center">
                                                                           <Media>
                                                                                   <span className="mb-0 text-sm">
-                                                                                    {routine.userId}
+                                                                                    {routine.userName}
                                                                                   </span>
                                                                           </Media>
                                                                       </Media>

@@ -38,11 +38,7 @@ export default function ChallengeCardList() {
   });
 
   const [bestTrialList, setbestTrialList] = useState([
-    {
-      id: 0,
-      username: "",
-      score: 0.0,
-    },
+
   ]);
 
   useEffect(() => {
@@ -80,17 +76,25 @@ export default function ChallengeCardList() {
                         <CardImg
                           alt="Card image cap"
                           // src="https://picsum.photos/256/186"
+<<<<<<< HEAD
                           src={
                             "http://221.143.144.143:80/" + challengeDeatil.url
                           }
+=======
+                          src={"http://58.122.7.167:9000/" + challengeDeatil.url}
+>>>>>>> 3c066ed9f8fe923eeeeecea71b6ed8d807c781f3
                           top
                           width="100%"
                         />
                       ) : (
                         <video
+<<<<<<< HEAD
                           src={
                             "http://221.143.144.143:80/" + challengeDeatil.url
                           }
+=======
+                          src={"http://58.122.7.167:9000/" + challengeDeatil.url}
+>>>>>>> 3c066ed9f8fe923eeeeecea71b6ed8d807c781f3
                           crossOrigin="anonymous"
                           type="type/mp4"
                           controls
@@ -119,7 +123,11 @@ export default function ChallengeCardList() {
                         </Button>
                       </div>
                       <ListGroup>
+<<<<<<< HEAD
                         {bestTrialList.length !== 0 ? (
+=======
+                        {bestTrialList.length!==0 ? (
+>>>>>>> 3c066ed9f8fe923eeeeecea71b6ed8d807c781f3
                           <>
                             {bestTrialList.map((bestTrial) => {
                               return (

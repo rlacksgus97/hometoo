@@ -25,7 +25,7 @@ public class RoutineService {
             RoutineDto build = RoutineDto.builder()
                     .routineId(routine.getRoutineId())
                     .routineName(routine.getRoutineName())
-                    .userId(routine.getUserId())
+                    .userName(routine.getUserName())
                     .build();
             result.add(build);
         }
@@ -62,6 +62,7 @@ public class RoutineService {
         String trainingSec = routine.get("trainingSec").toString();
         String trainingSetCnt = routine.get("trainingSetCnt").toString();
         String trainingSeq = routine.get("seq").toString();
+        String userName=routine.get("userName").toString();
 
         String[] nameArray = (String[]) arrayParse(trainingName);
         String[] secArray = (String[]) arrayParse(trainingSec);
@@ -81,7 +82,7 @@ public class RoutineService {
 
         myRoutine.setTrainings(trainings);
         myRoutine.setRoutineName(routineName);
-        myRoutine.setUserId(10L); // 임의로 유저 아이디 지정. 추후에 바꿀것임
+        myRoutine.setUserName(userName);
         myRoutine.setRoutineAvgScore(0);
         myRoutine.setEvaluateCnt(0);
 
@@ -113,11 +114,14 @@ public class RoutineService {
         List<Routine> top5ByRoutineAvgScore = routineRepository.findTop5ByOrderByRoutineAvgScoreDesc();
         List<RoutineScoreDto> dtoList=new ArrayList<>();
 
+        if(top5ByRoutineAvgScore.size()<5) {
+            top5ByRoutineAvgScore = top5ByRoutineAvgScore.subList(0, top5ByRoutineAvgScore.size());
+        }
 
         for(Routine routine : top5ByRoutineAvgScore){
             RoutineScoreDto dto = RoutineScoreDto.builder()
                     .routineId(routine.getRoutineId())
-                    .userId(routine.getUserId())
+                    .userName(routine.getUserName())
                     .routineName(routine.getRoutineName())
                     .routineAvgScore(routine.getRoutineAvgScore())
                     .evaluateCnt(routine.getEvaluateCnt())
