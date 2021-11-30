@@ -1,10 +1,7 @@
 package hometoogether.hometoogether.domain.user.service;
 
 import hometoogether.hometoogether.config.jwt.JwtTokenProvider;
-import hometoogether.hometoogether.domain.user.domain.LoginRequest;
-import hometoogether.hometoogether.domain.user.domain.PasswordFindReqeust;
-import hometoogether.hometoogether.domain.user.domain.SignUpRequest;
-import hometoogether.hometoogether.domain.user.domain.User;
+import hometoogether.hometoogether.domain.user.domain.*;
 import hometoogether.hometoogether.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +14,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Random;
 
 @Service
@@ -83,7 +79,13 @@ public class UserService {
         return generatedString;
     }
 
-    public User findUser(String email) {
-        return userRepository.findByEmail(email);
+    public String findUser(String email) {
+        return userRepository.findByEmail(email).getUserName();
     }
+    
+    @Transactional
+    public void deleteUser(String email) {
+        userRepository.deleteByEmail(email);
+    }
+
 }

@@ -37,9 +37,14 @@ public class CommentController {
         return commentService.updateComment(commentId, params);
     }
 
-    @GetMapping("/comments/count/{email}")
-    public Long getForumCount(@PathVariable("email") String email) {
-        return commentService.userCommentsCount(email);
+    @GetMapping("/comments/count/{userName}")
+    public Long getForumCount(@PathVariable("userName") String userName) {
+        return commentService.userCommentsCount(userName);
     }
 
+    @DeleteMapping("/comments/{userName}")
+    public String deleteCommentsByUser(@PathVariable("userName") String userName) {
+        commentService.deleteCommentsByUser(userName);
+        return "SUCCESS";
+    }
 }

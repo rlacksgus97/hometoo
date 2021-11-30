@@ -78,7 +78,7 @@ class BoardDetail extends React.Component {
         let tempComment = {
             forumId: this.state.no,
             //TODO: 나중에 로그인된 아이디로 바꿔야함
-            writer: this.state.board.writer,
+            writer: localStorage.getItem("authenticatedUserName"),
             delYn: 'N',
             contents: this.state.comments.at(-1)['contents']
         }

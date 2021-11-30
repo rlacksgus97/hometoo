@@ -15,6 +15,7 @@ import "assets/scss/argon-design-system-react.scss";
 
 //user
 import UserService from "../service/UserService";
+import BoardService from "../service/BoardService";
 
 class Profile extends React.Component {
 
@@ -28,6 +29,7 @@ class Profile extends React.Component {
       posts: '',
       comments: '',
       challenges: '',
+      photo: localStorage.getItem("authenticatedUserEmail").length%7,
     };
   }
 
@@ -42,6 +44,18 @@ class Profile extends React.Component {
     this.props.history.push('/board');
   }
 
+  // withdrawUser = (event) => {
+  //   event.preventDefault();
+  //   UserService.withdrawUser(this.state.name).then(res =>{
+  //     if (res.data == "SUCCESS") {
+  //       this.props.history.push('/register');
+  //       BoardService.
+  //     } else {
+  //       alert("회원 탈퇴에 실패하였습니다.");
+  //     }
+  //   });
+  // }
+
   // clickChanllenge 메소드 필요
 
   componentDidMount() {
@@ -49,6 +63,15 @@ class Profile extends React.Component {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     this.refs.main.scrollTop = 0;
+
+    BoardService.getForumCount(this.state.name).then(res => {
+      this.setState({posts: res.data});
+    });
+    BoardService.getCommentCount(this.state.name).then(res => {
+      this.setState({comments: res.data});
+    });
+    const temp = this.state.photo;
+    const img_url = '${temp}';
   }
 
   render() {
@@ -90,15 +113,15 @@ class Profile extends React.Component {
                 <div className="px-4">
                   <Row className="justify-content-center">
                     <Col className="order-lg-2" lg="3">
-                      {/*<div className="card-profile-image">*/}
-                      {/*  <a href="#pablo" onClick={e => e.preventDefault()}>*/}
-                      {/*    <img*/}
-                      {/*      alt="..."*/}
-                      {/*      className="rounded-circle"*/}
-                      {/*      src={require("assets/img/theme/team-4-800x800.jpg")}*/}
-                      {/*    />*/}
-                      {/*  </a>*/}
-                      {/*</div>*/}
+                      <div className="card-profile-image">
+                        <a href="/#" onClick={e => e.preventDefault()}>
+                          <img
+                            alt="..."
+                            className="rounded-circle"
+                            src={require("assets/img/theme/"+this.state.photo+".jpg")}
+                          />
+                        </a>
+                      </div>
                     </Col>
                     <Col
                       className="order-lg-3 text-lg-right align-self-lg-center"
@@ -108,34 +131,41 @@ class Profile extends React.Component {
                         <Button
                           className="mr-4"
                           color="info"
-                          onClick={this.logoutUser}
+                          onClick={e=>e.preventDefault()}
                           size="sm"
                         >
-                          로그아웃
+                          회원탈퇴
+                        </Button>
+                        <Button
+                          className="mr-4"
+                          color="default"
+                          onClick={e => e.preventDefault()}
+                          size="sm"
+                        >
+                          Routines
                         </Button>
                         {/*<Button*/}
-                        {/*  className="float-right"*/}
-                        {/*  color="default"*/}
-                        {/*  href="#pablo"*/}
-                        {/*  onClick={e => e.preventDefault()}*/}
-                        {/*  size="sm"*/}
+                        {/*    className="float-right"*/}
+                        {/*    color="default"*/}
+                        {/*    onClick={e => e.preventDefault()}*/}
+                        {/*    size="sm"*/}
                         {/*>*/}
-                        {/*  Message*/}
+                        {/*  Trials*/}
                         {/*</Button>*/}
                       </div>
                     </Col>
                     <Col className="order-lg-1" lg="4">
                       <div className="card-profile-stats d-flex justify-content-center">
                         <div>
-                          <span className="heading">22</span>
-                          <span className="description">Chanllenges</span>
+                          <span className="heading">22개</span>
+                          <span className="description">Chanllenge</span>
                         </div>
                         <div onClick={this.clickBoard} style={{cursor:'pointer'}}>
-                          <span className="heading">10</span>
+                          <span className="heading">{this.state.posts}개</span>
                           <span className="description">Posts</span>
                         </div>
                         <div onClick={this.clickBoard} style={{cursor:'pointer'}}>
-                          <span className="heading">89</span>
+                          <span className="heading">{this.state.comments}개</span>
                           <span className="description">Comments</span>
                         </div>
                       </div>
@@ -143,15 +173,11 @@ class Profile extends React.Component {
                   </Row>
                   <div className="text-center mt-5">
                     <h3>
-                      {this.state.name}
+                      이름 : {this.state.name}
                     </h3>
                     <div className="h6 font-weight-300">
                       <i className="ni location_pin mr-2" />
-                      {this.state.email}
-                    </div>
-                    <div className="h6 font-weight-500">
-                      <i className="ni location_pin mr-2" />
-                      챌린지 등수 : 1등
+                      이메일 : {this.state.email}
                     </div>
                     {/*<div className="h6 mt-4">*/}
                     {/*  <i className="ni business_briefcase-24 mr-2" />*/}
@@ -180,20 +206,20 @@ class Profile extends React.Component {
                   </div>
                 </div>
               </Card>
-              <div className="">
-                <Button value="1"
-                    onClick={window.location.href="/"}>
-                  Give me Routines
-                </Button>
-                <Button value="2"
-                    onClick={window.location.href="/"}>
-                  Give me Challenges
-                </Button>
-                <Button value="3"
-                    onClick={window.location.href="/"}>
-                  Give me Trials
-                </Button>
-              </div>
+              {/*<div className="">*/}
+              {/*  <Button value="1"*/}
+              {/*      onClick={window.location.href="/"}>*/}
+              {/*    Give me Routines*/}
+              {/*  </Button>*/}
+              {/*  <Button value="2"*/}
+              {/*      onClick={window.location.href="/"}>*/}
+              {/*    Give me Challenges*/}
+              {/*  </Button>*/}
+              {/*  <Button value="3"*/}
+              {/*      onClick={window.location.href="/"}>*/}
+              {/*    Give me Trials*/}
+              {/*  </Button>*/}
+              {/*</div>*/}
             </Container>
           </section>
         </main>
