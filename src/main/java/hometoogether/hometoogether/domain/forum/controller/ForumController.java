@@ -48,8 +48,14 @@ public class ForumController {
         return forumService.saveForum(params);
     }
 
-    @GetMapping("/forums/count/{email}")
-    public Long getForumCount(@PathVariable("email") String email) {
-        return forumService.userForumCount(email);
+    @GetMapping("/forums/count/{userName}")
+    public Long getForumCount(@PathVariable("userName") String userName) {
+        return forumService.userForumCount(userName);
+    }
+
+    @DeleteMapping("/forums/{userName}")
+    public String deleteForumByUser(@PathVariable("userName") String userName) {
+        forumService.deleteForumUser(userName);
+        return "SUCCESS";
     }
 }

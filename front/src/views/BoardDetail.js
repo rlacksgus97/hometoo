@@ -77,6 +77,20 @@ class BoardDetail extends React.Component {
       this.setState({ comments: data });
     });
   }
+  createComment = (event) => {
+    // event.preventDefault();
+    let tempComment = {
+      forumId: this.state.no,
+      //TODO: 나중에 로그인된 아이디로 바꿔야함
+      writer: localStorage.getItem("authenticatedUserName"),
+      delYn: "N",
+      contents: this.state.comments.at(-1)["contents"],
+    };
+    console.log("tempComment => " + JSON.stringify(tempComment));
+    BoardService.createComment(this.state.no, tempComment).then((res) => {
+      window.location.reload(true);
+    });
+  };
 
   createComment = (event) => {
     // event.preventDefault();

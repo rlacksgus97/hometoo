@@ -81,6 +81,10 @@ class UserService {
   getUserName(user) {
     return axios.get(USER_API_BASE_URL + "/find/userName/" + user.email);
   }
+
+  withdrawUser(email) {
+    return axios.delete(USER_API_BASE_URL + "/withdraw/" + email);
+  }
 }
 
 export default new UserService();

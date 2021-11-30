@@ -5,10 +5,9 @@ import hometoogether.hometoogether.domain.training.repository.RoutineRepository;
 import hometoogether.hometoogether.domain.training.repository.TrainingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.*;
 
 @Service
@@ -139,3 +138,4 @@ public class RoutineService {
         return parsedString;
     }
 }
+

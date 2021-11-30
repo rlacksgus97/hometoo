@@ -10,6 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class RoutineController {
 
     private final RoutineService routineService;
@@ -18,11 +19,6 @@ public class RoutineController {
     public List<RoutineDto> getRoutineList() {
         return routineService.getRoutines();
     }
-
-//    @GetMapping("/routines")
-//    public List<Routine> getRoutineList() {
-//        return routineService.getRoutines();
-//    }
 
     @GetMapping("/routine/{routineId}")
     public List<TrainingVO> getTrainings(@PathVariable Long routineId) {
@@ -44,3 +40,4 @@ public class RoutineController {
         return routineService.getTop5RoutineList();
     }
 }
+

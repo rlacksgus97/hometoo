@@ -59,7 +59,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
         http.csrf().disable()
                 // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/api/users/login", "/api/users/signup", "/api/users/find/password", "/api/users/find/userName/**", "/api/forums/**", "/api/challenges/**", "/demo/similarity").permitAll().
+                .authorizeRequests().antMatchers("/api/users/login", "/api/users/signup", "/api/users/find/password",
+                        "/api/users/find/userName/**", "/api/forums/count/**", "/routine/**", "/rooms", "/routines",
+//                        "/room/create/**",
+                        "/room/**", "/start", "/ws-stomp/**", "/api/challenges/**", "/demo/similarity").permitAll().
                 // all other requests need to be authenticated
                         anyRequest().authenticated().and().
             sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

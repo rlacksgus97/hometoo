@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findCommentsByForumId(Long forumId);
-    List<Comment> findCommentsByWriter(String email);
+    List<Comment> findCommentsByWriter(String userName);
+    public void deleteCommentsByWriter(String userName);
 }

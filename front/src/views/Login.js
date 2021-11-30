@@ -90,8 +90,7 @@ class Login extends React.Component {
     let userName = "";
     UserService.getUserName(user).then((res) => {
       console.log("testname => " + user);
-      userName = res.data["userName"];
-      localStorage.setItem("authenticatedUserName", userName);
+      localStorage.setItem("authenticatedUserName", res.data);
     });
   };
 

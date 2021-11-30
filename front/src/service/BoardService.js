@@ -43,6 +43,20 @@ class BoardService {
     UserService.setupAxiosInterceptors();
     return axios.post(BOARD_API_BASE_URL + "/" + no + "/comments", comment);
   }
+
+  getForumCount(userName) {
+    UserService.setupAxiosInterceptors();
+    return axios.get(BOARD_API_BASE_URL + "/count/" + userName);
+  }
+
+  getCommentCount(userName) {
+    UserService.setupAxiosInterceptors();
+    return axios.get(BOARD_API_BASE_URL + "/comments/count/" + userName);
+  }
+
+  deleteForumsByWithdraw(userName) {
+    UserService.setupAxiosInterceptors();
+  }
 }
 
 export default new BoardService();

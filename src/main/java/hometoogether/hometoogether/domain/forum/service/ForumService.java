@@ -64,8 +64,13 @@ public class ForumService {
         return forum.getForumId();
     }
 
-    public Long userForumCount(String email) {
-        return Long.valueOf(forumRepository.findForumsByWriter(email).size());
+    public Long userForumCount(String userName) {
+        return Long.valueOf(forumRepository.findForumsByWriter(userName).size());
+    }
+
+    @Transactional
+    public void deleteForumUser(String userName) {
+        forumRepository.deleteForumsByWriter(userName);
     }
 
 }

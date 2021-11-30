@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class UserCountAndTimeDto {
-    private Long time;
+
+    private String time;
     private Long count;
 }

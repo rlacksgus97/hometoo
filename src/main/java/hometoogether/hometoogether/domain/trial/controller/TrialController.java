@@ -1,6 +1,5 @@
 package hometoogether.hometoogether.domain.trial.controller;
 
-import hometoogether.hometoogether.domain.challenge.domain.Challenge;
 import hometoogether.hometoogether.domain.challenge.repository.ChallengeRepository;
 import hometoogether.hometoogether.domain.trial.dto.TrialRequestDto;
 import hometoogether.hometoogether.domain.trial.dto.TrialResponseDto;
@@ -38,7 +37,7 @@ public class TrialController {
         return trialService.getBestTrials(challengeId);
     }
 
-    @GetMapping("/challenges/{challengeId}/trials/{trialid}")
+    @GetMapping("/trials/{trialid}")
     public TrialResponseDto getDetail(@PathVariable("trialid") Long trialId){
         return trialService.getTrial(trialId);
     }

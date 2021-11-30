@@ -9,6 +9,10 @@ import BoardUpdate from "views/BoardUpdate";
 import ChallengeCardList from "views/ChallengeCardList";
 import ChallengeCreate from "views/ChallengeCreate";
 import ChallengeDetail from "./views/ChallengeDetail";
+import ChatRoom from "./views/chat/ChatRoom";
+import CreateRoom from "./views/chat/CreateRoom";
+import CreateRoutine from "./views/routine/CreateRoutine";
+import EvaluateRoutine from "./views/routine/EvaluateRoutine";
 import FindPassword from "./views/FindPassword";
 import Home from "views/Home.js";
 import Landing from "./views/Landing.js";
@@ -19,8 +23,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Register from "./views/Register";
 import Sample from "./views/Sample";
+import SelectRoomRoutine from "./views/chat/SelectRoomRoutine";
+import ShowRoutineDetails from "./views/routine/ShowRoutineDetails";
+import ShowTop5Routine from "./views/routine/ShowTop5Routine";
 import TrialCardList from "views/TrialCardList";
 import TrialCreate from "views/TrialCreate";
+import TrialDetail from "views/TrialDetail";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
@@ -65,24 +73,56 @@ ReactDOM.render(
         render={(props) => <ChallengeCreate {...props} />}
       />
       <Route
-        path="/challenge/detail"
-        exact
+        path="/challenge/:challengeid"
         render={(props) => <ChallengeDetail {...props} />}
-      />
-      <Route
-        path="/trial"
-        exact
-        render={(props) => <TrialCardList {...props} />}
-      />
-      <Route
-        path="/trial/create"
-        exact
-        render={(props) => <TrialCreate {...props} />}
       />
       <Route
         path="/find/password"
         exact
         render={(props) => <FindPassword {...props} />}
+      />
+      <Route
+        path="/room/create"
+        exact
+        render={(props) => <CreateRoom {...props} />}
+      />
+      <Route
+        path="/room/:id/user/:uuid/routine/:routineId"
+        render={(props) => <ChatRoom {...props} />}
+      />
+      <Route
+        path="/routine"
+        exact
+        render={(props) => <CreateRoutine {...props} />}
+      />
+      <Route
+        path="/room/create/routine"
+        exact
+        render={(props) => <SelectRoomRoutine {...props} />}
+      />
+      <Route
+        path="/room/create/routine/:routineId"
+        render={(props) => <ShowRoutineDetails {...props} />}
+      />
+      <Route
+        path="/routine/:routineId/evaluation"
+        render={(props) => <EvaluateRoutine {...props} />}
+      />
+      <Route
+        path="/routine/rank"
+        render={(props) => <ShowTop5Routine {...props} />}
+      />
+      <Route
+        path="/trial/create/:challengeid"
+        render={(props) => <TrialCreate {...props} />}
+      />
+      <Route
+        path="/trial/:challengeid"
+        render={(props) => <TrialCardList {...props} />}
+      />
+      <Route
+        path="/trial_detail/:trialid"
+        render={(props) => <TrialDetail {...props} />}
       />
       <Redirect to="/" />
     </Switch>

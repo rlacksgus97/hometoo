@@ -1,13 +1,12 @@
 package hometoogether.hometoogether.domain.room.domain;
 
 //import hometoogether.hometoogether.domain.user.domain.User;
-import hometoogether.hometoogether.domain.training.domain.Routine;
 import hometoogether.hometoogether.domain.training.domain.Training;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.socket.WebSocketSession;
 
 import javax.persistence.*;
 import java.util.*;
@@ -34,10 +33,11 @@ public class Room {
     @Getter
     private Long routineId;
 
-    // WebSocketSession은 spring에서 WebSocket connection이 맺어진 세션을 가리킨다 - 편하게 고수준 socket이라고 생각
-//    @OneToMany(fetch = FetchType.LAZY)
-//    private List<User> userList=new ArrayList<>();
-//    private final Map<String, WebSocketSession> clients = new HashMap<>();
+    @Getter @Setter
+    private String hostUserName;
+
+    @Getter @Setter
+    private String clientUserName;
 
     public Room(Long num) {
         this.max_num = num;
@@ -70,10 +70,14 @@ public class Room {
 //    }
 
     @Builder
-    public Room(Long cur_num, Long max_num, Long routineId, List<Training> trainings){
+    public Room(Long cur_num, Long max_num, Long routineId, List<Training> trainings,
+                String hostUserName, String clientUserName){
+
         this.cur_num=cur_num;
         this.max_num=max_num;
         this.routineId=routineId;
         this.trainings=trainings;
+        this.hostUserName=hostUserName;
+        this.clientUserName=clientUserName;
     }
 }

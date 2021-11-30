@@ -23,12 +23,10 @@ import React, { useEffect, useState } from "react";
 import Hero from "./Hero";
 import UserService from "../service/UserService";
 import axios from "axios";
-import { useHistory } from "react-router";
-import { useLocation } from "react-router";
+import { useParams } from "react-router-dom";
 
 export default function ChallengeCardList() {
-  const history = useHistory();
-  const location = useLocation();
+  const { challengeid } = useParams();
   const [challengeDeatil, setchallengeDeatil] = useState({
     id: 0,
     type: "",
@@ -49,18 +47,16 @@ export default function ChallengeCardList() {
 
   useEffect(() => {
     UserService.setupAxiosInterceptors();
-    axios
-      .get("/api/challenges/" + String(location.state.cid) + "/best_trials")
-      .then((res) => {
-        console.log(res.data);
-        setbestTrialList(res.data);
-      });
+    axios.get("/api/challenges/" + challengeid + "/best_trials").then((res) => {
+      console.log(res.data);
+      setbestTrialList(res.data);
+    });
   }, []);
 
   useEffect(() => {
     UserService.setupAxiosInterceptors();
     // console.log("/challenges/" + String(location.state.cid));
-    axios.get("/api/challenges/" + String(location.state.cid)).then((res) => {
+    axios.get("/api/challenges/" + challengeid).then((res) => {
       console.log(res.data);
       setchallengeDeatil(res.data);
     });
@@ -115,13 +111,8 @@ export default function ChallengeCardList() {
                           color="danger"
                           style={{ marginLeft: "auto" }}
                           onClick={() => {
-                            history.push({
-                              pathname: "/trial/create",
-                              state: {
-                                cid: location.state.cid,
-                                curl: challengeDeatil.url,
-                              },
-                            });
+                            window.location.href =
+                              "/trial/create/" + challengeid;
                           }}
                         >
                           지금 참가하기
@@ -174,14 +165,7 @@ export default function ChallengeCardList() {
                           color="primary"
                           style={{ marginLeft: "auto" }}
                           onClick={() => {
-                            history.push({
-                              pathname: "/trial",
-                              state: {
-                                cid: location.state.cid,
-                                ctitle: challengeDeatil.title,
-                                cuname: challengeDeatil.username,
-                              },
-                            });
+                            window.location.href = "/trial/" + challengeid;
                           }}
                         >
                           참가자 더보기

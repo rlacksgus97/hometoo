@@ -73,7 +73,7 @@ public class TrialService {
                 .build();
         trialPoseRepository.save(trialPose);
 
-        poseService.estimatePosePhoto(trialPose.getId(), url, "trial");
+//        poseService.estimatePosePhoto(trialPose.getId(), url, "trial");
 //        poseService.estimatePoseVideo(trialPose.getId(), url, "trial");
 
         //User <-> ChallengePose 매핑
@@ -121,7 +121,7 @@ public class TrialService {
                 .build();
         trialPoseRepository.save(trialPose);
 
-        poseService.estimatePoseVideo(trialPose.getId(), url, "trial");
+//        poseService.estimatePoseVideo(trialPose.getId(), url, "trial");
 
         //User <-> ChallengePose 매핑
         user.addTrialPose(trialPose);

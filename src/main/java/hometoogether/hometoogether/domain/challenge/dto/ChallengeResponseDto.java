@@ -12,6 +12,7 @@ public class ChallengeResponseDto {
     private String title;
 
     public ChallengeResponseDto(Challenge entity) {
+
         this.id = entity.getId();
         this.type = entity.getType();
         if (entity.getType() == "video"){
@@ -20,6 +21,7 @@ public class ChallengeResponseDto {
         else{
             this.url = entity.getChallengePose().getUrl();
         }
+
         this.username = entity.getChallengePose().getUser().getUserName();
         this.title = entity.getTitle();
     }

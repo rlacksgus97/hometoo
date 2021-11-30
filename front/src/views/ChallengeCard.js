@@ -10,10 +10,7 @@ import {
   CardTitle,
 } from "reactstrap";
 
-import { useHistory } from "react-router";
-
 export default function ChallengeCard(props) {
-  const history = useHistory();
   const url = "http://221.143.144.143:80/" + props.challenge.url;
 
   return (
@@ -57,10 +54,7 @@ export default function ChallengeCard(props) {
               color="primary"
               style={{ marginLeft: "auto" }}
               onClick={() => {
-                history.push({
-                  pathname: "/challenge/detail",
-                  state: { cid: props.challenge.id },
-                });
+                window.location.href = "/challenge/" + props.challenge.id;
               }}
             >
               참가하기

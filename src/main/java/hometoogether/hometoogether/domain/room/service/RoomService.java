@@ -2,12 +2,15 @@ package hometoogether.hometoogether.domain.room.service;
 
 import hometoogether.hometoogether.domain.room.domain.Room;
 import hometoogether.hometoogether.domain.room.dto.CanEnterAndRoutineIdDto;
+import hometoogether.hometoogether.domain.room.dto.HostAndClientDto;
+
 import hometoogether.hometoogether.domain.room.dto.RoomDto;
 import hometoogether.hometoogether.domain.room.repository.RoomRepository;
-import hometoogether.hometoogether.domain.training.domain.Routine;
 import hometoogether.hometoogether.domain.training.domain.Training;
 import hometoogether.hometoogether.domain.training.domain.TrainingVO;
 import hometoogether.hometoogether.domain.training.repository.RoutineRepository;
+import hometoogether.hometoogether.domain.user.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +24,7 @@ import java.util.*;
 public class RoomService{
 
     private final RoomRepository roomRepository;
+    private final UserRepository userRepository;
     private final RoutineRepository routineRepository;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -72,6 +76,23 @@ public class RoomService{
         }
     }
 
+    public void addClientToRoomMember(Long roomId, String email){
+        String userName = userRepository.findByEmail(email).getUserName();
+        Room room = roomRepository.findById(roomId).orElse(null);
+
+        room.setClientUserName(userName);
+        roomRepository.save(room);
+    }
+
+    public HostAndClientDto getRoomMembers(Long roomId){
+        Room room = roomRepository.findById(roomId).orElse(null);
+
+        return HostAndClientDto.builder()
+                .hostUser(room.getHostUserName())
+                .clientUser(room.getClientUserName())
+                .build();
+    }
+
     public void exitRoom(String sid, String uuid){
         if(sid != null && uuid != null) {
             logger.debug("User {} has left Room #{}", uuid, sid);
@@ -79,7 +100,8 @@ public class RoomService{
     }
 
     @Transactional
-    public Long createRoom(String routine, Long routineId){
+    public Long createRoom(String routine, Long routineId, String email){
+
         List<Training> trainings=new ArrayList<>();
 
         // 1차 파싱
@@ -105,6 +127,7 @@ public class RoomService{
         Room room = Room.builder()
                 .cur_num(0L).max_num(2L)
                 .routineId(routineId)
+                .hostUserName(userRepository.findByEmail(email).getUserName())
                 .trainings(trainings).build();
 
         return roomRepository.save(room).getId();
@@ -132,3 +155,4 @@ public class RoomService{
         return resultTraining;
     }
 }
+

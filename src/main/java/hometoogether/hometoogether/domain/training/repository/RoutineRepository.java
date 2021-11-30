@@ -9,3 +9,4 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
     List<Routine> findAllByUserId(Long userId);
     List<Routine> findTop5ByOrderByRoutineAvgScoreDesc();
 }
+

@@ -40,10 +40,10 @@ public class ChatRoomSubscriptionInterceptor implements ChannelInterceptor {
 //            Authentication authentication = jwtTokenProvider.getAuthentication(token);
 //            SecurityContextHolder.getContext().setAuthentication(authentication);
 //        }
+
 //        else {
 //            SecurityContextHolder.getContext().setAuthentication(null);
 //        }
-
 
         switch (accessor.getCommand()) {
             case SUBSCRIBE:
@@ -107,6 +107,17 @@ public class ChatRoomSubscriptionInterceptor implements ChannelInterceptor {
 //        }
 //        else {
 //            roomId2SessionIDs.put(roomId, new HashSet<>(Arrays.asList(sessionId)));
+
+//        }
+//        sessionId2RoomId.forEach((key, val) -> log.info("key = {}, val = {}", key, val));
+//    }
+
+//    public void removeSessionUser(String sessionId) {
+//        if(sessionId2RoomId.containsKey(sessionId)) {
+//            roomId2SessionIDs.remove(sessionId2RoomId.get(sessionId));
+//            sessionId2RoomId.remove(sessionId);
+//            System.out.println("DISCONNECTED");
+//            sessionId2RoomId.forEach((key, val) -> log.info("key = {}, val = {}", key, val));
 //        }
 //        sessionId2RoomId.forEach((key, val) -> log.info("key = {}, val = {}", key, val));
 //    }

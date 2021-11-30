@@ -21,7 +21,7 @@ public class Trial {
 
     private String type;
 
-    private Double score;
+    private Double score = 0.0;
 
     @OneToOne
     private TrialPose trialPose;
