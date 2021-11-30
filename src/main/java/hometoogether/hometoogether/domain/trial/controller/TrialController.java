@@ -14,7 +14,6 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 
-@RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
 public class TrialController {
@@ -22,9 +21,14 @@ public class TrialController {
     private final TrialService trialService;
     private final ChallengeRepository challengeRepository;
 
+    @Transactional
     @PostMapping("/challenges/{challengeId}/trials")
     public Long save(@PathVariable("challengeId") Long challengeId, TrialRequestDto param) throws IOException, ParseException, JCodecException {
-        return trialService.save(challengeId, param);
+        Challenge challenge = challengeRepository.getById(challengeId);
+        if ("photo".equals(challenge.getType())){
+            return trialService.saveTrialPhoto(challengeId, param);
+        }
+        return trialService.saveTrialVideo(challengeId, param);
     }
 
     @GetMapping("/challenges/{challengeId}/trials/{trialId}/estimate")

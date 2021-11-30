@@ -46,7 +46,7 @@ public class ChallengeService {
     @Transactional
     public Long saveChallengePhoto(ChallengeRequestDto challengeRequestDto) throws IOException, ParseException {
         // parameter로 SessionUser 받아오게 구현 예정
-        
+
         //ChallengePose 생성
         //url, poseInfoList, user
         MultipartFile multipartFile = challengeRequestDto.getFile();
@@ -64,7 +64,7 @@ public class ChallengeService {
 
         challengePoseRepository.save(challengePose);
 
-//        poseService.estimatePosePhoto(challengePose.getId(), url, "challenge");
+        poseService.estimatePosePhoto(challengePose.getId(), url, "challenge");
 //        List<PoseDetail> poseDetailList = poseService.estimatePosePhoto(url);
 //        List<PoseInfo> poseInfoList = new ArrayList<>();
 //        for (PoseDetail pd : poseDetailList){
@@ -118,7 +118,7 @@ public class ChallengeService {
                 .build();
         challengePoseRepository.save(challengePose);
 
-//        poseService.estimatePoseVideo(challengePose.getId(), url, "challenge");
+        poseService.estimatePoseVideo(challengePose.getId(), url, "challenge");
 
         //User <-> ChallengePose 매핑
         user.addChallengePose(challengePose);
