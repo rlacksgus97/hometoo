@@ -1,15 +1,12 @@
 package hometoogether.hometoogether.domain.room.domain;
 
 //import hometoogether.hometoogether.domain.user.domain.User;
-import hometoogether.hometoogether.domain.training.domain.Routine;
 import hometoogether.hometoogether.domain.training.domain.Training;
-import hometoogether.hometoogether.domain.user.domain.User;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.socket.WebSocketSession;
 
 import javax.persistence.*;
 import java.util.*;

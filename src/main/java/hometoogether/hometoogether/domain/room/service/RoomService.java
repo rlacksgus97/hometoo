@@ -6,7 +6,6 @@ import hometoogether.hometoogether.domain.room.dto.HostAndClientDto;
 
 import hometoogether.hometoogether.domain.room.dto.RoomDto;
 import hometoogether.hometoogether.domain.room.repository.RoomRepository;
-import hometoogether.hometoogether.domain.training.domain.Routine;
 import hometoogether.hometoogether.domain.training.domain.Training;
 import hometoogether.hometoogether.domain.training.domain.TrainingVO;
 import hometoogether.hometoogether.domain.training.repository.RoutineRepository;

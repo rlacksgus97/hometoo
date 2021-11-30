@@ -1,6 +1,5 @@
 package hometoogether.hometoogether.domain.training.domain;
 
-import hometoogether.hometoogether.domain.training.domain.Training;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
