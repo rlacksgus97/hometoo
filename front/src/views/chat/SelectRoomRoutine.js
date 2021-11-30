@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import DemoNavbar from "../../components/Navbars/DemoNavbar";
-import {Button, Card, CardHeader, Container, Media, Row, Table} from "reactstrap";
+import {Button, Card, CardBody, CardHeader, Col, Container, Media, Row, Table} from "reactstrap";
 import SimpleFooter from "../../components/Footers/SimpleFooter";
 import axios from "axios";
+import Hero from "../Hero";
 
 function SelectRoomRoutine(){
 
@@ -27,96 +28,118 @@ function SelectRoomRoutine(){
     return(
         <>
             <DemoNavbar />
-            <main>
-                <div className="position-relative">
-                    <section className="section section-lg section-shaped pb-250">
-                        <div className="shape shape-style-1 shape-default">
-                            <span />
-                            <span />
-                            <span />
-                            <span />
-                            <span />
-                            <span />
-                            <span />
-                            <span />
-                            <span />
-                        </div>
-                        <Container className="justify-content-md-center" fluid>
-                            <Row>
-                                <div className="col">
-                                    <Card className="shadow">
-                                        <CardHeader className="border-0">
-                                            <h1 className="display-3 text-black">Select one of the rooms created</h1>
-                                        </CardHeader>
-                                        <Table className="align-items-center table-flush" responsive>
-                                            <thead className="thead-light">
-                                            <tr>
-                                                <th scope="col">User Name</th>
-                                                <th scope="col">Routine Name</th>
-                                                <th scope="col">Routine Detail</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                                {(routines!==null) ? (
-                                                    <>
-                                                        {
-                                                            routines.map((routine)=>{
-                                                                return(
-                                                                    <tr>
-                                                                        <th scope="row">
-                                                                            <Media className="align-items-center">
-                                                                                <Media>
+            <div className="position-relative">
+                <Hero />
+            </div>
+            <section className="section section-components pb-5">
+                <Container className="justify-content-md-center" fluid>
+                    <Row className="justify-content-center mt--300">
+                        <Col lg="8">
+                            <Card className="bg-gradient-secondary shadow">
+                                <CardBody className="p-lg-5">
+                                    <div>
+                                        <Container fluid lg="8">
+                                            <Row lg="3">
+                                                <Col md="12" style={{ display: "flex" }}>
+                                                    <h1 className="font-weight-bold">루틴 선택</h1>
+                                                </Col>
+                                                <Col md="12" style={{ display: "flex" }}>
+                                                    <h5>화상 채팅방에서 수행할 루틴을 선택하세요.</h5>
+                                                </Col>
+                                                <Col md="12" style={{ display: "flex" }}>
+                                                    <Table className="align-items-center table-flush" responsive>
+                                                        <thead className="thead-light">
+                                                        <tr>
+                                                            <th scope="col">User Name</th>
+                                                            <th scope="col">Routine Name</th>
+                                                            <th scope="col">Routine Average Score</th>
+                                                            <th scope="col">Evaluation Count</th>
+                                                            <th scope="col">Routine Detail</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {(routines!==null) ? (
+                                                            <>
+                                                                {
+                                                                    routines.map((routine)=>{
+                                                                        return(
+                                                                            <tr>
+                                                                                <th scope="row">
+                                                                                    <Media className="align-items-center">
+                                                                                        <Media>
                                                                                   <span className="mb-0 text-sm">
                                                                                     {routine.userName}
                                                                                   </span>
-                                                                                </Media>
-                                                                            </Media>
-                                                                        </th>
-                                                                        <th scope="row">
-                                                                            <Media className="align-items-center">
-                                                                                <Media>
+                                                                                        </Media>
+                                                                                    </Media>
+                                                                                </th>
+                                                                                <th scope="row">
+                                                                                    <Media className="align-items-center">
+                                                                                        <Media>
                                                                                   <span className="mb-0 text-sm">
                                                                                     {routine.routineName}
                                                                                   </span>
-                                                                                </Media>
-                                                                            </Media>
-                                                                        </th>
-                                                                        <th scope="row" onClick={()=>{showRoutineDetail(routine)}}>
-                                                                            <Media className="align-items-center">
-                                                                                <Media>
+                                                                                        </Media>
+                                                                                    </Media>
+                                                                                </th>
+                                                                                <th scope="row">
+                                                                                    <Media className="align-items-center">
+                                                                                        <Media>
+                                                                                  <span className="mb-0 text-sm">
+                                                                                    {routine.avgScore}
+                                                                                  </span>
+                                                                                        </Media>
+                                                                                    </Media>
+                                                                                </th>
+                                                                                <th scope="row">
+                                                                                    <Media className="align-items-center">
+                                                                                        <Media>
+                                                                                  <span className="mb-0 text-sm">
+                                                                                    {routine.evalCnt}
+                                                                                  </span>
+                                                                                        </Media>
+                                                                                    </Media>
+                                                                                </th>
+                                                                                <th scope="row" onClick={()=>{showRoutineDetail(routine)}}>
+                                                                                    <Media className="align-items-center">
+                                                                                        <Media>
                                                                                   <span className="mb-0 text-sm">
                                                                                     Click Here To See Details
                                                                                   </span>
-                                                                                </Media>
-                                                                            </Media>
-                                                                        </th>
-                                                                    </tr>
-                                                                )
-                                                            })
-                                                        }
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <div className="text-center">
-                                                            No Routine
-                                                        </div>
-                                                    </>
-                                                )}
+                                                                                        </Media>
+                                                                                    </Media>
+                                                                                </th>
+                                                                            </tr>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <div className="text-center">
+                                                                    No Routine
+                                                                </div>
+                                                            </>
+                                                        )}
 
-                                            </tbody>
-                                        </Table>
-                                    </Card>
-                                </div>
-                            </Row>
-                            <input type="hidden" id="uuid" name="uuid" value="${uuid}"/>
-                            <Button className="col" onClick={goBackToRoomSelectPage}>
-                                Go Back
-                            </Button>
-                        </Container>
-                    </section>
-                </div>
-            </main>
-            <SimpleFooter />
+                                                        </tbody>
+                                                    </Table>
+                                                </Col>
+                                                <Col md="12" style={{ display: "flex" }}>
+                                                    <Button className="col" onClick={goBackToRoomSelectPage}>
+                                                        {/*className="btn-neutral btn-icon"*/}
+                                                        Go Back
+                                                    </Button>
+                                                </Col>
+                                            </Row>
+                                        </Container>
+                                    </div>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Container>
+            </section>
         </>
     )
 }

@@ -16,6 +16,7 @@ import "assets/scss/argon-design-system-react.scss";
 //user
 import UserService from "../service/UserService";
 import BoardService from "../service/BoardService";
+import axios from "axios";
 
 class Profile extends React.Component {
 
@@ -30,6 +31,9 @@ class Profile extends React.Component {
       comments: '',
       challenges: '',
       photo: localStorage.getItem("authenticatedUserEmail").length%7,
+      routineOnClick: true,
+      challengeOnClick: false,
+      trialOnClick: false,
     };
   }
 
@@ -70,6 +74,10 @@ class Profile extends React.Component {
     BoardService.getCommentCount(this.state.name).then(res => {
       this.setState({comments: res.data});
     });
+    // axios.get("/myRoutines/" + localStorage.getItem("authenticatedUserName"))
+    //     .then((res)=>{
+    //       res.data;
+    //     })
     const temp = this.state.photo;
     const img_url = '${temp}';
   }
@@ -139,7 +147,9 @@ class Profile extends React.Component {
                         <Button
                           className="mr-4"
                           color="default"
-                          onClick={e => e.preventDefault()}
+                          onClick={()=> {
+                            window.location.href = "/myRoutineList"
+                          }}
                           size="sm"
                         >
                           Routines

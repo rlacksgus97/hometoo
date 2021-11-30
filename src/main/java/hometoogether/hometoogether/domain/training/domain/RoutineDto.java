@@ -10,12 +10,16 @@ public class RoutineDto {
     private Long routineId;
     private String userName;
     private String routineName;
+    private float avgScore;
+    private int evalCnt;
 
     @Builder
-    public RoutineDto(Long routineId, String userName, String routineName) {
+    public RoutineDto(Long routineId, String userName, String routineName, float avgScore, int evalCnt) {
         this.routineId=routineId;
         this.userName = userName;
         this.routineName=routineName;
+        this.avgScore=avgScore;
+        this.evalCnt=evalCnt;
     }
 
 //    public Routine toEntity(RoutineDto routineDto) {

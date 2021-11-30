@@ -156,7 +156,7 @@ class Board extends React.Component {
                                                 <Button
                                                     className="btn-icon mb-3 mb-sm-0"
                                                     color="info"
-                                                    href="http://localhost:3000/sample"
+                                                    href="/room/create"
                                                 >
                           <span className="btn-inner--icon mr-1">
                             <i className="ni ni-user-run" />
@@ -166,7 +166,7 @@ class Board extends React.Component {
                                                 <Button
                                                     className="btn-white btn-icon mb-3 mb-sm-0 ml-1"
                                                     color="default"
-                                                    href="http://localhost:3000/login"
+                                                    href="/challenge"
                                                 >
                           <span className="btn-inner--icon mr-1">
                             <i className="ni ni-trophy" />

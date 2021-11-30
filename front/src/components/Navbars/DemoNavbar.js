@@ -222,88 +222,147 @@ class DemoNavbar extends React.Component {
                   </UncontrolledDropdown>
                 </Nav>
                 <Nav className="align-items-lg-center ml-lg-auto" navbar>
-                  <NavItem>
-                    <NavLink
-                      className="nav-link-icon"
-                      href="https://www.facebook.com/creativetim"
-                      id="tooltip333589074"
-                      target="_blank"
+                  {/*<NavItem>*/}
+                  {/*  <NavLink*/}
+                  {/*    className="nav-link-icon"*/}
+                  {/*    href="https://www.facebook.com/creativetim"*/}
+                  {/*    id="tooltip333589074"*/}
+                  {/*    target="_blank"*/}
+                  {/*  >*/}
+                  {/*    <i className="fa fa-facebook-square" />*/}
+                  {/*    <span className="nav-link-inner--text d-lg-none ml-2">*/}
+                  {/*      Facebook*/}
+                  {/*    </span>*/}
+                  {/*  </NavLink>*/}
+                  {/*  <UncontrolledTooltip delay={0} target="tooltip333589074">*/}
+                  {/*    Like us on Facebook*/}
+                  {/*  </UncontrolledTooltip>*/}
+                  {/*</NavItem>*/}
+                  {/*<NavItem>*/}
+                  {/*  <NavLink*/}
+                  {/*    className="nav-link-icon"*/}
+                  {/*    href="https://www.instagram.com/creativetimofficial"*/}
+                  {/*    id="tooltip356693867"*/}
+                  {/*    target="_blank"*/}
+                  {/*  >*/}
+                  {/*    <i className="fa fa-instagram" />*/}
+                  {/*    <span className="nav-link-inner--text d-lg-none ml-2">*/}
+                  {/*      Instagram*/}
+                  {/*    </span>*/}
+                  {/*  </NavLink>*/}
+                  {/*  <UncontrolledTooltip delay={0} target="tooltip356693867">*/}
+                  {/*    Follow us on Instagram*/}
+                  {/*  </UncontrolledTooltip>*/}
+                  {/*</NavItem>*/}
+                  {/*<NavItem>*/}
+                  {/*  <NavLink*/}
+                  {/*    className="nav-link-icon"*/}
+                  {/*    href="https://twitter.com/creativetim"*/}
+                  {/*    id="tooltip184698705"*/}
+                  {/*    target="_blank"*/}
+                  {/*  >*/}
+                  {/*    <i className="fa fa-twitter-square" />*/}
+                  {/*    <span className="nav-link-inner--text d-lg-none ml-2">*/}
+                  {/*      Twitter*/}
+                  {/*    </span>*/}
+                  {/*  </NavLink>*/}
+                  {/*  <UncontrolledTooltip delay={0} target="tooltip184698705">*/}
+                  {/*    Follow us on Twitter*/}
+                  {/*  </UncontrolledTooltip>*/}
+                  {/*</NavItem>*/}
+                  {/*<NavItem>*/}
+                  {/*  <NavLink*/}
+                  {/*    className="nav-link-icon"*/}
+                  {/*    href="https://github.com/creativetimofficial/argon-design-system-react"*/}
+                  {/*    id="tooltip112445449"*/}
+                  {/*    target="_blank"*/}
+                  {/*  >*/}
+                  {/*    <i className="fa fa-github" />*/}
+                  {/*    <span className="nav-link-inner--text d-lg-none ml-2">*/}
+                  {/*      Github*/}
+                  {/*    </span>*/}
+                  {/*  </NavLink>*/}
+                  {/*  <UncontrolledTooltip delay={0} target="tooltip112445449">*/}
+                  {/*    Star us on Github*/}
+                  {/*  </UncontrolledTooltip>*/}
+                  {/*</NavItem>*/}
+                  <NavItem className="d-none d-lg-block ml-lg-4">
+                    <Button
+                        className="btn-neutral btn-icon"
+                        color="default"
+                        onClick={()=> {
+                          window.location.href = "/challenge"
+                        }}
+                        target="_blank"
                     >
-                      <i className="fa fa-facebook-square" />
-                      <span className="nav-link-inner--text d-lg-none ml-2">
-                        Facebook
+                      <div style={{ display: "flex" }}>
+                      <span className="btn-inner--icon">
+                        <i className="ni ni-trophy"/>
                       </span>
-                    </NavLink>
-                    <UncontrolledTooltip delay={0} target="tooltip333589074">
-                      Like us on Facebook
-                    </UncontrolledTooltip>
+                      <span className="nav-link-inner--text ml-1">
+                         challenge
+                      </span>
+                      </div>
+                    </Button>
                   </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className="nav-link-icon"
-                      href="https://www.instagram.com/creativetimofficial"
-                      id="tooltip356693867"
-                      target="_blank"
+                  <NavItem className="d-none d-lg-block ml-lg-4">
+                    <Button
+                        className="btn-neutral btn-icon"
+                        color="default"
+                        onClick={()=> {
+                          window.location.href = "/room/create"
+                        }}
+                        target="_blank"
                     >
-                      <i className="fa fa-instagram" />
-                      <span className="nav-link-inner--text d-lg-none ml-2">
-                        Instagram
+                      <div style={{ display: "flex" }}>
+                      <span className="btn-inner--icon">
+                        <i className="ni ni-user-run"/>
                       </span>
-                    </NavLink>
-                    <UncontrolledTooltip delay={0} target="tooltip356693867">
-                      Follow us on Instagram
-                    </UncontrolledTooltip>
+                      <span className="nav-link-inner--text ml-1">
+                         chat
+                      </span>
+                      </div>
+                    </Button>
                   </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className="nav-link-icon"
-                      href="https://twitter.com/creativetim"
-                      id="tooltip184698705"
-                      target="_blank"
+                  <NavItem className="d-none d-lg-block ml-lg-4">
+                    <Button
+                        className="btn-neutral btn-icon"
+                        color="default"
+                        onClick={()=> {
+                          window.location.href = "/profile"
+                        }}
+                        target="_blank"
                     >
-                      <i className="fa fa-twitter-square" />
-                      <span className="nav-link-inner--text d-lg-none ml-2">
-                        Twitter
+                      <div style={{ display: "flex" }}>
+                      <span className="btn-inner--icon">
+                        <i className="ni ni-delivery-fast mr-2"/>
                       </span>
-                    </NavLink>
-                    <UncontrolledTooltip delay={0} target="tooltip184698705">
-                      Follow us on Twitter
-                    </UncontrolledTooltip>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className="nav-link-icon"
-                      href="https://github.com/creativetimofficial/argon-design-system-react"
-                      id="tooltip112445449"
-                      target="_blank"
-                    >
-                      <i className="fa fa-github" />
-                      <span className="nav-link-inner--text d-lg-none ml-2">
-                        Github
+                      <span className="nav-link-inner--text ml-1">
+                         profile
                       </span>
-                    </NavLink>
-                    <UncontrolledTooltip delay={0} target="tooltip112445449">
-                      Star us on Github
-                    </UncontrolledTooltip>
+                      </div>
+                    </Button>
                   </NavItem>
                   {
                     this.state.flag
-                    ?
+                        ?
                         (<NavItem className="d-none d-lg-block ml-lg-4">
-                      <Button
-                          className="btn-neutral btn-icon"
-                          color="default"
-                          onClick={this.onLogoutClick}
-                          target="_blank"
-                      >
+                          <Button
+                              className="btn-neutral btn-icon"
+                              color="default"
+                              onClick={this.onLogoutClick}
+                              target="_blank"
+                          >
+                            <div style={{ display: "flex" }}>
                       <span className="btn-inner--icon">
                         <i className="ni ni-fat-remove mr-2"/>
                       </span>
-                        <span className="nav-link-inner--text ml-1">
+                            <span className="nav-link-inner--text ml-1">
                         Logout
                       </span>
-                      </Button>
-                    </NavItem>)
+                            </div>
+                          </Button>
+                        </NavItem>)
                         :(
                             <NavItem className="d-none d-lg-block ml-lg-4">
                               <Button
@@ -312,12 +371,14 @@ class DemoNavbar extends React.Component {
                                   onClick={this.onLoginClick}
                                   target="_blank"
                               >
+                                <div style={{ display: "flex" }}>
                       <span className="btn-inner--icon">
                         <i className="ni ni-curved-next mr-2"/>
                       </span>
                                 <span className="nav-link-inner--text ml-1">
                         Login
                       </span>
+                                </div>
                               </Button>
                             </NavItem>
                         )
