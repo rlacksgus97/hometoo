@@ -1,33 +1,42 @@
-import React from "react";
-
-// reactstrap components
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
-  Container,
-  Row,
-  Col
-} from "reactstrap";
-
-// core components
-import DemoNavbar from "components/Navbars/DemoNavbar.js";
-import SimpleFooter from "components/Footers/SimpleFooter.js";
-
-//css
 import "assets/vendor/nucleo/css/nucleo.css";
 import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss";
 
-//user
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Row,
+} from "reactstrap";
+
+import DemoNavbar from "components/Navbars/DemoNavbar.js";
+import React from "react";
+import SimpleFooter from "components/Footers/SimpleFooter.js";
 import UserService from "../service/UserService";
+
+// reactstrap components
+
+
+// core components
+
+
+
+//css
+
+
+
+
+//user
+
 
 class Register extends React.Component {
   state = {};
@@ -35,9 +44,9 @@ class Register extends React.Component {
     super(props);
 
     this.state = {
-      email: '',
-      password: '',
-      userName: ''
+      email: "",
+      password: "",
+      userName: "",
     };
 
     this.changeNameHandler = this.changeNameHandler.bind(this);
@@ -52,32 +61,34 @@ class Register extends React.Component {
     let user = {
       email: this.state.email,
       password: this.state.password,
-      userName: this.state.name
+      userName: this.state.name,
     };
 
     console.log("user => " + JSON.stringify(user));
-    UserService.signup(user).then(res => {
-      // 유저 데이터
-      console.log(res.data);
-      this.props.history.push('/login');
-    }).catch((error) => {
-      console.log("signup fail = > " , error.data.message);
-      console.log(error.message);
-      alert('이메일 또는 닉네임이 존재합니다.');
-    })
-  }
+    UserService.signup(user)
+      .then((res) => {
+        // 유저 데이터
+        console.log(res.data);
+        this.props.history.push("/login");
+      })
+      .catch((error) => {
+        console.log("signup fail = > ", error.data.message);
+        console.log(error.message);
+        alert("이메일 또는 닉네임이 존재합니다.");
+      });
+  };
 
   changeNameHandler = (event) => {
-    this.setState({name: event.target.value});
-  }
+    this.setState({ name: event.target.value });
+  };
 
   changeEmailHandler = (event) => {
-    this.setState({email: event.target.value});
-  }
+    this.setState({ email: event.target.value });
+  };
 
   changePasswordHandler = (event) => {
-    this.setState({password: event.target.value});
-  }
+    this.setState({ password: event.target.value });
+  };
 
   componentDidMount() {
     document.documentElement.scrollTop = 0;
@@ -141,7 +152,9 @@ class Register extends React.Component {
                     </CardHeader>
                     <CardBody className="px-lg-5 py-lg-5">
                       <div className="text-center text-muted mb-4">
-                        <small>닉네임, 이메일과 비밀번호를 통해 가입해주세요.</small>
+                        <small>
+                          닉네임, 이메일과 비밀번호를 통해 가입해주세요.
+                        </small>
                       </div>
                       <Form role="form">
                         <FormGroup>
@@ -151,7 +164,11 @@ class Register extends React.Component {
                                 <i className="ni ni-hat-3" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Name" type="text" onChange={this.changeNameHandler}/>
+                            <Input
+                              placeholder="Name"
+                              type="text"
+                              onChange={this.changeNameHandler}
+                            />
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -161,7 +178,11 @@ class Register extends React.Component {
                                 <i className="ni ni-email-83" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Email" type="email" onChange={this.changeEmailHandler}/>
+                            <Input
+                              placeholder="Email"
+                              type="email"
+                              onChange={this.changeEmailHandler}
+                            />
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -230,7 +251,6 @@ class Register extends React.Component {
             </Container>
           </section>
         </main>
-        <SimpleFooter />
       </>
     );
   }

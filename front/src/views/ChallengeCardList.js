@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 
 import ChallengeCard from "./ChallengeCard";
 import Hero from "./Hero";
+import UserService from "../service/UserService";
 import axios from "axios";
 
 export default function ChallengeCardList() {
@@ -21,7 +22,8 @@ export default function ChallengeCardList() {
   ]);
 
   useEffect(() => {
-    axios.get("/challenges").then((res) => {
+    UserService.setupAxiosInterceptors();
+    axios.get("/api/challenges").then((res) => {
       console.log(res.data);
       setchallengeList(res.data);
     });

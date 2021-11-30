@@ -20,6 +20,7 @@ import {
 import React, { useEffect, useState } from "react";
 
 import Hero from "./Hero";
+import UserService from "../service/UserService";
 import axios from "axios";
 
 export default function ChallengeCreate() {
@@ -72,9 +73,10 @@ export default function ChallengeCreate() {
 
     console.log(file);
 
+    UserService.setupAxiosInterceptors();
     axios({
       method: "post",
-      url: "/challenges",
+      url: "/api/challenges",
       data: formData,
       headers: { "Content-Type": "multipart/form-data" },
     });

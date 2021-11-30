@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
 public class ChallengeController {

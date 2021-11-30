@@ -42,6 +42,15 @@ public class TrialService {
     private final PoseService poseService;
 
     @Transactional
+    public Long save(Long challengeId, TrialRequestDto trialRequestDto) throws JCodecException, IOException, ParseException {
+        Challenge challenge = challengeRepository.getById(challengeId);
+        if ("photo".equals(challenge.getType())){
+            return saveTrialPhoto(challengeId, trialRequestDto);
+        }
+        return saveTrialVideo(challengeId, trialRequestDto);
+    }
+
+    @Transactional
     public Long saveTrialPhoto(Long challengeId, TrialRequestDto trialRequestDto) throws IOException, ParseException, JCodecException {
         // parameter로 SessionUser 받아오게 구현 예정
 

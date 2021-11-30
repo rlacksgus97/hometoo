@@ -21,6 +21,7 @@ import {
 import React, { useEffect, useState } from "react";
 
 import Hero from "./Hero";
+import UserService from "../service/UserService";
 import axios from "axios";
 import { useHistory } from "react-router";
 import { useLocation } from "react-router";
@@ -28,7 +29,6 @@ import { useLocation } from "react-router";
 export default function ChallengeCardList() {
   const history = useHistory();
   const location = useLocation();
-  const url = "http://221.143.144.143:80/" + challengeDeatil.url;
   const [challengeDeatil, setchallengeDeatil] = useState({
     id: 0,
     type: "",
@@ -48,8 +48,9 @@ export default function ChallengeCardList() {
   ]);
 
   useEffect(() => {
+    UserService.setupAxiosInterceptors();
     axios
-      .get("/challenges/" + String(location.state.cid) + "/best_trials")
+      .get("/api/challenges/" + String(location.state.cid) + "/best_trials")
       .then((res) => {
         console.log(res.data);
         setbestTrialList(res.data);
@@ -57,8 +58,9 @@ export default function ChallengeCardList() {
   }, []);
 
   useEffect(() => {
+    UserService.setupAxiosInterceptors();
     // console.log("/challenges/" + String(location.state.cid));
-    axios.get("/challenges/" + String(location.state.cid)).then((res) => {
+    axios.get("/api/challenges/" + String(location.state.cid)).then((res) => {
       console.log(res.data);
       setchallengeDeatil(res.data);
     });
@@ -82,13 +84,17 @@ export default function ChallengeCardList() {
                         <CardImg
                           alt="Card image cap"
                           // src="https://picsum.photos/256/186"
-                          src={url}
+                          src={
+                            "http://221.143.144.143:80/" + challengeDeatil.url
+                          }
                           top
                           width="100%"
                         />
                       ) : (
                         <video
-                          src={url}
+                          src={
+                            "http://221.143.144.143:80/" + challengeDeatil.url
+                          }
                           crossOrigin="anonymous"
                           type="type/mp4"
                           controls
@@ -122,7 +128,7 @@ export default function ChallengeCardList() {
                         </Button>
                       </div>
                       <ListGroup>
-                        {bestTrialList[0].id !== 0 ? (
+                        {bestTrialList.length !== 0 ? (
                           <>
                             {bestTrialList.map((bestTrial) => {
                               return (
