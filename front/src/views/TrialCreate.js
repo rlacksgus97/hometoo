@@ -17,14 +17,15 @@ import {
   InputGroupText,
   Row,
 } from "reactstrap";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import Hero from "./Hero";
+import UserService from "../service/UserService";
 import axios from "axios";
-import { useLocation } from "react-router";
+import { useParams } from "react-router-dom";
 
 export default function TrialCreate() {
-  const location = useLocation();
+  const { challengeid } = useParams();
   const [username, setUsername] = useState("");
   const [file, setFile] = useState([]);
 
@@ -42,18 +43,32 @@ export default function TrialCreate() {
     e.preventDefault();
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("username", username);
+    formData.append("userName", username);
 
     console.log(file);
 
-    axios({
-      method: "post",
-      url: "/challenges/" + location.state.cid + "/trials/",
-      data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
+    UserService.setupAxiosInterceptors();
+    // axios({
+    //   method: "post",
+    //   url: "/api/challenges/" + challengeid + "/trials/",
+    //   data: formData,
+    //   headers: { "Content-Type": "multipart/form-data" },
+    // });
+
+    const axiosInstance = axios.create({
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      timeout: 6000,
     });
 
-    window.location.href = "/challenge";
+    axiosInstance
+      .post("/api/challenges/" + challengeid + "/trials/", formData)
+      .then((res) => {
+        window.location.href = "/challenge/" + challengeid;
+        return res;
+      })
+      .catch(this.handleError);
   };
 
   return (
@@ -104,6 +119,21 @@ export default function TrialCreate() {
                           </InputGroup>
                           <FormText>
                             챌린지에 도전할 나의 사진을 선택해주세요.
+                          </FormText>
+                        </FormGroup>
+                        <FormGroup>
+                          <InputGroup className="input-group-alternative">
+                            <Input
+                              type="file"
+                              accept="video/mp4"
+                              // accept="image/*, video/*"
+                              // name="file"
+                              // value={file}
+                              onChange={fileHandler}
+                            />
+                          </InputGroup>
+                          <FormText>
+                            챌린지에 도전할 나의 영상을 선택해주세요.
                           </FormText>
                         </FormGroup>
                         <div style={{ display: "flex" }}>

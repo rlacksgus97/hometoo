@@ -21,14 +21,12 @@ import {
 import React, { useEffect, useState } from "react";
 
 import Hero from "./Hero";
+import UserService from "../service/UserService";
 import axios from "axios";
-import { useHistory } from "react-router";
-import { useLocation } from "react-router";
+import { useParams } from "react-router-dom";
 
 export default function ChallengeCardList() {
-  const history = useHistory();
-  const location = useLocation();
-  // const url = "http://58.122.7.167:9000/" + challengeDeatil.url;
+  const { challengeid } = useParams();
   const [challengeDeatil, setchallengeDeatil] = useState({
     id: 0,
     type: "",
@@ -39,22 +37,20 @@ export default function ChallengeCardList() {
     trial_user_List: [],
   });
 
-  const [bestTrialList, setbestTrialList] = useState([
-
-  ]);
+  const [bestTrialList, setbestTrialList] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("/challenges/" + String(location.state.cid) + "/best_trials")
-      .then((res) => {
-        console.log(res.data);
-        setbestTrialList(res.data);
-      });
+    UserService.setupAxiosInterceptors();
+    axios.get("/api/challenges/" + challengeid + "/best_trials").then((res) => {
+      console.log(res.data);
+      setbestTrialList(res.data);
+    });
   }, []);
 
   useEffect(() => {
+    UserService.setupAxiosInterceptors();
     // console.log("/challenges/" + String(location.state.cid));
-    axios.get("/challenges/" + String(location.state.cid)).then((res) => {
+    axios.get("/api/challenges/" + challengeid).then((res) => {
       console.log(res.data);
       setchallengeDeatil(res.data);
     });
@@ -78,13 +74,19 @@ export default function ChallengeCardList() {
                         <CardImg
                           alt="Card image cap"
                           // src="https://picsum.photos/256/186"
-                          src={"http://58.122.7.167:9000/" + challengeDeatil.url}
+                          src={
+                            "http://221.143.144.143:80/" + challengeDeatil.url
+                          }
+                          // src={"http://58.122.7.167:9000/" + challengeDeatil.url}
                           top
                           width="100%"
                         />
                       ) : (
                         <video
-                          src={"http://58.122.7.167:9000/" + challengeDeatil.url}
+                          src={
+                            "http://221.143.144.143:80/" + challengeDeatil.url
+                          }
+                          // src={"http://58.122.7.167:9000/" + challengeDeatil.url}
                           crossOrigin="anonymous"
                           type="type/mp4"
                           controls
@@ -105,20 +107,15 @@ export default function ChallengeCardList() {
                           color="danger"
                           style={{ marginLeft: "auto" }}
                           onClick={() => {
-                            history.push({
-                              pathname: "/trial/create",
-                              state: {
-                                cid: location.state.cid,
-                                curl: challengeDeatil.url,
-                              },
-                            });
+                            window.location.href =
+                              "/trial/create/" + challengeid;
                           }}
                         >
                           지금 참가하기
                         </Button>
                       </div>
                       <ListGroup>
-                        {bestTrialList.length!==0 ? (
+                        {bestTrialList.length !== 0 ? (
                           <>
                             {bestTrialList.map((bestTrial) => {
                               return (
@@ -164,14 +161,7 @@ export default function ChallengeCardList() {
                           color="primary"
                           style={{ marginLeft: "auto" }}
                           onClick={() => {
-                            history.push({
-                              pathname: "/trial",
-                              state: {
-                                cid: location.state.cid,
-                                ctitle: challengeDeatil.title,
-                                cuname: challengeDeatil.username,
-                              },
-                            });
+                            window.location.href = "/trial/" + challengeid;
                           }}
                         >
                           참가자 더보기

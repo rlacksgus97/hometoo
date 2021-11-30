@@ -7,11 +7,22 @@ import React, { useEffect, useState } from "react";
 
 import Hero from "./Hero";
 import TrialCard from "./TrialCard";
+import UserService from "../service/UserService";
 import axios from "axios";
-import { useLocation } from "react-router";
+import { useParams } from "react-router-dom";
 
 export default function TrialCardList() {
-  const location = useLocation();
+  const { challengeid } = useParams();
+  const [challengeDetail, setchallengeDetail] = useState({
+    id: 0,
+    type: "",
+    url: "",
+    username: "",
+    title: "",
+    context: "",
+    trial_user_List: [],
+  });
+
   const [trialList, settrialList] = useState([
     {
       id: 0,
@@ -23,7 +34,16 @@ export default function TrialCardList() {
   ]);
 
   useEffect(() => {
-    axios.get("/challenges/" + location.state.cid + "/trials/").then((res) => {
+    UserService.setupAxiosInterceptors();
+    axios.get("/api/challenges/" + challengeid).then((res) => {
+      console.log(res.data);
+      setchallengeDetail(res.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    UserService.setupAxiosInterceptors();
+    axios.get("/api/challenges/" + challengeid + "/trials/").then((res) => {
       console.log(res.data);
       settrialList(res.data);
     });
@@ -46,12 +66,12 @@ export default function TrialCardList() {
                       <Row lg="3">
                         <Col md="12" style={{ display: "flex" }}>
                           <h1 className="font-weight-bold">
-                            {location.state.ctitle} 챌린지
+                            {challengeDetail.title} 챌린지
                           </h1>
                         </Col>
                         <Col md="12" style={{ display: "flex" }}>
                           <h5>
-                            {location.state.cuname}님의 챌린지에{" "}
+                            {challengeDetail.username}님의 챌린지에{" "}
                             {trialList.length} 명이 참여중이에요!
                           </h5>
                         </Col>
@@ -59,12 +79,15 @@ export default function TrialCardList() {
                           <Button
                             color="danger"
                             style={{ marginLeft: "auto" }}
-                            href="/trial/create"
+                            onClick={() => {
+                              window.location.href =
+                                "/trial/create/" + challengeid;
+                            }}
                           >
                             + 나도 참여하기
                           </Button>
                         </Col>
-                        {trialList !== [] ? (
+                        {trialList.lenth !== 0 ? (
                           <>
                             {trialList.map((trial) => {
                               return (

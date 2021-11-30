@@ -1,33 +1,35 @@
-import React from "react";
-
-// reactstrap components
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
-  Container,
-  Row,
-  Col
-} from "reactstrap";
-
-// core components
-import DemoNavbar from "components/Navbars/DemoNavbar.js";
-import SimpleFooter from "components/Footers/SimpleFooter.js";
-
-//css
 import "assets/vendor/nucleo/css/nucleo.css";
 import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss";
 
-// 유저기능
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Row,
+} from "reactstrap";
+
+import DemoNavbar from "components/Navbars/DemoNavbar.js";
+import React from "react";
+import SimpleFooter from "components/Footers/SimpleFooter.js";
 import UserService from "../service/UserService";
+
+// reactstrap components
+
+// core components
+
+//css
+
+// 유저기능
 
 class Login extends React.Component {
   state = {};
@@ -36,8 +38,8 @@ class Login extends React.Component {
     super(props);
 
     this.state = {
-      email : '',
-      password: ''
+      email: "",
+      password: "",
     };
 
     this.changeEmailHandler = this.changeEmailHandler.bind(this);
@@ -47,46 +49,50 @@ class Login extends React.Component {
 
   clickFindPassword = (event) => {
     event.preventDefault();
-    window.location.href='/find/password';
-  }
+    window.location.href = "/find/password";
+  };
 
   clickRegisterUser = (event) => {
     event.preventDefault();
-    window.location.href='/register';
-  }
+    window.location.href = "/register";
+  };
 
   changeEmailHandler = (event) => {
-    this.setState({email: event.target.value});
-  }
+    this.setState({ email: event.target.value });
+  };
 
   changePasswordHandler = (event) => {
-    this.setState({password: event.target.value});
-  }
+    this.setState({ password: event.target.value });
+  };
 
   loginUser = (event) => {
     event.preventDefault();
     let user = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
     };
 
     console.log("user => " + JSON.stringify(user));
-    UserService.signIn(user).then(res => {
-      // 로그인 정보 저장
-      console.log(res.data);
-      UserService.registerSuccessfulLoginForJwt(user, res.data['accessToken']);
-      this.props.history.push('/board');
-    }).catch(() => {
-      alert('이메일 혹은 비밀번호가 틀립니다.');
-    });
+    UserService.signIn(user)
+      .then((res) => {
+        // 로그인 정보 저장
+        console.log(res.data);
+        UserService.registerSuccessfulLoginForJwt(
+          user,
+          res.data["accessToken"]
+        );
+        this.props.history.push("/board");
+      })
+      .catch(() => {
+        alert("이메일 혹은 비밀번호가 틀립니다.");
+      });
 
     let userName = "";
-    UserService.getUserName(user).then(res => {
+    UserService.getUserName(user).then((res) => {
       console.log("testname => " + user);
       localStorage.setItem("authenticatedUserName", res.data);
     });
-  }
-
+  };
 
   componentDidMount() {
     document.documentElement.scrollTop = 0;
@@ -160,7 +166,11 @@ class Login extends React.Component {
                                 <i className="ni ni-email-83" />
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input placeholder="Email" type="email" onChange={this.changeEmailHandler}/>
+                            <Input
+                              placeholder="Email"
+                              type="email"
+                              onChange={this.changeEmailHandler}
+                            />
                           </InputGroup>
                         </FormGroup>
                         <FormGroup>
@@ -208,7 +218,7 @@ class Login extends React.Component {
                     <Col xs="6">
                       <a
                         className="text-light"
-                        style={{cursor:'pointer'}}
+                        style={{ cursor: "pointer" }}
                         onClick={this.clickFindPassword}
                       >
                         <small>비밀번호찾기</small>
@@ -217,7 +227,7 @@ class Login extends React.Component {
                     <Col className="text-right" xs="6">
                       <a
                         className="text-light"
-                        style={{cursor:'pointer'}}
+                        style={{ cursor: "pointer" }}
                         onClick={this.clickRegisterUser}
                       >
                         <small>계정 생성</small>
@@ -229,7 +239,6 @@ class Login extends React.Component {
             </Container>
           </section>
         </main>
-        <SimpleFooter />
       </>
     );
   }

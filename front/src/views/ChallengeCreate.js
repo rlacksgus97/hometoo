@@ -17,9 +17,10 @@ import {
   InputGroupText,
   Row,
 } from "reactstrap";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import Hero from "./Hero";
+import UserService from "../service/UserService";
 import axios from "axios";
 
 export default function ChallengeCreate() {
@@ -64,22 +65,36 @@ export default function ChallengeCreate() {
   const createChallenge = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("file", file);
     formData.append("type", type);
     formData.append("username", username);
     formData.append("title", title);
     formData.append("context", context);
+    formData.append("file", file);
 
     console.log(file);
 
-    axios({
-      method: "post",
-      url: "/challenges",
-      data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
+    UserService.setupAxiosInterceptors();
+    // axios({
+    //   method: "post",
+    //   url: "/api/challenges",
+    //   data: formData,
+    //   headers: { "Content-Type": "multipart/form-data" },
+    // });
+
+    const axiosInstance = axios.create({
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      timeout: 6000,
     });
 
-    window.location.href = "/challenge";
+    axiosInstance
+      .post("/api/challenges", formData)
+      .then((res) => {
+        window.location.href = "/challenge";
+        return res;
+      })
+      .catch(this.handleError);
   };
 
   return (
@@ -174,13 +189,27 @@ export default function ChallengeCreate() {
                           <InputGroup className="input-group-alternative">
                             <Input
                               type="file"
-                              accept="image/*, video/*"
+                              accept="image/*"
+                              // accept="image/*, video/*"
                               // name="file"
                               // value={file}
                               onChange={fileHandler}
                             />
                           </InputGroup>
                           <FormText>챌린지 사진을 선택해주세요.</FormText>
+                        </FormGroup>
+                        <FormGroup>
+                          <InputGroup className="input-group-alternative">
+                            <Input
+                              type="file"
+                              accept="video/mp4"
+                              // accept="image/*, video/*"
+                              // name="file"
+                              // value={file}
+                              onChange={fileHandler}
+                            />
+                          </InputGroup>
+                          <FormText>챌린지 영상을 선택해주세요.</FormText>
                         </FormGroup>
                         <div style={{ display: "flex" }}>
                           <Input

@@ -64,7 +64,7 @@ public class ChallengeService {
 
         challengePoseRepository.save(challengePose);
 
-        poseService.estimatePosePhoto(challengePose.getId(), url, "challenge");
+//        poseService.estimatePosePhoto(challengePose.getId(), url, "challenge");
 //        List<PoseDetail> poseDetailList = poseService.estimatePosePhoto(url);
 //        List<PoseInfo> poseInfoList = new ArrayList<>();
 //        for (PoseDetail pd : poseDetailList){
@@ -119,7 +119,7 @@ public class ChallengeService {
                 .build();
         challengePoseRepository.save(challengePose);
 
-        poseService.estimatePoseVideo(challengePose.getId(), url, "challenge");
+//        poseService.estimatePoseVideo(challengePose.getId(), url, "challenge");
 
         //User <-> ChallengePose 매핑
         user.addChallengePose(challengePose);

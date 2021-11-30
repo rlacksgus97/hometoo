@@ -21,7 +21,7 @@ public class Trial {
 
     private String type;
 
-    private Double score;
+    private Double score = 0.0;
 
     @OneToOne
     private TrialPose trialPose;
@@ -31,7 +31,7 @@ public class Trial {
 
     @Builder
     public Trial(TrialPose trialPose, Challenge challenge) {
-        this.type = challenge.getType();
+//        this.type = challenge.getType();
         this.trialPose = trialPose;
         this.challenge = challenge;
     }

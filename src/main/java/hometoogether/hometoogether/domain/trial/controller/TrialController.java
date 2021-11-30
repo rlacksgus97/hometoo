@@ -1,6 +1,5 @@
 package hometoogether.hometoogether.domain.trial.controller;
 
-import hometoogether.hometoogether.domain.challenge.domain.Challenge;
 import hometoogether.hometoogether.domain.challenge.repository.ChallengeRepository;
 import hometoogether.hometoogether.domain.trial.dto.TrialRequestDto;
 import hometoogether.hometoogether.domain.trial.dto.TrialResponseDto;
@@ -14,6 +13,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
 public class TrialController {
@@ -24,11 +24,7 @@ public class TrialController {
     @Transactional
     @PostMapping("/challenges/{challengeId}/trials")
     public Long save(@PathVariable("challengeId") Long challengeId, TrialRequestDto param) throws IOException, ParseException, JCodecException {
-        Challenge challenge = challengeRepository.getById(challengeId);
-        if ("photo".equals(challenge.getType())){
-            return trialService.saveTrialPhoto(challengeId, param);
-        }
-        return trialService.saveTrialVideo(challengeId, param);
+        return trialService.save(challengeId, param);
     }
 
     @GetMapping("/challenges/{challengeId}/trials/{trialId}/estimate")
@@ -41,7 +37,7 @@ public class TrialController {
         return trialService.getBestTrials(challengeId);
     }
 
-    @GetMapping("/challenges/{challengeId}/trials/{trialid}")
+    @GetMapping("/trials/{trialid}")
     public TrialResponseDto getDetail(@PathVariable("trialid") Long trialId){
         return trialService.getTrial(trialId);
     }

@@ -9,6 +9,14 @@ import BoardUpdate from "views/BoardUpdate";
 import ChallengeCardList from "views/ChallengeCardList";
 import ChallengeCreate from "views/ChallengeCreate";
 import ChallengeDetail from "./views/ChallengeDetail";
+import TrialCardList from "views/TrialCardList";
+import TrialCreate from "views/TrialCreate";
+import TrialDetail from "views/TrialDetail";
+import reportWebVitals from "./reportWebVitals";
+import ChatRoom from "./views/chat/ChatRoom";
+import CreateRoom from "./views/chat/CreateRoom";
+import CreateRoutine from "./views/routine/CreateRoutine";
+import EvaluateRoutine from "./views/routine/EvaluateRoutine";
 import FindPassword from "./views/FindPassword";
 import Home from "views/Home.js";
 import Landing from "./views/Landing.js";
@@ -19,16 +27,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Register from "./views/Register";
 import Sample from "./views/Sample";
-import TrialCardList from "views/TrialCardList";
-import TrialCreate from "views/TrialCreate";
-import reportWebVitals from "./reportWebVitals";
-
-import ChatRoom from "./views/chat/ChatRoom";
-import CreateRoom from "./views/chat/CreateRoom";
-import CreateRoutine from "./views/routine/CreateRoutine";
 import SelectRoomRoutine from "./views/chat/SelectRoomRoutine";
 import ShowRoutineDetails from "./views/routine/ShowRoutineDetails";
-import EvaluateRoutine from "./views/routine/EvaluateRoutine";
 import ShowTop5Routine from "./views/routine/ShowTop5Routine";
 import MyRoutineList from "./views/routine/MyRoutineList";
 
@@ -106,9 +106,8 @@ ReactDOM.render(
                 render={(props) => <ChallengeCreate {...props} />}
             />
             <Route
-                path="/challenge/detail"
-                exact
-                render={props => <ChallengeDetail {...props} />}
+                path="/challenge/:challengeid"
+                render={(props) => <ChallengeDetail {...props} />}
             />
             <Route
                 path="/find/password"
@@ -151,14 +150,16 @@ ReactDOM.render(
                 render={props => <MyRoutineList {...props} />}
             />
             <Route
-                path="/trial"
-                exact
+                path="/trial/create/:challengeid"
+                render={(props) => <TrialCreate {...props} />}
+            />
+            <Route
+                path="/trial/:challengeid"
                 render={(props) => <TrialCardList {...props} />}
             />
             <Route
-                path="/trial/create"
-                exact
-                render={(props) => <TrialCreate {...props} />}
+                path="/trial_detail/:trialid"
+                render={(props) => <TrialDetail {...props} />}
             />
             <Redirect to="/" />
         </Switch>

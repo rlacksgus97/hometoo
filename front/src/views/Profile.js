@@ -1,25 +1,36 @@
-
-import React from "react";
-
-// reactstrap components
-import { Button, Card, Container, Row, Col } from "reactstrap";
-
-// core components
-import DemoNavbar from "components/Navbars/DemoNavbar.js";
-import SimpleFooter from "components/Footers/SimpleFooter.js";
-
-//css
 import "assets/vendor/nucleo/css/nucleo.css";
 import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss";
+
+import { Button, Card, Col, Container, Row } from "reactstrap";
+
+import BoardService from "../service/BoardService";
+import DemoNavbar from "components/Navbars/DemoNavbar.js";
+import React from "react";
+import SimpleFooter from "components/Footers/SimpleFooter.js";
+import UserService from "../service/UserService";
+
+// reactstrap components
+
+
+// core components
+
+
+
+//css
+
+
+
 
 //user
 import UserService from "../service/UserService";
 import BoardService from "../service/BoardService";
 import axios from "axios";
 
-class Profile extends React.Component {
 
+
+
+class Profile extends React.Component {
   state = {};
 
   constructor(props) {
@@ -27,26 +38,23 @@ class Profile extends React.Component {
     this.state = {
       email: localStorage.getItem("authenticatedUserEmail"),
       name: localStorage.getItem("authenticatedUserName"),
-      posts: '',
-      comments: '',
-      challenges: '',
-      photo: localStorage.getItem("authenticatedUserEmail").length%7,
-      routineOnClick: true,
-      challengeOnClick: false,
-      trialOnClick: false,
+      posts: "",
+      comments: "",
+      challenges: "",
+      photo: localStorage.getItem("authenticatedUserEmail").length % 7,
     };
   }
 
   logoutUser = (event) => {
     event.preventDefault();
     UserService.logout();
-    this.props.history.push('/board');
+    this.props.history.push("/board");
   };
 
   clickBoard = (event) => {
     event.preventDefault();
-    this.props.history.push('/board');
-  }
+    this.props.history.push("/board");
+  };
 
   // withdrawUser = (event) => {
   //   event.preventDefault();
@@ -68,18 +76,18 @@ class Profile extends React.Component {
     document.scrollingElement.scrollTop = 0;
     this.refs.main.scrollTop = 0;
 
-    BoardService.getForumCount(this.state.name).then(res => {
-      this.setState({posts: res.data});
+    BoardService.getForumCount(this.state.name).then((res) => {
+      this.setState({ posts: res.data });
     });
-    BoardService.getCommentCount(this.state.name).then(res => {
-      this.setState({comments: res.data});
+    BoardService.getCommentCount(this.state.name).then((res) => {
+      this.setState({ comments: res.data });
     });
     // axios.get("/myRoutines/" + localStorage.getItem("authenticatedUserName"))
     //     .then((res)=>{
     //       res.data;
     //     })
     const temp = this.state.photo;
-    const img_url = '${temp}';
+    const img_url = "${temp}";
   }
 
   render() {
@@ -88,7 +96,6 @@ class Profile extends React.Component {
         <DemoNavbar />
         <main className="profile-page" ref="main">
           <section className="section-profile-cover section-shaped my-0">
-            {/* Circles background */}
             <div className="shape shape-style-1 shape-default alpha-4">
               <span />
               <span />
@@ -98,7 +105,6 @@ class Profile extends React.Component {
               <span />
               <span />
             </div>
-            {/* SVG separator */}
             <div className="separator separator-bottom separator-skew">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -122,11 +128,13 @@ class Profile extends React.Component {
                   <Row className="justify-content-center">
                     <Col className="order-lg-2" lg="3">
                       <div className="card-profile-image">
-                        <a href="/#" onClick={e => e.preventDefault()}>
+                        <a href="/#" onClick={(e) => e.preventDefault()}>
                           <img
                             alt="..."
                             className="rounded-circle"
-                            src={require("assets/img/theme/"+this.state.photo+".jpg")}
+                            src={require("assets/img/theme/" +
+                              this.state.photo +
+                              ".jpg")}
                           />
                         </a>
                       </div>
@@ -139,7 +147,7 @@ class Profile extends React.Component {
                         <Button
                           className="mr-4"
                           color="info"
-                          onClick={e=>e.preventDefault()}
+                          onClick={(e) => e.preventDefault()}
                           size="sm"
                         >
                           회원탈퇴
@@ -170,21 +178,27 @@ class Profile extends React.Component {
                           <span className="heading">22개</span>
                           <span className="description">Chanllenge</span>
                         </div>
-                        <div onClick={this.clickBoard} style={{cursor:'pointer'}}>
+                        <div
+                          onClick={this.clickBoard}
+                          style={{ cursor: "pointer" }}
+                        >
                           <span className="heading">{this.state.posts}개</span>
                           <span className="description">Posts</span>
                         </div>
-                        <div onClick={this.clickBoard} style={{cursor:'pointer'}}>
-                          <span className="heading">{this.state.comments}개</span>
+                        <div
+                          onClick={this.clickBoard}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <span className="heading">
+                            {this.state.comments}개
+                          </span>
                           <span className="description">Comments</span>
                         </div>
                       </div>
                     </Col>
                   </Row>
                   <div className="text-center mt-5">
-                    <h3>
-                      이름 : {this.state.name}
-                    </h3>
+                    <h3>이름 : {this.state.name}</h3>
                     <div className="h6 font-weight-300">
                       <i className="ni location_pin mr-2" />
                       이메일 : {this.state.email}
