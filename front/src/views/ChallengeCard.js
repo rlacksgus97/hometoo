@@ -14,7 +14,7 @@ import { useHistory } from "react-router";
 
 export default function ChallengeCard(props) {
   const history = useHistory();
-  const url = "http://221.143.144.143:80/" + props.challenge.url;
+  const url = "http://58.122.7.167:9000/" + props.challenge.url;
 
   return (
     <>

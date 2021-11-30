@@ -38,9 +38,9 @@ function ChatRoom(){
     const [localAudioState, SetLocalAudioState] = useState(true);
     const [isWorkoutOver, setIsWorkoutOver]=useState(false);
     const [modalOpen, setModalOpen]=useState(false);
-    const [user, setUser]=useState("");
-    // const [hostUser, setHostUser]=useState("");
-    // const [clientUser, setClientUser]=useState("");
+    const user = localStorage.getItem("authenticatedUserName");
+    const [hostUser, setHostUser]=useState("A");
+    const [clientUser, setClientUser]=useState("B");
 
     const localRoom = id;
     const localUserName = localStorage.getItem("uuid");
@@ -58,8 +58,8 @@ function ChatRoom(){
     };
 
     let routine;
-    let hostUser;
-    let clientUser;
+    let host;
+    let client;
     const [alarmText, setAlarmText]=useState("No message");
 
     let localStream;
@@ -365,12 +365,6 @@ function ChatRoom(){
     useEffect(()=>{
         start();
 
-        // axios.get("/api/users/find/userName/"+localStorage.getItem("authenticatedUserEmail"))
-            // .then((res)=> {
-                // console.log("User: " + res.data);
-                // setUser(res.data)
-            // })
-
         const workoutReady=setInterval(()=>{
             axios.get("/start")
                 .then((res)=>{
@@ -383,13 +377,13 @@ function ChatRoom(){
                             .then((res)=> {
                                     axios.get("/room/" + id + "/members")
                                         .then((res) => {
-                                            hostUser=res.data.hostUser;
-                                            clientUser=res.data.clientUser;
-                                            // setHostUser(res.data.hostUser);
-                                            // setClientUser(res.data.clientUser);
-                                            console.log("Host: "+res.data.hostUser);
-                                            console.log("Client: "+res.data.clientUser);
-                                            console.log("User: "+user);
+                                            host=res.data.hostUser;
+                                            client=res.data.clientUser;
+                                            setHostUser(res.data.hostUser);
+                                            setClientUser(res.data.clientUser);
+                                            // console.log("Host: "+res.data.hostUser);
+                                            // console.log("Client: "+res.data.clientUser);
+                                            // console.log("User: "+user);
                                         })
                                         .then(()=>{
                                             setAlarmText("10초 후에 운동이 시작됩니다. 준비해주세요.");
@@ -416,12 +410,12 @@ function ChatRoom(){
         let totalWorkoutTime=0;
 
         setTimeout(()=>{
-            setAlarmText( hostUser + " 차례입니다.\n"
+            setAlarmText( host + " 차례입니다.\n"
                 + routine[0].trainingSec + "초 동안 "
                 + routine[0].trainingName + "을 하세요.\n");
-            if(hostUser==user){
+            if(host==user){
                 speech.speak({
-                    text: hostUser + '차례입니다'
+                    text: host + '차례입니다'
                         + routine[0].trainingSec + '초 동안 '
                         + routine[0].trainingName + '을 하세요.'
                 })
@@ -435,12 +429,12 @@ function ChatRoom(){
                     (function(x, y, time){
                         setTimeout(()=>{
                             if(y%2==0){
-                                setAlarmText(hostUser + " 차례입니다\n"
+                                setAlarmText(host + " 차례입니다\n"
                                     + routine[x].trainingSec + "초 동안 "
                                     + routine[x].trainingName + "을 하세요.\n");
-                                if(hostUser==user){
+                                if(host==user){
                                     speech.speak({
-                                        text: hostUser + '차례입니다'
+                                        text: host + '차례입니다'
                                             + routine[x].trainingSec + '초 동안 '
                                             + routine[x].trainingName + '을 하세요.'
                                     })
@@ -448,12 +442,12 @@ function ChatRoom(){
 
                             }
                             else{
-                                setAlarmText(clientUser + " 차례입니다\n"
+                                setAlarmText(client + " 차례입니다\n"
                                     + routine[x].trainingSec + "초 동안 "
                                     + routine[x].trainingName + "을 하세요.\n");
-                                if(clientUser==user){
+                                if(client==user){
                                     speech.speak({
-                                        text: clientUser + '차례입니다'
+                                        text: client + '차례입니다'
                                             + routine[x].trainingSec + '초 동안 '
                                             + routine[x].trainingName + '을 하세요.'
                                     })

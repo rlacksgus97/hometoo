@@ -1,7 +1,7 @@
 import axios from 'axios';
 import UserService from "./UserService";
 
-const BOARD_API_BASE_URL = "http://localhost:8081/api/forums";
+const BOARD_API_BASE_URL = "http://localhost:8080/api/forums";
 
 class BoardService {
     getBoards() {

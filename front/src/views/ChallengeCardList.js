@@ -57,7 +57,7 @@ export default function ChallengeCardList() {
                             + 새 챌린지
                           </Button>
                         </Col>
-                        {challengeList[0].id !== 0 ? (
+                        {challengeList ? (
                           <>
                             {challengeList.map((challenge) => {
                               return (

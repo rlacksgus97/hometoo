@@ -28,7 +28,7 @@ import { useLocation } from "react-router";
 export default function ChallengeCardList() {
   const history = useHistory();
   const location = useLocation();
-  const url = "http://221.143.144.143:80/" + challengeDeatil.url;
+  // const url = "http://58.122.7.167:9000/" + challengeDeatil.url;
   const [challengeDeatil, setchallengeDeatil] = useState({
     id: 0,
     type: "",
@@ -40,11 +40,7 @@ export default function ChallengeCardList() {
   });
 
   const [bestTrialList, setbestTrialList] = useState([
-    {
-      id: 0,
-      username: "",
-      score: 0.0,
-    },
+
   ]);
 
   useEffect(() => {
@@ -82,13 +78,13 @@ export default function ChallengeCardList() {
                         <CardImg
                           alt="Card image cap"
                           // src="https://picsum.photos/256/186"
-                          src={url}
+                          src={"http://58.122.7.167:9000/" + challengeDeatil.url}
                           top
                           width="100%"
                         />
                       ) : (
                         <video
-                          src={url}
+                          src={"http://58.122.7.167:9000/" + challengeDeatil.url}
                           crossOrigin="anonymous"
                           type="type/mp4"
                           controls
@@ -122,7 +118,7 @@ export default function ChallengeCardList() {
                         </Button>
                       </div>
                       <ListGroup>
-                        {bestTrialList[0].id !== 0 ? (
+                        {bestTrialList.length!==0 ? (
                           <>
                             {bestTrialList.map((bestTrial) => {
                               return (
