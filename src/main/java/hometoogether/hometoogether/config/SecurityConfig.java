@@ -62,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/api/users/login", "/api/users/signup", "/api/users/find/password",
                         "/api/users/find/userName/**", "/api/forums/count/**", "/api/forums/**", "/api/challenges/**",
                         "/routine/**", "/rooms", "/routines", "/routine", "/myRoutines/**",
-                        "/room/**", "/start", "/ws-stomp/**", "/challenges/**", "/demo/similarity").permitAll().
+                        "/room/**", "/start", "/ws-stomp/**", "/api/challenges/**", "/api/trials/**", "/demo/similarity").permitAll().
                 // all other requests need to be authenticated
                         anyRequest().authenticated().and().
             sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

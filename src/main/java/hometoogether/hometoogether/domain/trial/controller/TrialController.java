@@ -1,6 +1,6 @@
 package hometoogether.hometoogether.domain.trial.controller;
 
-import hometoogether.hometoogether.domain.challenge.repository.ChallengeRepository;
+import hometoogether.hometoogether.domain.trial.dto.Challenge_vs_TrialDto;
 import hometoogether.hometoogether.domain.trial.dto.TrialRequestDto;
 import hometoogether.hometoogether.domain.trial.dto.TrialResponseDto;
 import hometoogether.hometoogether.domain.trial.service.TrialService;
@@ -14,12 +14,12 @@ import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/api")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
 public class TrialController {
 
     private final TrialService trialService;
-    private final ChallengeRepository challengeRepository;
 
     @Transactional
     @PostMapping("/challenges/{challengeId}/trials")
@@ -27,9 +27,14 @@ public class TrialController {
         return trialService.save(challengeId, param);
     }
 
-    @GetMapping("/challenges/{challengeId}/trials/{trialId}/estimate")
-    public double estimate(@PathVariable("challengeId") Long challengeId, @PathVariable("trialId") Long trialId){
-        return trialService.runSimilarity(challengeId, trialId);
+    @GetMapping("/trials/{trialId}/estimate/detail")
+    public Challenge_vs_TrialDto compare(@PathVariable("trialId") Long trialId){
+        return trialService.compareDetail(trialId);
+    }
+
+    @GetMapping("/trials/{trialId}/estimate")
+    public double estimate(@PathVariable("trialId") Long trialId){
+        return trialService.runSimilarity(trialId);
     }
 
     @GetMapping("/challenges/{challengeId}/best_trials")
@@ -40,6 +45,11 @@ public class TrialController {
     @GetMapping("/trials/{trialid}")
     public TrialResponseDto getDetail(@PathVariable("trialid") Long trialId){
         return trialService.getTrial(trialId);
+    }
+
+    @GetMapping("/trials/my/{username}")
+    public List<TrialResponseDto> getMyList(@PathVariable("username") String username){
+        return trialService.getMyList(username);
     }
 
     @GetMapping("/challenges/{challengeId}/trials")

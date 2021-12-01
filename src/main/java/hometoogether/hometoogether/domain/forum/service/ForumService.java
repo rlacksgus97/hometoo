@@ -29,6 +29,13 @@ public class ForumService {
         return forums.stream().map(ForumResponseDto::new).collect(Collectors.toList());
     }
 
+    public List<ForumResponseDto> getTop5ForumList() {
+        // 최신순 (date 역순으로 정렬)
+        Sort sort = Sort.by(Sort.Direction.DESC, "hits", "createDate");
+        List<Forum> forums = forumRepository.findAll(sort);
+        return forums.stream().map(ForumResponseDto::new).limit(5).collect(Collectors.toList());
+    }
+
     public ForumResponseDto getForumInfo(Long id) {
         Optional<Forum> forum = forumRepository.findById(id);
         Forum tempForum = forum.get();

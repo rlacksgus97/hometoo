@@ -20,6 +20,7 @@ import {
 } from "reactstrap";
 import React, { useEffect, useState } from "react";
 
+import DemoNavbar from "../components/Navbars/DemoNavbar";
 import Hero from "./Hero";
 import UserService from "../service/UserService";
 import axios from "axios";
@@ -58,7 +59,7 @@ export default function ChallengeCardList() {
 
   return (
     <>
-      {/* <DemoNavbar /> */}
+       <DemoNavbar />
       <div className="position-relative">
         <Hero />
       </div>

@@ -23,10 +23,13 @@ import Hero from "./Hero";
 import UserService from "../service/UserService";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import DemoNavbar from "../components/Navbars/DemoNavbar";
 
 export default function TrialCreate() {
   const { challengeid } = useParams();
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(
+      localStorage.getItem("authenticatedUserName")
+  );
   const [file, setFile] = useState([]);
 
   const usernameHandler = (e) => {
@@ -73,7 +76,7 @@ export default function TrialCreate() {
 
   return (
     <>
-      {/* <DemoNavbar /> */}
+       <DemoNavbar />
       <div className="position-relative">
         <Hero />
       </div>
@@ -105,6 +108,7 @@ export default function TrialCreate() {
                               name="username"
                               value={username}
                               onChange={usernameHandler}
+                              disabled={true}
                             />
                           </InputGroup>
                         </FormGroup>

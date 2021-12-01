@@ -81,7 +81,6 @@ class BoardDetail extends React.Component {
     // event.preventDefault();
     let tempComment = {
       forumId: this.state.no,
-      //TODO: 나중에 로그인된 아이디로 바꿔야함
       writer: localStorage.getItem("authenticatedUserName"),
       delYn: "N",
       contents: this.state.comments.at(-1)["contents"],
@@ -96,7 +95,6 @@ class BoardDetail extends React.Component {
     // event.preventDefault();
     let tempComment = {
       forumId: this.state.no,
-      //TODO: 나중에 로그인된 아이디로 바꿔야함
       writer: this.state.board.writer,
       delYn: "N",
       contents: this.state.comments.at(-1)["contents"],
@@ -122,7 +120,7 @@ class BoardDetail extends React.Component {
                 <Col lg="8">
                   <Card className="bg-gradient-secondary shadow">
                     <CardBody className="p-lg-4">
-                      <h1 className="display-3 text-black">게시판</h1>
+                      <h1 className="display-3 text-black">게시글</h1>
                       <p className="mt-0">
                         운동 정보, 트레이닝에 관한 정보를 자유롭게 대화해주세요.
                       </p>

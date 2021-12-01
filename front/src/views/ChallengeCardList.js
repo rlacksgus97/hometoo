@@ -9,6 +9,7 @@ import ChallengeCard from "./ChallengeCard";
 import Hero from "./Hero";
 import UserService from "../service/UserService";
 import axios from "axios";
+import DemoNavbar from "../components/Navbars/DemoNavbar";
 
 export default function ChallengeCardList() {
   const [challengeList, setchallengeList] = useState([
@@ -31,7 +32,7 @@ export default function ChallengeCardList() {
 
   return (
     <>
-      {/* <DemoNavbar /> */}
+       <DemoNavbar />
       <div className="position-relative">
         <Hero />
       </div>
@@ -64,7 +65,7 @@ export default function ChallengeCardList() {
                             {challengeList.map((challenge) => {
                               return (
                                 <>
-                                  <Col md="4">
+                                  <Col md="4" className="mb-5">
                                     <ChallengeCard challenge={challenge} />
                                   </Col>
                                 </>

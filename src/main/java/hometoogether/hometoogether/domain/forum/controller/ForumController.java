@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class ForumController {
@@ -53,9 +53,14 @@ public class ForumController {
         return forumService.userForumCount(userName);
     }
 
-    @DeleteMapping("/forums/{userName}")
-    public String deleteForumByUser(@PathVariable("userName") String userName) {
-        forumService.deleteForumUser(userName);
-        return "SUCCESS";
+    @GetMapping("/forums/top5")
+    public List<ForumResponseDto> getTop5Forum() {
+        return forumService.getTop5ForumList();
     }
+
+//    @DeleteMapping("/forums/{userName}")
+//    public String deleteForumByUser(@PathVariable("userName") String userName) {
+//        forumService.deleteForumUser(userName);
+//        return "SUCCESS";
+//    }
 }

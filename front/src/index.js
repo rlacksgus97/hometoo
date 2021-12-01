@@ -31,6 +31,11 @@ import SelectRoomRoutine from "./views/chat/SelectRoomRoutine";
 import ShowRoutineDetails from "./views/routine/ShowRoutineDetails";
 import ShowTop5Routine from "./views/routine/ShowTop5Routine";
 import MyRoutineList from "./views/routine/MyRoutineList";
+import MyChallengeCardList from "./views/MyChallengeCardList";
+import MyChallengeCard from "./views/MyChallengeCard";
+import MyScore from "./views/MyScore";
+import MyTrialCard from "./views/MyTrialCard";
+import MyTrialCardList from "./views/MyTrialCardList";
 
 ReactDOM.render(
     <BrowserRouter>
@@ -38,7 +43,7 @@ ReactDOM.render(
             <Route
                 path="/"
                 exact
-                render={props => <Board {...props} />}
+                render={props => <Home {...props} />}
             />
             <Route
                 path="/home"
@@ -160,6 +165,18 @@ ReactDOM.render(
             <Route
                 path="/trial_detail/:trialid"
                 render={(props) => <TrialDetail {...props} />}
+            />
+            <Route
+                path="/challenge/my/:username"
+                render={(props) => <MyChallengeCard {...props} />}
+            />
+            <Route
+                path="/challenge/mychallenge"
+                render={(props) => <MyChallengeCardList {...props} />}
+            />
+            <Route
+                path="/challenge/my/score/:username"
+                render={(props) => <MyScore {...props} />}
             />
             <Redirect to="/" />
         </Switch>

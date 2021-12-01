@@ -10,6 +10,7 @@ import TrialCard from "./TrialCard";
 import UserService from "../service/UserService";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import DemoNavbar from "../components/Navbars/DemoNavbar";
 
 export default function TrialCardList() {
   const { challengeid } = useParams();
@@ -51,7 +52,7 @@ export default function TrialCardList() {
 
   return (
     <>
-      {/* <DemoNavbar /> */}
+       <DemoNavbar />
       <div className="position-relative">
         <Hero />
       </div>
@@ -92,7 +93,7 @@ export default function TrialCardList() {
                             {trialList.map((trial) => {
                               return (
                                 <>
-                                  <Col md="4">
+                                  <Col md="4" className="mb-5">
                                     <TrialCard trial={trial} />
                                   </Col>
                                 </>
