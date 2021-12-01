@@ -92,6 +92,10 @@ class Home extends React.Component {
         });
     }
 
+    readBoard(no) {
+        this.props.history.push('/board/detail/'+no);
+    }
+
     render() {
         return (
             <>
