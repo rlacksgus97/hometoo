@@ -17,6 +17,9 @@ import FindPassword from "./views/FindPassword";
 import Home from "views/Home.js";
 import Landing from "./views/Landing.js";
 import Login from "./views/Login.js";
+import MyChallengeCardList from "views/MyChallengeCardList";
+import MyScore from "views/MyScore";
+import MyTrialCardList from "views/MyTrialCardList";
 import Profile from "./views/Profile";
 import Project from "views/Project.js";
 import React from "react";
@@ -123,6 +126,18 @@ ReactDOM.render(
       <Route
         path="/trial_detail/:trialid"
         render={(props) => <TrialDetail {...props} />}
+      />
+      <Route
+        path="/mychallenges"
+        render={(props) => <MyChallengeCardList {...props} />}
+      />
+      <Route
+        path="/mytrials"
+        render={(props) => <MyTrialCardList {...props} />}
+      />
+      <Route
+        path="/score/:trialid"
+        render={(props) => <MyScore {...props} />}
       />
       <Redirect to="/" />
     </Switch>

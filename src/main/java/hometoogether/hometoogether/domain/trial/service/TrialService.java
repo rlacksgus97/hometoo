@@ -7,6 +7,7 @@ import hometoogether.hometoogether.domain.pose.domain.TrialPose;
 import hometoogether.hometoogether.domain.pose.repository.TrialPoseRepository;
 import hometoogether.hometoogether.domain.pose.service.PoseService;
 import hometoogether.hometoogether.domain.trial.domain.Trial;
+import hometoogether.hometoogether.domain.trial.dto.Challenge_vs_TrialDto;
 import hometoogether.hometoogether.domain.trial.dto.TrialRequestDto;
 import hometoogether.hometoogether.domain.trial.dto.TrialResponseDto;
 import hometoogether.hometoogether.domain.trial.repository.TrialRepository;
@@ -26,6 +27,7 @@ import javax.transaction.Transactional;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -73,7 +75,7 @@ public class TrialService {
                 .build();
         trialPoseRepository.save(trialPose);
 
-//        poseService.estimatePosePhoto(trialPose.getId(), url, "trial");
+        poseService.estimatePosePhoto(trialPose.getId(), url, "trial");
 //        poseService.estimatePoseVideo(trialPose.getId(), url, "trial");
 
         //User <-> ChallengePose 매핑
@@ -121,7 +123,7 @@ public class TrialService {
                 .build();
         trialPoseRepository.save(trialPose);
 
-//        poseService.estimatePoseVideo(trialPose.getId(), url, "trial");
+        poseService.estimatePoseVideo(trialPose.getId(), url, "trial");
 
         //User <-> ChallengePose 매핑
         user.addTrialPose(trialPose);
@@ -155,17 +157,19 @@ public class TrialService {
     }
 
     @Transactional
-    public double runSimilarity(Long challengeId, Long trialId){
-//        Trial trial = trialRepository.findById(trialId)
-//                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + trialId));
-//
-//        Challenge challenge = trial.getChallenge();
+    public Challenge_vs_TrialDto compareDetail(Long trialId){
+        Trial trial = trialRepository.findById(trialId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + trialId));
+        return new Challenge_vs_TrialDto(trial);
+    }
 
-        Challenge challenge = challengeRepository.findById(challengeId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + 0));
+    @Transactional
+    public double runSimilarity(Long trialId){
 
         Trial trial = trialRepository.findById(trialId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + 1));
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + trialId));
+
+        Challenge challenge = trial.getChallenge();
 
         List<Keypoints> keypointsListA = challenge.getChallengePose().getKeypointsList();
         List<Double> keypointsA = keypointsListA.get(0).getKeypoints();
@@ -194,6 +198,20 @@ public class TrialService {
             best_trials = trials.subList(0, 5);
         }
         return best_trials.stream().map(TrialResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<TrialResponseDto> getMyList(String username) {
+        User user = userRepository.findUserByUserName(username)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. username=" + username));
+
+        List<Trial> trials = new ArrayList<>();
+
+        for (TrialPose trialPose : user.getTrialPoseList()) {
+            trials.add(trialPose.getTrial());
+        }
+
+        return trials.stream().map(TrialResponseDto::new).collect(Collectors.toList());
     }
 
     @Transactional

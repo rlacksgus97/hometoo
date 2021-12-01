@@ -5,27 +5,32 @@ import "assets/scss/argon-design-system-react.scss";
 import { Button, Card, CardBody, Col, Container, Row } from "reactstrap";
 import React, { useEffect, useState } from "react";
 
-import ChallengeCard from "./ChallengeCard";
 import Hero from "./Hero";
+import MyTrialCard from "./MyTrialCard";
 import UserService from "../service/UserService";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
-export default function ChallengeCardList() {
-  const [challengeList, setchallengeList] = useState([
+export default function TrialCardList() {
+  const [username, setUsername] = useState(
+    localStorage.getItem("authenticatedUserName")
+  );
+
+  const [trialList, settrialList] = useState([
     {
       id: 0,
       type: "",
-      title: "",
       url: "",
       username: "",
+      score: 0.0,
     },
   ]);
 
   useEffect(() => {
     UserService.setupAxiosInterceptors();
-    axios.get("/api/challenges").then((res) => {
+    axios.get("/api/trials/my/" + username).then((res) => {
       console.log(res.data);
-      setchallengeList(res.data);
+      settrialList(res.data);
     });
   }, []);
 
@@ -45,27 +50,25 @@ export default function ChallengeCardList() {
                     <Container fluid lg="8">
                       <Row lg="3">
                         <Col md="12" style={{ display: "flex" }}>
-                          <h1 className="font-weight-bold">홈트 챌린지</h1>
+                          <h1 className="font-weight-bold">
+                            {username}님이 참여한 시도입니다!
+                          </h1>
                         </Col>
                         <Col md="12" style={{ display: "flex" }}>
-                          <h5>다른 사람들의 챌린지에 도전해봐요!</h5>
+                          <h5>내 점수를 확인해보세요!</h5>
                         </Col>
                         <Col md="12" style={{ display: "flex" }}>
-                          <Button
-                            color="primary"
-                            style={{ marginLeft: "auto" }}
-                            href="/challenge/create"
-                          >
-                            + 새 챌린지
-                          </Button>
+                          <h8>
+                            *영상 챌린지는 점수 집계에 1분정도 소요됩니다.
+                          </h8>
                         </Col>
-                        {challengeList ? (
+                        {trialList.lenth !== 0 ? (
                           <>
-                            {challengeList.map((challenge) => {
+                            {trialList.map((trial) => {
                               return (
                                 <>
                                   <Col md="4" className="mb-5">
-                                    <ChallengeCard challenge={challenge} />
+                                    <MyTrialCard trial={trial} />
                                   </Col>
                                 </>
                               );
@@ -74,10 +77,14 @@ export default function ChallengeCardList() {
                         ) : (
                           <>
                             <Col md="12">
-                              아직 등록된 챌린지가 없어요! 챌린지를 만들어봐요!
+                              아직 참여한 시도가 없어요! 챌린지에 참여해보세요!
                             </Col>
                           </>
                         )}
+
+                        {/* <Col md="4">
+                              <TrialCard />
+                            </Col> */}
                       </Row>
                     </Container>
                   </div>

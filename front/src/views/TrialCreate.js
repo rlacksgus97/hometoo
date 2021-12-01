@@ -26,7 +26,9 @@ import { useParams } from "react-router-dom";
 
 export default function TrialCreate() {
   const { challengeid } = useParams();
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(
+    localStorage.getItem("authenticatedUserName")
+  );
   const [file, setFile] = useState([]);
 
   const usernameHandler = (e) => {
@@ -105,6 +107,7 @@ export default function TrialCreate() {
                               name="username"
                               value={username}
                               onChange={usernameHandler}
+                              disabled={true}
                             />
                           </InputGroup>
                         </FormGroup>

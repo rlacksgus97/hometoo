@@ -17,8 +17,6 @@ import org.jcodec.common.model.Picture;
 import org.jcodec.scale.AWTUtil;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +25,9 @@ import javax.transaction.Transactional;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -64,7 +64,7 @@ public class ChallengeService {
 
         challengePoseRepository.save(challengePose);
 
-//        poseService.estimatePosePhoto(challengePose.getId(), url, "challenge");
+        poseService.estimatePosePhoto(challengePose.getId(), url, "challenge");
 //        List<PoseDetail> poseDetailList = poseService.estimatePosePhoto(url);
 //        List<PoseInfo> poseInfoList = new ArrayList<>();
 //        for (PoseDetail pd : poseDetailList){
@@ -119,7 +119,7 @@ public class ChallengeService {
                 .build();
         challengePoseRepository.save(challengePose);
 
-//        poseService.estimatePoseVideo(challengePose.getId(), url, "challenge");
+        poseService.estimatePoseVideo(challengePose.getId(), url, "challenge");
 
         //User <-> ChallengePose 매핑
         user.addChallengePose(challengePose);
@@ -152,6 +152,20 @@ public class ChallengeService {
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + challengeId));
         return new ChallengeDetailResponseDto(challenge);
+    }
+
+    @Transactional
+    public List<ChallengeResponseDto> getMyList(String username) {
+        User user = userRepository.findUserByUserName(username)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다. username=" + username));
+
+        List<Challenge> challenges = new ArrayList<>();
+
+        for (ChallengePose challengePose : user.getChallengePoseList()) {
+            challenges.add(challengePose.getChallenge());
+        }
+
+        return challenges.stream().map(ChallengeResponseDto::new).collect(Collectors.toList());
     }
 
     @Transactional

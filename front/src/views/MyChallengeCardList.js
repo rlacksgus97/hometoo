@@ -5,12 +5,15 @@ import "assets/scss/argon-design-system-react.scss";
 import { Button, Card, CardBody, Col, Container, Row } from "reactstrap";
 import React, { useEffect, useState } from "react";
 
-import ChallengeCard from "./ChallengeCard";
 import Hero from "./Hero";
+import MyChallengeCard from "./MyChallengeCard";
 import UserService from "../service/UserService";
 import axios from "axios";
 
-export default function ChallengeCardList() {
+export default function MyChallengeCardList() {
+  const [username, setUsername] = useState(
+    localStorage.getItem("authenticatedUserName")
+  );
   const [challengeList, setchallengeList] = useState([
     {
       id: 0,
@@ -23,7 +26,7 @@ export default function ChallengeCardList() {
 
   useEffect(() => {
     UserService.setupAxiosInterceptors();
-    axios.get("/api/challenges").then((res) => {
+    axios.get("/api/challenges/my/" + username).then((res) => {
       console.log(res.data);
       setchallengeList(res.data);
     });
@@ -45,19 +48,12 @@ export default function ChallengeCardList() {
                     <Container fluid lg="8">
                       <Row lg="3">
                         <Col md="12" style={{ display: "flex" }}>
-                          <h1 className="font-weight-bold">홈트 챌린지</h1>
+                          <h1 className="font-weight-bold">
+                            {username}님의 챌린지 목록입니다!
+                          </h1>
                         </Col>
                         <Col md="12" style={{ display: "flex" }}>
-                          <h5>다른 사람들의 챌린지에 도전해봐요!</h5>
-                        </Col>
-                        <Col md="12" style={{ display: "flex" }}>
-                          <Button
-                            color="primary"
-                            style={{ marginLeft: "auto" }}
-                            href="/challenge/create"
-                          >
-                            + 새 챌린지
-                          </Button>
+                          <h5>내 챌린지에 어떤 사람들이 참가했을까요?</h5>
                         </Col>
                         {challengeList ? (
                           <>
@@ -65,7 +61,7 @@ export default function ChallengeCardList() {
                               return (
                                 <>
                                   <Col md="4" className="mb-5">
-                                    <ChallengeCard challenge={challenge} />
+                                    <MyChallengeCard challenge={challenge} />
                                   </Col>
                                 </>
                               );
@@ -74,7 +70,7 @@ export default function ChallengeCardList() {
                         ) : (
                           <>
                             <Col md="12">
-                              아직 등록된 챌린지가 없어요! 챌린지를 만들어봐요!
+                              아직 생성한 챌린지가 없어요! 챌린지를 만들어봐요!
                             </Col>
                           </>
                         )}

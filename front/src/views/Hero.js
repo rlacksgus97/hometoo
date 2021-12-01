@@ -31,7 +31,7 @@ export default function Hero() {
                 <Button
                   className="btn-icon mb-3 mb-sm-0"
                   color="info"
-                  href="http://localhost:3000/sample"
+                  href="/board"
                 >
                   <span className="btn-inner--icon mr-1">
                     <i className="ni ni-user-run" />

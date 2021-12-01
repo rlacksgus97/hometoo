@@ -27,7 +27,9 @@ export default function ChallengeCreate() {
   const [type, setType] = useState("");
   const [isCheckedList, setIsCheckedList] = useState([false, false]);
   const [title, setTitle] = useState("");
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(
+    localStorage.getItem("authenticatedUserName")
+  );
   const [context, setContext] = useState("");
   const [file, setFile] = useState([]);
 
@@ -71,7 +73,10 @@ export default function ChallengeCreate() {
     formData.append("context", context);
     formData.append("file", file);
 
-    console.log(file);
+    console.log(type);
+    console.log(username);
+    console.log(title);
+    console.log(context);
 
     UserService.setupAxiosInterceptors();
     // axios({
@@ -170,6 +175,7 @@ export default function ChallengeCreate() {
                               name="username"
                               value={username}
                               onChange={usernameHandler}
+                              disabled={true}
                             />
                           </InputGroup>
                         </FormGroup>

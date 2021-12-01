@@ -92,7 +92,7 @@ export default function TrialCardList() {
                             {trialList.map((trial) => {
                               return (
                                 <>
-                                  <Col md="4">
+                                  <Col md="4" className="mb-5">
                                     <TrialCard trial={trial} />
                                   </Col>
                                 </>

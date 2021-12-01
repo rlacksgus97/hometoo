@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/users/find/userName/**", "/api/forums/count/**", "/routine/**", "/rooms", "/routines", "/routine",
 //                        "/room/create/**",
                         "/api/forums/**",
-                        "/room/**", "/start", "/ws-stomp/**", "/api/challenges/**", "/demo/similarity").permitAll().
+                        "/room/**", "/start", "/ws-stomp/**", "/api/challenges/**", "/api/trials/**", "/demo/similarity").permitAll().
                 // all other requests need to be authenticated
                         anyRequest().authenticated().and().
             sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

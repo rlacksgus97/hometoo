@@ -35,6 +35,11 @@ public class ChallengeController {
         return challengeService.getChallenge(challengeId);
     }
 
+    @GetMapping("/challenges/my/{username}")
+    public List<ChallengeResponseDto> getMyList(@PathVariable("username") String username){
+        return challengeService.getMyList(username);
+    }
+
     @GetMapping("/challenges")
     public List<ChallengeResponseDto> getList(){
         return challengeService.getChallengeList();
