@@ -23,8 +23,6 @@ import UserService from "../service/UserService";
 
 
 //user
-import UserService from "../service/UserService";
-import BoardService from "../service/BoardService";
 import axios from "axios";
 
 
