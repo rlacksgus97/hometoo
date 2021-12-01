@@ -179,6 +179,15 @@ class DemoNavbar extends React.Component {
                     <DropdownToggle nav>
                       <i className="ni ni-collection d-lg-none mr-1" />
                       <span className="nav-link-inner--text" onClick={() => {
+                        window.location.href = "/routine"
+                      }}>루틴생성</span>
+                    </DropdownToggle>
+                  </UncontrolledDropdown>
+
+                  <UncontrolledDropdown nav>
+                    <DropdownToggle nav>
+                      <i className="ni ni-collection d-lg-none mr-1" />
+                      <span className="nav-link-inner--text" onClick={() => {
                         window.location.href = "/board"
                       }}>게시판</span>
                     </DropdownToggle>

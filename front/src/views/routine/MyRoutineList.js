@@ -4,6 +4,7 @@ import {Button, Card, CardBody, Col, Container, Row} from "reactstrap";
 import ChallengeCard from "../ChallengeCard";
 import axios from "axios";
 import RoutineCard from "./RoutineCard";
+import DemoNavbar from "../../components/Navbars/DemoNavbar";
 
 function MyRoutineList(){
 
@@ -18,7 +19,7 @@ function MyRoutineList(){
 
     return(
         <>
-            {/* <DemoNavbar /> */}
+            <DemoNavbar />
             <div className="position-relative">
                 <Hero />
             </div>

@@ -77,25 +77,25 @@ class BoardDetail extends React.Component {
       this.setState({ comments: data });
     });
   }
-  createComment = (event) => {
-    // event.preventDefault();
-    let tempComment = {
-      forumId: this.state.no,
-      writer: localStorage.getItem("authenticatedUserName"),
-      delYn: "N",
-      contents: this.state.comments.at(-1)["contents"],
-    };
-    console.log("tempComment => " + JSON.stringify(tempComment));
-    BoardService.createComment(this.state.no, tempComment).then((res) => {
-      window.location.reload(true);
-    });
-  };
+  // createComment = (event) => {
+  //   // event.preventDefault();
+  //   let tempComment = {
+  //     forumId: this.state.no,
+  //     writer: localStorage.getItem("authenticatedUserName"),
+  //     delYn: "N",
+  //     contents: this.state.comments.at(-1)["contents"],
+  //   };
+  //   console.log("tempComment => " + JSON.stringify(tempComment));
+  //   BoardService.createComment(this.state.no, tempComment).then((res) => {
+  //     window.location.reload(true);
+  //   });
+  // };
 
   createComment = (event) => {
     // event.preventDefault();
     let tempComment = {
       forumId: this.state.no,
-      writer: this.state.board.writer,
+      writer: localStorage.getItem("authenticatedUserName"),
       delYn: "N",
       contents: this.state.comments.at(-1)["contents"],
     };

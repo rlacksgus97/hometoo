@@ -75,19 +75,19 @@ export default function ChallengeCardList() {
                         <CardImg
                           alt="Card image cap"
                           // src="https://picsum.photos/256/186"
-                          src={
-                            "http://221.143.144.143:80/" + challengeDeatil.url
-                          }
-                          // src={"http://58.122.7.167:9000/" + challengeDeatil.url}
+                          // src={
+                          //   "http://221.143.144.143:80/" + challengeDeatil.url
+                          // }
+                          src={"http://58.122.7.167:9000/" + challengeDeatil.url}
                           top
                           width="100%"
                         />
                       ) : (
                         <video
-                          src={
-                            "http://221.143.144.143:80/" + challengeDeatil.url
-                          }
-                          // src={"http://58.122.7.167:9000/" + challengeDeatil.url}
+                          // src={
+                          //   "http://221.143.144.143:80/" + challengeDeatil.url
+                          // }
+                          src={"http://58.122.7.167:9000/" + challengeDeatil.url}
                           crossOrigin="anonymous"
                           type="type/mp4"
                           controls
