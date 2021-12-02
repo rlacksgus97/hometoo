@@ -19,11 +19,11 @@ import {
 } from "reactstrap";
 import React, { useState } from "react";
 
+import DemoNavbar from "../components/Navbars/DemoNavbar";
 import Hero from "./Hero";
 import UserService from "../service/UserService";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import DemoNavbar from "../components/Navbars/DemoNavbar";
 
 export default function TrialCreate() {
   const { challengeid } = useParams();

@@ -5,48 +5,20 @@ import "assets/scss/argon-design-system-react.scss";
 import {
   Button,
   Card,
-  CardFooter,
   CardHeader,
   CardImg,
   Col,
   Container,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
   Media,
-  PaginationItem,
-  PaginationLink,
   Row,
   Table,
-  UncontrolledDropdown,
 } from "reactstrap";
-import React, { Fragment } from "react";
 
-import Alerts from "components/IndexSections/Alerts.js";
 import BoardService from "../service/BoardService";
-import Buttons from "components/IndexSections/Buttons.js";
-import CardsFooter from "components/Footers/CardsFooter.js";
-import Carousel from "components/IndexSections/Carousel.js";
-import CustomControls from "components/IndexSections/CustomControls.js";
-import Datepicker from "components/IndexSections/Datepicker.js";
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
-import Download from "components/IndexSections/Download.js";
 import Hero from "components/IndexSections/Hero.js";
-import Icons from "components/IndexSections/Icons.js";
-import Inputs from "components/IndexSections/Inputs.js";
-import Labels from "components/IndexSections/Labels.js";
-import Login from "components/IndexSections/Login.js";
-import Menus from "components/IndexSections/Menus.js";
-import Modals from "components/IndexSections/Modals.js";
-import Navbars from "components/IndexSections/Navbars.js";
-import Pagination from "components/IndexSections/Pagination.js";
-import Pills from "components/IndexSections/Pills.js";
-import Progress from "components/IndexSections/Progress.js";
+import React from "react";
 import ReactPlayer from "react-player";
-import Tabs from "components/IndexSections/Tabs.js";
-import TooltipPopover from "components/IndexSections/TooltipPopover.js";
-import Typography from "components/IndexSections/Typography.js";
-import YouTubePlayer from "react-player/youtube";
 import axios from "axios";
 import moment from "moment";
 
