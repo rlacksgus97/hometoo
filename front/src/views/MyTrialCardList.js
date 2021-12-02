@@ -1,17 +1,17 @@
-import "assets/vendor/nucleo/css/nucleo.css";
 import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss";
 
 import { Button, Card, CardBody, Col, Container, Row } from "reactstrap";
 import React, { useEffect, useState } from "react";
 
+import DemoNavbar from "../components/Navbars/DemoNavbar";
 import Hero from "./Hero";
 import MyTrialCard from "./MyTrialCard";
 import UserService from "../service/UserService";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-export default function TrialCardList() {
+export default function MyTrialCardList() {
   const [username, setUsername] = useState(
     localStorage.getItem("authenticatedUserName")
   );
@@ -36,7 +36,7 @@ export default function TrialCardList() {
 
   return (
     <>
-      {/* <DemoNavbar /> */}
+      <DemoNavbar />
       <div className="position-relative">
         <Hero />
       </div>

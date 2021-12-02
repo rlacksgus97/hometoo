@@ -24,6 +24,7 @@ import Hero from "./Hero";
 import UserService from "../service/UserService";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import DemoNavbar from "../components/Navbars/DemoNavbar";
 
 export default function ChallengeCardList() {
   const { trialid } = useParams();
@@ -45,7 +46,7 @@ export default function ChallengeCardList() {
 
   return (
     <>
-      {/* <DemoNavbar /> */}
+       <DemoNavbar />
       <div className="position-relative">
         <Hero />
       </div>
@@ -67,7 +68,8 @@ export default function ChallengeCardList() {
                         />
                       ) : (
                         <video
-                          src={"http://221.143.144.143:80/" + trialDetail.url}
+                          // src={"http://221.143.144.143:80/" + trialDetail.url}
+                            src={"http://58.122.7.167:9000/" + trialDetail.url}
                           crossOrigin="anonymous"
                           type="type/mp4"
                           controls

@@ -121,45 +121,45 @@ class BoardUpdate extends React.Component {
                                 <span />
                             </div>
                             <Container className="py-lg-md d-flex">
-                                <div className="col px-0">
-                                    <Row>
-                                        <Col lg="6">
-                                            <h1 className="display-3 text-white">
-                                                모두의 홈트 게시판{" "}
-                                                <span></span>
-                                            </h1>
-                                            <p className="lead text-white">
-                                                홈트레이닝에 관한 자유로운 토론 게시판입니다.<br />
-                                                필요한 정보들이나 팁들을 자유롭게 공유해주세요.<br />
-                                                화상채팅에 같이할 동료들을 구해도 좋습니다.
-                                            </p>
-                                            <div className="btn-wrapper">
-                                                <Button
-                                                    className="btn-icon mb-3 mb-sm-0"
-                                                    color="info"
-                                                    href="http://localhost:3000/sample"
-                                                >
-                          <span className="btn-inner--icon mr-1">
-                            <i className="ni ni-user-run" />
-                          </span>
-                                                    <span className="btn-inner--text">화상채팅 홈트</span>
-                                                </Button>
-                                                <Button
-                                                    className="btn-white btn-icon mb-3 mb-sm-0 ml-1"
-                                                    color="default"
-                                                    href="http://localhost:3000/login"
-                                                >
-                          <span className="btn-inner--icon mr-1">
-                            <i className="ni ni-trophy" />
-                          </span>
-                                                    <span className="btn-inner--text">
-                            홈트 챌린지
-                          </span>
-                                                </Button>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                </div>
+                          {/*      <div className="col px-0">*/}
+                          {/*          <Row>*/}
+                          {/*              <Col lg="6">*/}
+                          {/*                  <h1 className="display-3 text-white">*/}
+                          {/*                      모두의 홈트 게시판{" "}*/}
+                          {/*                      <span></span>*/}
+                          {/*                  </h1>*/}
+                          {/*                  <p className="lead text-white">*/}
+                          {/*                      홈트레이닝에 관한 자유로운 토론 게시판입니다.<br />*/}
+                          {/*                      필요한 정보들이나 팁들을 자유롭게 공유해주세요.<br />*/}
+                          {/*                      화상채팅에 같이할 동료들을 구해도 좋습니다.*/}
+                          {/*                  </p>*/}
+                          {/*                  <div className="btn-wrapper">*/}
+                          {/*                      <Button*/}
+                          {/*                          className="btn-icon mb-3 mb-sm-0"*/}
+                          {/*                          color="info"*/}
+                          {/*                          href="http://localhost:3000/sample"*/}
+                          {/*                      >*/}
+                          {/*<span className="btn-inner--icon mr-1">*/}
+                          {/*  <i className="ni ni-user-run" />*/}
+                          {/*</span>*/}
+                          {/*                          <span className="btn-inner--text">화상채팅 홈트</span>*/}
+                          {/*                      </Button>*/}
+                          {/*                      <Button*/}
+                          {/*                          className="btn-white btn-icon mb-3 mb-sm-0 ml-1"*/}
+                          {/*                          color="default"*/}
+                          {/*                          href="http://localhost:3000/login"*/}
+                          {/*                      >*/}
+                          {/*<span className="btn-inner--icon mr-1">*/}
+                          {/*  <i className="ni ni-trophy" />*/}
+                          {/*</span>*/}
+                          {/*                          <span className="btn-inner--text">*/}
+                          {/*  홈트 챌린지*/}
+                          {/*</span>*/}
+                          {/*                      </Button>*/}
+                          {/*                  </div>*/}
+                          {/*              </Col>*/}
+                          {/*          </Row>*/}
+                          {/*      </div>*/}
                             </Container>
                             {/* SVG separator */}
                             <div className="separator separator-bottom separator-skew">
@@ -187,7 +187,7 @@ class BoardUpdate extends React.Component {
                                 <Col lg="8">
                                     <Card className="bg-gradient-secondary shadow">
                                         <CardBody className="p-lg-5">
-                                            <h4 className="display-3 text-black">게시판</h4>
+                                            <h4 className="display-3 text-black">게시판 수정</h4>
                                             <p className="mt-0">
                                                 운동 정보, 트레이닝에 관한 정보를 자유롭게 대화해주세요.
                                             </p>

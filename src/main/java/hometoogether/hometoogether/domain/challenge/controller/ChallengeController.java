@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/api")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
 public class ChallengeController {
@@ -38,6 +39,11 @@ public class ChallengeController {
     @GetMapping("/challenges/my/{username}")
     public List<ChallengeResponseDto> getMyList(@PathVariable("username") String username){
         return challengeService.getMyList(username);
+    }
+
+    @GetMapping("/challenges/my/count/{username}")
+    public int getMyCount(@PathVariable("username") String username){
+        return challengeService.getMyList(username).size();
     }
 
     @GetMapping("/challenges")

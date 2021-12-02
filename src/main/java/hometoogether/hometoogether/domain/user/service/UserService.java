@@ -1,6 +1,8 @@
 package hometoogether.hometoogether.domain.user.service;
 
 import hometoogether.hometoogether.config.jwt.JwtTokenProvider;
+import hometoogether.hometoogether.domain.forum.service.CommentService;
+import hometoogether.hometoogether.domain.forum.service.ForumService;
 import hometoogether.hometoogether.domain.user.domain.*;
 import hometoogether.hometoogether.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider tokenProvider;
+    private final ForumService forumService;
+    private final CommentService commentService;
 
     public String signIn(LoginRequest loginRequest) throws Exception {
         Authentication authentication;
@@ -38,7 +42,6 @@ public class UserService {
 
     @Transactional
     public String singUp(SignUpRequest signUpRequest) {
-        //TODO: username 중복체크 같이
         if (userRepository.existsUserByEmail(signUpRequest.getEmail())) {
             return "Email EXIST";
         } else if (userRepository.existsUserByUserName(signUpRequest.getUserName())) {
@@ -82,10 +85,13 @@ public class UserService {
     public String findUser(String email) {
         return userRepository.findByEmail(email).getUserName();
     }
-    
+
     @Transactional
-    public void deleteUser(String email) {
-        userRepository.deleteByEmail(email);
+    public void deleteUser(String userName) {
+        commentService.deleteCommentsByUser(userName);
+        forumService.deleteForumUser(userName);
+        //TODO: 챌린지(Trials)및 루틴 삭제 기능 필요
+        userRepository.deleteByUserName(userName);
     }
 
 }

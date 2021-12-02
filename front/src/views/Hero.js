@@ -28,26 +28,26 @@ export default function Hero() {
                 모두의 홈트 <span></span>
               </h1>
               <div className="btn-wrapper">
-                <Button
-                  className="btn-icon mb-3 mb-sm-0"
-                  color="info"
-                  href="/board"
-                >
-                  <span className="btn-inner--icon mr-1">
-                    <i className="ni ni-user-run" />
-                  </span>
-                  <span className="btn-inner--text">홈트 게시판</span>
-                </Button>
-                <Button
-                  className="btn-white btn-icon mb-3 mb-sm-0 ml-1"
-                  color="default"
-                  href="/challenge"
-                >
-                  <span className="btn-inner--icon mr-1">
-                    <i className="ni ni-trophy" />
-                  </span>
-                  <span className="btn-inner--text">홈트 챌린지</span>
-                </Button>
+                {/*<Button*/}
+                {/*  className="btn-icon mb-3 mb-sm-0"*/}
+                {/*  color="info"*/}
+                {/*  href="http://localhost:3000/board"*/}
+                {/*>*/}
+                {/*  <span className="btn-inner--icon mr-1">*/}
+                {/*    <i className="ni ni-user-run" />*/}
+                {/*  </span>*/}
+                {/*  <span className="btn-inner--text">홈트 게시판</span>*/}
+                {/*</Button>*/}
+                {/*<Button*/}
+                {/*  className="btn-white btn-icon mb-3 mb-sm-0 ml-1"*/}
+                {/*  color="default"*/}
+                {/*  href="/challenge"*/}
+                {/*>*/}
+                {/*  <span className="btn-inner--icon mr-1">*/}
+                {/*    <i className="ni ni-trophy" />*/}
+                {/*  </span>*/}
+                {/*  <span className="btn-inner--text">홈트 챌린지</span>*/}
+                {/*</Button>*/}
               </div>
             </Col>
           </Row>

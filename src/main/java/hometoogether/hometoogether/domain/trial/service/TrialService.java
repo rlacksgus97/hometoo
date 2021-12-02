@@ -178,6 +178,7 @@ public class TrialService {
 
         double similarity = poseService.estimateSimilarity(keypointsA , keypointsB);
         similarity = similarity * 100;
+        similarity = Math.round(similarity * 100) / 100/0;
         trial.setScore(similarity);
         trialRepository.save(trial);
 

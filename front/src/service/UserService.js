@@ -63,16 +63,16 @@ class UserService {
       (config) => {
         const token = localStorage.getItem("token");
 
-        if (token) {
-          config.headers["Authorization"] = "Bearer " + token;
-        }
-        return config;
-      },
-      (error) => {
-        Promise.reject(error);
-      }
-    );
-  }
+                if (token) {
+                    config.headers['Authorization'] = this.createJWTToken(token);
+                }
+                return config;
+            },
+            error => {
+                Promise.reject(error);
+            }
+        );
+    }
 
   findPassword(email) {
     return axios.patch(USER_API_BASE_URL + "/find/password", email);
@@ -82,9 +82,10 @@ class UserService {
     return axios.get(USER_API_BASE_URL + "/find/userName/" + user.email);
   }
 
-  withdrawUser(email) {
-    return axios.delete(USER_API_BASE_URL + "/withdraw/" + email);
-  }
+    withdrawUser(userName) {
+        return axios.delete(USER_API_BASE_URL+"/withdraw/"+userName);
+    }
+
 }
 
 export default new UserService();

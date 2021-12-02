@@ -10,11 +10,11 @@ import {
   CardTitle,
 } from "reactstrap";
 
-export default function ChallengeCard(props) {
+export default function MyChallengeCard(props) {
   // 찬현 주소
-  const url = "http://221.143.144.143:80/" + props.challenge.url;
+  // const url = "http://221.143.144.143:80/" + props.challenge.url;
   // 태훈 주소
-  // const url = "http://58.122.7.167:9000/" + props.challenge.url;
+  const url = "http://58.122.7.167:9000/" + props.challenge.url;
 
   return (
     <>

@@ -22,6 +22,7 @@ import React, { useState } from "react";
 import Hero from "./Hero";
 import UserService from "../service/UserService";
 import axios from "axios";
+import DemoNavbar from "../components/Navbars/DemoNavbar";
 
 export default function ChallengeCreate() {
   const [type, setType] = useState("");
@@ -104,7 +105,7 @@ export default function ChallengeCreate() {
 
   return (
     <>
-      {/* <DemoNavbar /> */}
+       <DemoNavbar />
       <div className="position-relative">
         <Hero />
       </div>

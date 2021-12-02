@@ -18,6 +18,7 @@ import Home from "views/Home.js";
 import Landing from "./views/Landing.js";
 import Login from "./views/Login.js";
 import MyChallengeCardList from "views/MyChallengeCardList";
+import MyRoutineList from "./views/routine/MyRoutineList";
 import MyScore from "views/MyScore";
 import MyTrialCardList from "views/MyTrialCardList";
 import Profile from "./views/Profile";
@@ -37,7 +38,7 @@ import reportWebVitals from "./reportWebVitals";
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route path="/" exact render={(props) => <Board {...props} />} />
+      <Route path="/" exact render={(props) => <Home {...props} />} />
       <Route path="/home" exact render={(props) => <Home {...props} />} />
       <Route path="/project" exact render={(props) => <Project {...props} />} />
       <Route path="/sample" exact render={(props) => <Sample {...props} />} />
@@ -116,6 +117,10 @@ ReactDOM.render(
         render={(props) => <ShowTop5Routine {...props} />}
       />
       <Route
+        path="/myRoutineList"
+        render={(props) => <MyRoutineList {...props} />}
+      />
+      <Route
         path="/trial/create/:challengeid"
         render={(props) => <TrialCreate {...props} />}
       />
@@ -128,11 +133,11 @@ ReactDOM.render(
         render={(props) => <TrialDetail {...props} />}
       />
       <Route
-        path="/mychallenges"
+        path="/myChallenges"
         render={(props) => <MyChallengeCardList {...props} />}
       />
       <Route
-        path="/mytrials"
+        path="/myTrials"
         render={(props) => <MyTrialCardList {...props} />}
       />
       <Route

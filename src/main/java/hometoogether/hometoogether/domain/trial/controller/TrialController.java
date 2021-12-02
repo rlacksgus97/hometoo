@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/api")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
 public class TrialController {

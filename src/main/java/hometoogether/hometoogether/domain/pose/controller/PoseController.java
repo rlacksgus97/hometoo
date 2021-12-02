@@ -11,6 +11,7 @@ import hometoogether.hometoogether.domain.trial.repository.TrialRepository;
 import hometoogether.hometoogether.domain.trial.service.TrialService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
+@CrossOrigin("*")
 @RestController
 public class PoseController {
 

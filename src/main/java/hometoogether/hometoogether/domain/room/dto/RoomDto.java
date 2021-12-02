@@ -14,6 +14,7 @@ public class RoomDto {
     private Long id;
     private Long max_num;
     private Long cur_num;
+    private String hostUser;
     private List<Training> trainings;
     private Long routineId;
 

@@ -8,7 +8,7 @@ import {
     CardHeader,
     Container,
     Row,
-    Col, Table, Media
+    Col, Table, Media, CardBody
 } from "reactstrap";
 
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
@@ -17,11 +17,12 @@ import SimpleFooter from "components/Footers/SimpleFooter.js";
 import "assets/vendor/nucleo/css/nucleo.css";
 import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss";
+import Hero from "../Hero";
+import RoutineCard from "../routine/RoutineCard";
 
 function CreateRoom(){
 
     const [roomList, setRoomList]=useState("");
-    // const [roomId, setRoomId]=useState(0);
 
     useEffect(
         ()=>{
@@ -45,8 +46,8 @@ function CreateRoom(){
         if (localStorage.getItem("uuid") === null) {
             localStorage.setItem("uuid", guid());
         }
-        uuidInput.value = localStorage.getItem("uuid");
-        console.log("local.uuid:" + localStorage.getItem("uuid"));
+        // uuidInput.value = localStorage.getItem("uuid");
+        // console.log("local.uuid:" + localStorage.getItem("uuid"));
         // console.log("input.value:" + uuidInput.value);
     });
 
@@ -87,116 +88,116 @@ function CreateRoom(){
     return(
         <>
             <DemoNavbar />
-            <main>
-                <div className="position-relative">
-                <section className="section section-lg section-shaped pb-250">
-                <div className="shape shape-style-1 shape-default">
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                </div>
+            <div className="position-relative">
+                <Hero />
+            </div>
+            <section className="section section-components pb-5">
                 <Container className="justify-content-md-center" fluid>
-                    <Row>
-                        <div className="col">
-                            <Card className="shadow">
-                                <CardHeader className="border-0">
-                                    <h1 className="display-3 text-black">Select one of the rooms created</h1>
-                                </CardHeader>
-                                <Table className="align-items-center table-flush" responsive>
-                                    <thead className="thead-light">
-                                    <tr>
-                                        <th scope="col">방 번호</th>
-                                        <th scope="col">호스트</th>
-                                        <th scope="col">루틴</th>
-                                        <th scope="col">입장자 수</th>
-                                        <th scope="col">입장 가능</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        {(roomList!=="") ? (
-                                            <>
-                                                {
-                                                    roomList.map((room)=>{
-                                                        return(
-                                                            <tr onClick={()=>{addUuidToButtonLink(room)}}>
-                                                            <th scope="row">
-                                                                <Media className="align-items-center">
-                                                                    <Media>
-                                                                      <span className="mb-0 text-sm">
-                                                                        # {room.id}
-                                                                      </span>
-                                                                    </Media>
-                                                                </Media>
-                                                            </th>
-                                                            <th scope="row">
-                                                                <Media className="align-items-center">
-                                                                    <Media>
-                                                                          <span className="mb-0 text-sm">
-                                                                            Random User
-                                                                          </span>
-                                                                    </Media>
-                                                                </Media>
-                                                            </th>
-                                                            <th scope="row">
-                                                                <Media className="align-items-center">
-                                                                    <Media>
-                                                                      <span className="mb-0 text-sm">
-                                                                        Random Routine
-                                                                      </span>
-                                                                    </Media>
-                                                                </Media>
-                                                            </th>
-                                                            <th scope="row">
-                                                                <Media className="align-items-center">
-                                                                    <Media>
-                                                                      <span className="mb-0 text-sm">
-                                                                        {room.cur_num}
-                                                                      </span>
-                                                                    </Media>
-                                                                </Media>
-                                                            </th>
-                                                                <th scope="row">
-                                                                    <Media className="align-items-center">
-                                                                        <Media>
-                                                                      <span className="mb-0 text-sm">
-                                                                        {((room.cur_num)<2) ? "YES" : "NO"}
-                                                                      </span>
-                                                                        </Media>
-                                                                    </Media>
-                                                                </th>
-                                                            </tr>
-                                                            )
-                                                        })
-                                                }
-                                            </>
-                                        ) : (
-                                            <>
-                                                <div className="text-center">
-                                                    No Room
-                                                </div>
-                                            </>
-                                            )}
-                                    </tbody>
-                                </Table>
-                                <Button id="create_button" onClick={createRoom} className="btn-neutral btn-icon">
-                                    Create Room
-                                </Button>
+                    <Row className="justify-content-center mt--300">
+                        <Col lg="8">
+                            <Card className="bg-gradient-secondary shadow">
+                                <CardBody className="p-lg-5">
+                                    <div>
+                                        <Container fluid lg="8">
+                                            <Row lg="3">
+                                                <Col md="12" style={{ display: "flex" }}>
+                                                    <h1 className="font-weight-bold">화상 홈트</h1>
+                                                </Col>
+                                                <Col md="12" style={{ display: "flex" }}>
+                                                    <h5>화상 채팅방에 입장해서 다른 사람들과 함께 운동해보세요!</h5>
+                                                </Col>
+                                                <Col md="12" style={{ display: "flex" }}>
+                                                    <Table className="align-items-center table-flush" responsive>
+                                                     <thead className="thead-light">
+                                                    <tr>
+                                                         <th scope="col">방 번호</th>
+                                                         <th scope="col">호스트</th>
+                                                         <th scope="col">루틴</th>
+                                                         <th scope="col">입장자 수</th>
+                                                         <th scope="col">입장 가능</th>
+                                                     </tr>
+                                                    </thead>
+                                                     <tbody>
+                                                     {(roomList!=="") ? (
+                                                             <>
+                                                                 {
+                                                                     roomList.map((room)=>{
+                                                                         return(
+                                                                             <tr onClick={()=>{addUuidToButtonLink(room)}}>
+                                                                             <th scope="row">
+                                                                                 <Media className="align-items-center">
+                                                                                     <Media>
+                                                                                       <span className="mb-0 text-sm">
+                                                                                         # {room.id}
+                                                                                       </span>
+                                                                                     </Media>
+                                                                                 </Media>
+                                                                             </th>
+                                                                             <th scope="row">
+                                                                                 <Media className="align-items-center">
+                                                                                     <Media>
+                                                                                           <span className="mb-0 text-sm">
+                                                                                             {room.hostUser}
+                                                                                           </span>
+                                                                                     </Media>
+                                                                                 </Media>
+                                                                             </th>
+                                                                             <th scope="row">
+                                                                                 <Media className="align-items-center">
+                                                                                     <Media>
+                                                                                       <span className="mb-0 text-sm">
+                                                                                         Random Routine
+                                                                                       </span>
+                                                                                     </Media>
+                                                                                 </Media>
+                                                                             </th>
+                                                                             <th scope="row">
+                                                                                 <Media className="align-items-center">
+                                                                                     <Media>
+                                                                                       <span className="mb-0 text-sm">
+                                                                                         {room.cur_num}
+                                                                                       </span>
+                                                                                     </Media>
+                                                                                 </Media>
+                                                                             </th>
+                                                                                 <th scope="row">
+                                                                                     <Media className="align-items-center">
+                                                                                         <Media>
+                                                                                       <span className="mb-0 text-sm">
+                                                                                         {((room.cur_num)<2) ? "YES" : "NO"}
+                                                                                       </span>
+                                                                                         </Media>
+                                                                                     </Media>
+                                                                                 </th>
+                                                                             </tr>
+                                                                             )
+                                                                         })
+                                                                 }
+                                                             </>
+                                                         ) : (
+                                                             <>
+                                                                 <div className="text-center">
+                                                                     No Room
+                                                                 </div>
+                                                             </>
+                                                             )}
+                                                     </tbody>
+                                                    </Table>
+                                                </Col>
+                                                <Col md="12" style={{ display: "flex" }}>
+                                                    <Button className="col" onClick={createRoom}>
+                                                    Create Room
+                                                    </Button>
+                                                </Col>
+                                            </Row>
+                                        </Container>
+                                    </div>
+                                </CardBody>
                             </Card>
-                        </div>
+                        </Col>
                     </Row>
-                    <input type="hidden" id="uuid" name="uuid" value="${uuid}"/>
-
                 </Container>
-                </section>
-                </div>
-            </main>
-            <SimpleFooter />
+            </section>
         </>
     )}
 
