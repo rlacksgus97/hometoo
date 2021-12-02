@@ -26,6 +26,8 @@ public class RoutineService {
                     .routineId(routine.getRoutineId())
                     .routineName(routine.getRoutineName())
                     .userName(routine.getUserName())
+                    .avgScore(routine.getRoutineAvgScore())
+                    .evalCnt(routine.getEvaluateCnt())
                     .build();
             result.add(build);
         }
@@ -33,6 +35,7 @@ public class RoutineService {
         return result;
     }
 
+    @Transactional
     public List<TrainingVO> getTrainingList(Long routineId) {
         Routine routine = routineRepository.findById(routineId).orElse(null);
         List<Training> trainings = routine.getTrainings();
@@ -130,6 +133,24 @@ public class RoutineService {
         }
 
         return dtoList;
+    }
+
+    public List<RoutineScoreDto> getMyRoutines(String userName){
+        List<Routine> myRoutineList = routineRepository.findByUserName(userName);
+        List<RoutineScoreDto> result=new ArrayList<>();
+
+        for(Routine routine : myRoutineList){
+            RoutineScoreDto dto = RoutineScoreDto.builder()
+                    .routineName(routine.getRoutineName())
+                    .routineId(routine.getRoutineId())
+                    .routineAvgScore(routine.getRoutineAvgScore())
+                    .evaluateCnt(routine.getEvaluateCnt())
+                    .build();
+
+            result.add(dto);
+        }
+
+        return result;
     }
 
     private Object[] arrayParse(String notParsedString){

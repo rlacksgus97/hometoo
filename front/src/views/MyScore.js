@@ -20,12 +20,13 @@ import {
 } from "reactstrap";
 import React, { useEffect, useState } from "react";
 
+import DemoNavbar from "../components/Navbars/DemoNavbar";
 import Hero from "./Hero";
 import UserService from "../service/UserService";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-export default function ChallengeCardList() {
+export default function MyScore() {
   const { trialid } = useParams();
   const [myScore, setmyScore] = useState(0);
   const [trialDetail, settrialDeatil] = useState({
@@ -55,7 +56,7 @@ export default function ChallengeCardList() {
 
   return (
     <>
-      {/* <DemoNavbar /> */}
+      <DemoNavbar />
       <div className="position-relative">
         <Hero />
       </div>
@@ -65,72 +66,82 @@ export default function ChallengeCardList() {
             <Col lg="8">
               <Card className="bg-gradient-secondary shadow">
                 <CardBody className="p-lg-5">
-                  <Col className="d-flex justify-content-between" lg="8">
-                    <div>
-                      {trialDetail.type == "photo" ? (
-                        <CardImg
-                          alt="Card image cap"
-                          // src="https://picsum.photos/256/186"
-                          src={
-                            "http://221.143.144.143:80/" +
-                            trialDetail.challenge_url
-                          }
-                          top
-                          width="100%"
-                        />
-                      ) : (
-                        <video
-                          src={
-                            "http://221.143.144.143:80/" +
-                            trialDetail.challenge_url
-                          }
-                          crossOrigin="anonymous"
-                          type="type/mp4"
-                          controls
-                          width="100%"
+                  <Row className="justify-content-space-between">
+                    <Col className="d-flex" md="4">
+                      <div>
+                        {trialDetail.type == "photo" ? (
+                          <CardImg
+                            alt="Card image cap"
+                            // src="https://picsum.photos/256/186"
+                            src={
+                              "http://221.143.144.143:80/" +
+                              trialDetail.challenge_url
+                            }
+                            top
+                            width="100%"
+                          />
+                        ) : (
+                          <video
+                            src={
+                              "http://221.143.144.143:80/" +
+                              trialDetail.challenge_url
+                            }
+                            crossOrigin="anonymous"
+                            type="type/mp4"
+                            controls
+                            width="100%"
+                          >
+                            비디오 재생 중 에러가 발생했습니다.
+                          </video>
+                        )}
+                      </div>
+                    </Col>
+                    <Col className="d-flex justify-content-center" md="4">
+                      <div>
+                        <Button
+                          className="flex"
+                          color="primary"
+                          onClick={checkMyScore}
                         >
-                          비디오 재생 중 에러가 발생했습니다.
-                        </video>
-                      )}
-                    </div>
-                    <div>
-                      {trialDetail.type == "photo" ? (
-                        <CardImg
-                          alt="Card image cap"
-                          // src="https://picsum.photos/256/186"
-                          src={
-                            "http://221.143.144.143:80/" + trialDetail.trial_url
-                          }
-                          top
-                          width="100%"
-                        />
-                      ) : (
-                        <video
-                          src={
-                            "http://221.143.144.143:80/" + trialDetail.trial_url
-                          }
-                          crossOrigin="anonymous"
-                          type="type/mp4"
-                          controls
-                          width="100%"
-                        >
-                          비디오 재생 중 에러가 발생했습니다.
-                        </video>
-                      )}
-                    </div>
-                  </Col>
+                          점수 확인하기
+                        </Button>
+                        <div className="flex ">
+                          <h3 align="center">{myScore} %</h3>
+                        </div>
+                      </div>
+                    </Col>
+                    <Col className="d-flex" md="4">
+                      <div>
+                        {trialDetail.type == "photo" ? (
+                          <CardImg
+                            alt="Card image cap"
+                            // src="https://picsum.photos/256/186"
+                            src={
+                              "http://221.143.144.143:80/" +
+                              trialDetail.trial_url
+                            }
+                            top
+                            width="100%"
+                          />
+                        ) : (
+                          <video
+                            src={
+                              "http://221.143.144.143:80/" +
+                              trialDetail.trial_url
+                            }
+                            crossOrigin="anonymous"
+                            type="type/mp4"
+                            controls
+                            width="100%"
+                          >
+                            비디오 재생 중 에러가 발생했습니다.
+                          </video>
+                        )}
+                      </div>
+                    </Col>
+                  </Row>
                 </CardBody>
-                <div>제 점수는요... {myScore}</div>
               </Card>
-              <div style={{ display: "flex" }}>
-                <Button
-                  color="primary"
-                  style={{ marginLeft: "auto" }}
-                  onClick={checkMyScore}
-                >
-                  점수 확인하기
-                </Button>
-              </div>
             </Col>
           </Row>
         </Container>

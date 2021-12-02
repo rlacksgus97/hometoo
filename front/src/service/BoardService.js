@@ -54,9 +54,10 @@ class BoardService {
     return axios.get(BOARD_API_BASE_URL + "/comments/count/" + userName);
   }
 
-  deleteForumsByWithdraw(userName) {
-    UserService.setupAxiosInterceptors();
+  getTop5Board() {
+    return axios.get(BOARD_API_BASE_URL+"/top5");
   }
+
 }
 
 export default new BoardService();

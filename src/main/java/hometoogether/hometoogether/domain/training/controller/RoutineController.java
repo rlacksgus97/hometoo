@@ -39,5 +39,10 @@ public class RoutineController {
     public List<RoutineScoreDto> getTop5RoutineList(){
         return routineService.getTop5RoutineList();
     }
+
+    @GetMapping("/myRoutines/{userName}")
+    public List<RoutineScoreDto> getMyRoutines(@PathVariable String userName){
+        return routineService.getMyRoutines(userName);
+    }
 }
 

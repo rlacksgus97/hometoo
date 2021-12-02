@@ -5,6 +5,7 @@ import "assets/scss/argon-design-system-react.scss";
 import { Button, Card, CardBody, Col, Container, Row } from "reactstrap";
 import React, { useEffect, useState } from "react";
 
+import DemoNavbar from "../components/Navbars/DemoNavbar";
 import Hero from "./Hero";
 import MyChallengeCard from "./MyChallengeCard";
 import UserService from "../service/UserService";
@@ -34,7 +35,7 @@ export default function MyChallengeCardList() {
 
   return (
     <>
-      {/* <DemoNavbar /> */}
+      <DemoNavbar />
       <div className="position-relative">
         <Hero />
       </div>

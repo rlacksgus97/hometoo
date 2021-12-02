@@ -37,6 +37,7 @@ public class RoomService{
                     .id(room.getId())
                     .cur_num(room.getCur_num())
                     .max_num(room.getMax_num())
+                    .hostUser(room.getHostUserName())
                     .routineId(room.getRoutineId())
                     .build());
         }

@@ -10,13 +10,13 @@ import {
   CardTitle,
 } from "reactstrap";
 
-export default function TrialCard(props) {
+export default function MyTrialCard(props) {
   const url = "http://221.143.144.143:80/" + props.trial.url;
 
   return (
     <Card>
       <div>
-        {props.trial.type == "photo" ? (
+        {props.trial.type === "photo" ? (
           <CardImg
             alt="Card image cap"
             // src="https://picsum.photos/256/186"
@@ -39,7 +39,8 @@ export default function TrialCard(props) {
       <CardBody>
         <CardTitle tag="h5">{props.trial.title}</CardTitle>
         <CardSubtitle className="mb-2 text-muted" tag="h6">
-          {props.trial.username} {props.trial.score}점
+          <div>{props.trial.username}</div>
+          <div>{props.trial.score}점</div>
         </CardSubtitle>
         <div style={{ display: "flex" }}>
           <Button

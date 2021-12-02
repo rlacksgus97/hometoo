@@ -20,6 +20,7 @@ import {
 } from "reactstrap";
 import React, { useEffect, useState } from "react";
 
+import DemoNavbar from "../components/Navbars/DemoNavbar";
 import Hero from "./Hero";
 import UserService from "../service/UserService";
 import axios from "axios";
@@ -58,7 +59,7 @@ export default function ChallengeCardList() {
 
   return (
     <>
-      {/* <DemoNavbar /> */}
+      <DemoNavbar />
       <div className="position-relative">
         <Hero />
       </div>
@@ -74,19 +75,23 @@ export default function ChallengeCardList() {
                         <CardImg
                           alt="Card image cap"
                           // src="https://picsum.photos/256/186"
+                          // src={
+                          //   "http://221.143.144.143:80/" + challengeDeatil.url
+                          // }
                           src={
-                            "http://221.143.144.143:80/" + challengeDeatil.url
+                            "http://58.122.7.167:9000/" + challengeDeatil.url
                           }
-                          // src={"http://58.122.7.167:9000/" + challengeDeatil.url}
                           top
                           width="100%"
                         />
                       ) : (
                         <video
+                          // src={
+                          //   "http://221.143.144.143:80/" + challengeDeatil.url
+                          // }
                           src={
-                            "http://221.143.144.143:80/" + challengeDeatil.url
+                            "http://58.122.7.167:9000/" + challengeDeatil.url
                           }
-                          // src={"http://58.122.7.167:9000/" + challengeDeatil.url}
                           crossOrigin="anonymous"
                           type="type/mp4"
                           controls
@@ -97,22 +102,12 @@ export default function ChallengeCardList() {
                       )}
                     </div>
                     <div className="w-50 px-2">
-                      <div className="d-flex justify-content-between">
+                      <div className="d-flex justify-content-center">
                         <h5>
                           <i className="ni ni-notification-70 px-3" />
                           명예의 전당
                           <i className="ni ni-notification-70 px-3" />
                         </h5>
-                        <Button
-                          color="danger"
-                          style={{ marginLeft: "auto" }}
-                          onClick={() => {
-                            window.location.href =
-                              "/trial/create/" + challengeid;
-                          }}
-                        >
-                          지금 참가하기
-                        </Button>
                       </div>
                       <ListGroup>
                         {bestTrialList.length !== 0 ? (
@@ -121,8 +116,8 @@ export default function ChallengeCardList() {
                               return (
                                 <>
                                   <ListGroupItem className="d-flex justify-content-between">
-                                    {bestTrial.username} {bestTrial.score}
-                                    {/* <i className="ni ni-favourite-28 text-danger" /> */}
+                                    <div>{bestTrial.username}</div>
+                                    <div>{bestTrial.score} 점</div>
                                   </ListGroupItem>
                                 </>
                               );
@@ -135,28 +130,8 @@ export default function ChallengeCardList() {
                             </ListGroupItem>
                           </>
                         )}
-                        {/* <ListGroupItem className="d-flex justify-content-between">
-                          Cras justo odio
-                          <i className="ni ni-favourite-28 text-danger" />
-                        </ListGroupItem>
-                        <ListGroupItem className="d-flex justify-content-between">
-                          Dapibus ac facilisis in
-                          <i className="ni ni-favourite-28 text-danger" />
-                        </ListGroupItem>
-                        <ListGroupItem className="d-flex justify-content-between">
-                          Cras justo odio
-                          <i className="ni ni-favourite-28 text-danger" />
-                        </ListGroupItem>
-                        <ListGroupItem className="d-flex justify-content-between">
-                          Cras justo odio
-                          <i className="ni ni-favourite-28 text-danger" />
-                        </ListGroupItem>
-                        <ListGroupItem className="d-flex justify-content-between">
-                          Cras justo odio
-                          <i className="ni ni-favourite-28 text-danger" />
-                        </ListGroupItem> */}
                       </ListGroup>
-                      <div style={{ display: "flex" }}>
+                      <div className="d-flex justify-content-between">
                         <Button
                           color="primary"
                           style={{ marginLeft: "auto" }}
@@ -165,6 +140,16 @@ export default function ChallengeCardList() {
                           }}
                         >
                           참가자 더보기
+                        </Button>
+                        <Button
+                          color="danger"
+                          style={{ marginLeft: "auto" }}
+                          onClick={() => {
+                            window.location.href =
+                              "/trial/create/" + challengeid;
+                          }}
+                        >
+                          지금 참가하기
                         </Button>
                       </div>
                     </div>

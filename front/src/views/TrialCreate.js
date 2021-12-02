@@ -23,6 +23,7 @@ import Hero from "./Hero";
 import UserService from "../service/UserService";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import DemoNavbar from "../components/Navbars/DemoNavbar";
 
 export default function TrialCreate() {
   const { challengeid } = useParams();
@@ -75,7 +76,7 @@ export default function TrialCreate() {
 
   return (
     <>
-      {/* <DemoNavbar /> */}
+      <DemoNavbar />
       <div className="position-relative">
         <Hero />
       </div>

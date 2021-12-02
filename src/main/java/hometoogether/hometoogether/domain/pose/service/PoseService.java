@@ -74,7 +74,8 @@ public class PoseService {
         headers.add("Authorization", "KakaoAK 19a4097fe8917a985bb1a7acc9ce2fb1");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("image_url", "http://221.143.144.143:80/"+url);
+//        params.add("image_url", "http://221.143.144.143:80/"+url);
+        params.add("image_url", "http://58.122.7.167:9000/"+url);
 
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
 
@@ -119,7 +120,8 @@ public class PoseService {
         headers.add("Authorization", "KakaoAK e77f96acc7076a928b06d2fa9a480474");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("video_url", "http://221.143.144.143:80/"+url);
+//        params.add("video_url", "http://221.143.144.143:80/"+url);
+        params.add("image_url", "http://58.122.7.167:9000/"+url);
 
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
 

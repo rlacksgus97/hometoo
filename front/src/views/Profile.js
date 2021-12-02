@@ -9,22 +9,15 @@ import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import React from "react";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 import UserService from "../service/UserService";
+import axios from "axios";
 
 // reactstrap components
 
-
 // core components
-
-
 
 //css
 
-
-
-
 //user
-
-
 
 class Profile extends React.Component {
   state = {};
@@ -52,19 +45,22 @@ class Profile extends React.Component {
     this.props.history.push("/board");
   };
 
-  // withdrawUser = (event) => {
-  //   event.preventDefault();
-  //   UserService.withdrawUser(this.state.name).then(res =>{
-  //     if (res.data == "SUCCESS") {
-  //       this.props.history.push('/register');
-  //       BoardService.
-  //     } else {
-  //       alert("회원 탈퇴에 실패하였습니다.");
-  //     }
-  //   });
-  // }
-
-  // clickChanllenge 메소드 필요
+  withdrawUser = async function () {
+    if (
+      window.confirm(
+        "모든 활동내역들을 복구 할 수 없습니다.\n정말로 탈퇴하시겠습니까?"
+      )
+    ) {
+      UserService.withdrawUser(this.state.name).then((res) => {
+        console.log("delete user result => " + JSON.stringify(res.data));
+        if (res.data == "Success") {
+          this.props.history.push("/");
+        } else {
+          alert("회원 삭제가 실패했습니다.");
+        }
+      });
+    }
+  };
 
   componentDidMount() {
     UserService.pageLoginCheck();
@@ -78,8 +74,11 @@ class Profile extends React.Component {
     BoardService.getCommentCount(this.state.name).then((res) => {
       this.setState({ comments: res.data });
     });
-    const temp = this.state.photo;
-    const img_url = "${temp}";
+    axios
+      .get("http://localhost:8080/api/challenges/my/count/" + this.state.name)
+      .then((res) => {
+        this.setState({ challenges: res.data });
+      });
   }
 
   render() {
@@ -88,6 +87,7 @@ class Profile extends React.Component {
         <DemoNavbar />
         <main className="profile-page" ref="main">
           <section className="section-profile-cover section-shaped my-0">
+            {/* Circles background */}
             <div className="shape shape-style-1 shape-default alpha-4">
               <span />
               <span />
@@ -97,6 +97,7 @@ class Profile extends React.Component {
               <span />
               <span />
             </div>
+            {/* SVG separator */}
             <div className="separator separator-bottom separator-skew">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -138,35 +139,26 @@ class Profile extends React.Component {
                       <div className="card-profile-actions py-4 mt-lg-0">
                         <Button
                           className="mr-4"
-                          color="info"
-                          onClick={(e) => e.preventDefault()}
+                          color="danger"
+                          onClick={() => this.withdrawUser()}
                           size="sm"
                         >
                           회원탈퇴
                         </Button>
-                        <Button
-                          className="mr-4"
-                          color="default"
-                          onClick={(e) => e.preventDefault()}
-                          size="sm"
-                        >
-                          Routines
-                        </Button>
-                        {/*<Button*/}
-                        {/*    className="float-right"*/}
-                        {/*    color="default"*/}
-                        {/*    onClick={e => e.preventDefault()}*/}
-                        {/*    size="sm"*/}
-                        {/*>*/}
-                        {/*  Trials*/}
-                        {/*</Button>*/}
                       </div>
                     </Col>
                     <Col className="order-lg-1" lg="4">
                       <div className="card-profile-stats d-flex justify-content-center">
-                        <div>
-                          <span className="heading">22개</span>
-                          <span className="description">Chanllenge</span>
+                        <div
+                          onClick={() =>
+                            (window.location.href = "/challenge/mychallenge")
+                          }
+                          style={{ cursor: "pointer" }}
+                        >
+                          <span className="heading">
+                            {this.state.challenges}개
+                          </span>
+                          <span className="description">Chanllenges</span>
                         </div>
                         <div
                           onClick={this.clickBoard}
@@ -203,37 +195,30 @@ class Profile extends React.Component {
                     {/*</div>*/}
                   </div>
                   <div className="mt-5 py-5 border-top text-center">
-                    {/*<Row className="justify-content-center">*/}
-                    {/*  <Col lg="9">*/}
-                    {/*    <p>*/}
-                    {/*      An artist of considerable range, Ryan — the name taken*/}
-                    {/*      by Melbourne-raised, Brooklyn-based Nick Murphy —*/}
-                    {/*      writes, performs and records all of his own music,*/}
-                    {/*      giving it a warm, intimate feel with a solid groove*/}
-                    {/*      structure. An artist of considerable range.*/}
-                    {/*    </p>*/}
-                    {/*    <a href="#pablo" onClick={e => e.preventDefault()}>*/}
-                    {/*      Show more*/}
-                    {/*    </a>*/}
-                    {/*  </Col>*/}
-                    {/*</Row>*/}
+                    <Button
+                      className="mr-4"
+                      color="neutral"
+                      onClick={() => (window.location.href = "/myRoutineList")}
+                    >
+                      My Routines
+                    </Button>
+                    <Button
+                      className="mr-4"
+                      color="info"
+                      onClick={() => (window.location.href = "/myChallenges")}
+                    >
+                      My Challenges
+                    </Button>
+                    <Button
+                      className="mr-4"
+                      color="warning"
+                      onClick={() => (window.location.href = "/myTrials")}
+                    >
+                      My Trials
+                    </Button>
                   </div>
                 </div>
               </Card>
-              {/*<div className="">*/}
-              {/*  <Button value="1"*/}
-              {/*      onClick={window.location.href="/"}>*/}
-              {/*    Give me Routines*/}
-              {/*  </Button>*/}
-              {/*  <Button value="2"*/}
-              {/*      onClick={window.location.href="/"}>*/}
-              {/*    Give me Challenges*/}
-              {/*  </Button>*/}
-              {/*  <Button value="3"*/}
-              {/*      onClick={window.location.href="/"}>*/}
-              {/*    Give me Trials*/}
-              {/*  </Button>*/}
-              {/*</div>*/}
             </Container>
           </section>
         </main>

@@ -42,9 +42,9 @@ public class CommentController {
         return commentService.userCommentsCount(userName);
     }
 
-    @DeleteMapping("/comments/{userName}")
-    public String deleteCommentsByUser(@PathVariable("userName") String userName) {
-        commentService.deleteCommentsByUser(userName);
-        return "SUCCESS";
-    }
+//    @DeleteMapping("/comments/{userName}")
+//    public String deleteCommentsByUser(@PathVariable("userName") String userName) {
+//        commentService.deleteCommentsByUser(userName);
+//        return "SUCCESS";
+//    }
 }
