@@ -23,7 +23,7 @@
 - 루틴 관리
 ![routine](./img/routine.png)
 - 화상 세션
-![session](./img/session.png)
+![session](./img/session.jpg)
 - 자세 챌린지
 ![challenge](./img/challenge.png)
 - 점수 확인
